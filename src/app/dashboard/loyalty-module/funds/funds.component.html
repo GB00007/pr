@@ -1,0 +1,41 @@
+<div>
+  <h3 class="text-left text-muted text-uppercase title-container">
+    {{'settings' | translate}} > {{'customerFunds' | translate}}
+  </h3>
+  <hr>
+  <div *ngIf="isPageLoaded && currenciesCoins" class="funds-wrapper" flexLayout="row" flexLayoutAlign="center center">
+    <mat-card fxFlex="70" fxFlexOffset="15" class="mat-elevation-z10">
+        <mat-card-title><h2>{{'customerFunds' | translate}}</h2></mat-card-title>
+        <mat-card-content
+          class="m-0"
+          *ngIf="page"
+          fxLayout="row"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="space-between center"
+        >
+          <div
+            fxFlex="25"
+            fxLayout="row"
+            fxLayoutGap="1rem"
+            fxLayoutAlign="center center"
+            *ngFor="let currency of keys(page.customerFund)"
+          >
+            <div class="coin-value">{{page.customerFund[currency]}}</div>
+            <img [src]="currenciesCoins[currency]">
+          </div>
+        </mat-card-content>
+        <mat-card-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+          <button
+            fxFlex="40"
+            color="green"
+            mat-raised-button
+            [disabled]="isButtonDisabled"
+            (click)="openUpdateFundsDialog()"
+          >
+            {{'buyFunds' | translate}}
+          </button>
+        </mat-card-actions>
+    </mat-card>
+  </div>
+  <!-- <app-loader *ngIf="!isPageLoaded"></app-loader> -->
+</div>

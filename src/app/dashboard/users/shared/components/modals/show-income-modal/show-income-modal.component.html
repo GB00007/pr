@@ -1,0 +1,170 @@
+<form
+  novalidate
+  name="showIncome"
+  class="show-income"
+  [formGroup]="incomeForm"
+>
+  <div class="modal-header">
+    <h4 class="modal-title" *ngIf="!selectedWaiter">
+      {{'selectWaiter' | translate}}
+    </h4>
+    <h4 class="modal-title" *ngIf="selectedWaiter">
+      {{'getIncomeFor' | translate}} <strong>{{selectedWaiter?.firstname}} {{selectedWaiter?.lastname}}</strong>
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <div
+      class="mat-block text-center c-filters-wrapper mb-0"
+      *ngIf="isSectionVisible('waiters') || isSectionVisible('pinCode')"
+    >
+      <fieldset>
+        <legend class="text-left" class="text-left">
+          <span>{{"waiter" | translate}}</span>
+        </legend>
+        <span
+          *ngFor="let waiter of waiters"
+          (click)="toggleWaiter(waiter)"
+          [class.checked]="selectedWaiter?.id === waiter?.id"
+          class="label label-pill filter label-primary c-filter"
+        >
+          {{waiter.firstname}} {{waiter.lastname}}
+          <mat-icon *ngIf="selectedWaiter?.id !== waiter?.id">add</mat-icon>
+          <mat-icon *ngIf="selectedWaiter?.id === waiter?.id">done</mat-icon>
+        </span>
+        <div class="mt-5 text-center" *ngIf="isSectionVisible('pinCode')">
+          <mat-form-field
+            class="width-pinCode"
+            dividerColor="{{getDividerColor(incomeForm.get('pinCode'))}}"
+          >
+            <input
+              matInput
+              #pinCode
+              autofocus="true"
+              autocomplete="off"
+              formControlName="pinCode"
+              [type]="showPin ? 'text' : 'password'"
+              placeholder="{{'pinCode' | translate}}"
+              (keyup)="incomeForm.get('pinCode').valid ? selectIncomeDate({value: 'today'}) : (totalPrice = null)"
+            >
+            <span matSuffix>
+              <button
+                type="button"
+                tabindex="-1"
+                mat-raised-button
+                (click)="showPin = !showPin"
+                class="btn btn-sm lc-btn-primary show-pin text-capitalize"
+              >
+                <span [hidden]="!showPin"> <i class="fa fa-eye-slash fa-2x"></i></span>
+                <span [hidden]="showPin"> <i class="fa fa-eye fa-2x"></i></span>
+              </button>
+            </span>
+            <mat-error *ngIf="incomeForm.get('pinCode').hasError('required')">
+              {{'form_error_required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="incomeForm.get('pinCode').hasError('pattern')">
+              {{'postiveonly' | translate}}
+            </mat-error>
+            <mat-error *ngIf="incomeForm.get('pinCode').hasError('wrongPinCode')">
+              {{'wrongPinCode' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="row justify-content-center">
+          <div class="mat-block-alert col-lg-8" *ngIf="selectedWaiter && !selectedWaiter.pinCode">
+            <mat-icon>error</mat-icon> {{'notFoundpinCode' | translate}}
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div
+      *ngIf="isSectionVisible('date')"
+      class="mat-block text-center c-filters-wrapper mt-0"
+    >
+      <fieldset>
+        <legend class="text-left">
+          <span>{{"date" | translate}}</span>
+        </legend>
+        <mat-radio-group
+          class="row"
+          [(ngModel)]="selectedType"
+          formControlName="incomeDate"
+          (change)="selectIncomeDate($event)"
+        >
+          <mat-radio-button value="today" checked="true">{{'today' | translate}}</mat-radio-button>
+          <mat-radio-button value="yesterday">{{'yesterday' | translate}}</mat-radio-button>
+          <mat-radio-button value="fromTo">{{'fromTo' | translate}}</mat-radio-button>
+        </mat-radio-group>
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          class="mt-3 center-block"
+          fxLayoutAlign="start stretch"
+          *ngIf="selectedType === 'fromTo'"
+        >
+          <div fxFlex="50">
+            <mat-form-field>
+              <input
+                matInput
+                [min]="minDate"
+                [matDatepicker]="from"
+                (mouseup)="from.open()"
+                formControlName="from_date"
+                placeholder="Choose a date"
+                [max]="incomeForm.get('to_date').value || today"
+              >
+              <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+              <mat-datepicker #from (selectedChanged)="selectIncomeDate($event, 'from_date')"></mat-datepicker>
+              <mat-error *ngIf="incomeForm.get('from_date').hasError('required')">
+                {{'form_error_required' | translate}}
+              </mat-error>
+              <mat-error *ngIf="incomeForm.get('from_date').hasError('invalidDate')">
+                {{'invalidDate' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50">
+            <mat-form-field>
+              <input
+                matInput
+                [max]="today"
+                [matDatepicker]="to"
+                (mouseup)="to.open()"
+                formControlName="to_date"
+                placeholder="Choose a date"
+                [min]="incomeForm.get('from_date').value"
+              >
+              <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
+              <mat-datepicker #to (selectedChanged)="selectIncomeDate($event, 'to_date')"></mat-datepicker>
+              <mat-error *ngIf="incomeForm.get('from_date').hasError('invalidDate')">
+                {{'invalidDate' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div
+      class="row clearfix"
+      *ngIf="isSectionVisible('totalAmount')"
+    >
+      <div class="col-lg-12 total-price-wrapper">
+        <div class="row text-center">
+          <div class="col-lg-6 total-text text-right">
+            {{'totalPrice' | translate}}
+          </div>
+          <div class="col-lg-6 text-left">
+            <span class="total-value">{{totalPrice | snugCurrency:currentCurrency:true}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

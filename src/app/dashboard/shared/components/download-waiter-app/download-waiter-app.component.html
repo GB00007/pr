@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <button
+    type="button"
+    class="close"
+    mat-icon-button
+    aria-label="Close"
+    (click)="activeModal.dismiss(false)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+  <h3 class="modal-title">{{'downloadWaiterApp' | translate}}</h3>
+</div>
+<div class="modal-body text-center">
+  <p class="text-left">{{'downloadWaiterAppContent' | translate}}</p>
+  <app-qrcode-image
+    [qrdata]="waiterAppLink"
+    class="download-qrcode-image"
+  >
+  </app-qrcode-image>
+</div>
+<div class="modal-footer">
+  <a
+    color="primary"
+    target="_blank"
+    mat-raised-button
+    class="lc-btn-primary"
+    href="{{waiterAppLink}}"
+    (click)="activeModal.close(true)"
+  >
+    {{'download' | translate}}
+  </a>
+  <button type="button" mat-raised-button (click)="activeModal.dismiss(false)">
+    {{'cancel' | translate}}
+  </button>
+</div>

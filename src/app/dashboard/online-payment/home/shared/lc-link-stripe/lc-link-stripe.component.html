@@ -1,0 +1,33 @@
+<div class="row justify-content-center">
+  <div
+    *ngIf="page?.stripe_account"
+    class="col-xl-6 col-lg-8 lc-reset-padding-v"
+  >
+    <div class="row update-nag">
+      <div class="update-split update-success">
+        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+            <path fill="#ffffff" d="M14,2A8,8 0 0,0 6,10A8,8 0 0,0 14,18A8,8 0 0,0 22,10A8,8 0 0,0 14,2M4.93,5.82C3.08,7.34 2,9.61 2,12A8,8 0 0,0 10,20C10.64,20 11.27,19.92 11.88,19.77C10.12,19.38 8.5,18.5 7.17,17.29C5.22,16.25 4,14.21 4,12C4,11.7 4.03,11.41 4.07,11.11C4.03,10.74 4,10.37 4,10C4,8.56 4.32,7.13 4.93,5.82M18.09,6.08L19.5,7.5L13,14L9.21,10.21L10.63,8.79L13,11.17" />
+        </svg>
+      </div>
+      <div class="update-text text-center">
+        {{'stripeAccountIsConnected' | translate}} <a href="https://dashboard.stripe.com/dashboard" target="_blank">{{'dashboard' | translate}}</a>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="!page?.stripe_account"
+    class="form-group col-lg-6 col-mat-8"
+  >
+    <div class="row text-center">
+      <button
+        type="submit"
+        color="primary"
+        mat-raised-button
+        class="lc-stripe"
+        (click)="openCheckout()"
+      >
+        {{'connectWithStripe' | translate}}
+      </button>
+    </div>
+  </div>
+</div>

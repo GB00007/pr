@@ -1,0 +1,16 @@
+<div class="clearfix">
+  <span class="inline top pt-1 status-order">{{order?.status}}</span>
+  <button
+    type="button"
+    color="warn"
+    mat-raised-button
+    tooltip-position="below"
+    (click)="updateStatus()"
+    class="ml-3 mr-0 pl-2 pr-2"
+    [matTooltip]="'cancel' | translate"
+    *ngIf="order?.status?.toLowerCase() === 'open' || order?.status?.toLowerCase() === 'in progress'"
+  >
+    <mat-icon>cancel</mat-icon>
+    <span class="inline">{{'cancel' | translate}}</span>
+  </button>
+</div>

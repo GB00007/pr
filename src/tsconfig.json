@@ -1,0 +1,44 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es6", "dom"],
+    "mapRoot": "./",
+    "module": "es6",
+    "moduleResolution": "node",
+    "outDir": "../dist/out-tsc",
+    "sourceMap": true,
+    "target": "es5",
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
+    "types": [
+      "jasmine",
+      "hammerjs"
+    ],
+    "baseUrl": "..",
+    "paths": {
+      "Config": ["./src/app/config"],
+      "AppModels": ["./src/app/shared/models/models"],
+      "Environment": ["./src/environments/environment"],
+      "AppHelpers": ["./src/app/shared/helpers/helpers.module"],
+      "DashboardModule": ["./src/app/dashboard/dashboard.module"],
+      "AppServices": ["./src/app/shared/services/services.module"],
+      "DashboardModels": ["./src/app/dashboard/shared/models/models"],
+      "AppComponents": ["./src/app/shared/components/components.module"],
+      "DashboardPipes": ["./src/app/dashboard/shared/pipes/pipes.module"],
+      "AppInterceptors": ["./src/app/shared/interceptors/interceptors.module"],
+      "DashboardHelpers": ["./src/app/dashboard/shared/helpers/helpers.module"],
+      "DashboardServices": ["./src/app/dashboard/shared/services/services.module"],
+      "OrdersHelpers": ["./src/app/dashboard/rk/orders/shared/helpers/helpers.module"],
+      "RkComponents": ["./src/app/dashboard/rk/shared/components/components.module"],
+      "DashboardComponents": ["./src/app/dashboard/shared/components/components.module"],
+      "DashboardDirectives": ["./src/app/dashboard/shared/directives/directives.module"],
+      "UsersComponents": ["./src/app/dashboard/users/shared/components/components.module"],
+      "DashboardFormatters": ["./src/app/dashboard/shared/helpers/formatters/formatters.module"],
+      "AddNewOrderComponents": ["./src/app/dashboard/rk/orders/add-new-order/shared/components/components.module"]
+    }
+  }
+}

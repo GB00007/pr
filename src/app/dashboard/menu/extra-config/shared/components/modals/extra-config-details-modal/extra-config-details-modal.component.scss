@@ -1,0 +1,29 @@
+:host {
+  h3 span:first-letter {
+    text-transform: capitalize;
+  }
+  .card {
+    margin-top: 30px;
+    .card-header {
+      padding-bottom: 0;
+      .card-title {
+        width: 90%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        @media screen and (max-width: 1280px) {
+          font-size: 1rem;
+          padding-top: 4px;
+        }
+      }
+    }
+    .card-body {
+      padding: 0;
+      .mat-data-table {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+

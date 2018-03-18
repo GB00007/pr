@@ -1,0 +1,16 @@
+<div ngbDropdown class="btn-group">
+  <button id="language" type="button" ngbDropdownToggle>
+    {{translate.currentLang}} <i class="fa fa-caret-down"></i>
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="language">
+    <li *ngFor="let lang of languages" role="menuitem">
+      <a
+        class="dropdown-item"
+        (click)="translate.use(lang)"
+        [class.select]="lang === translate.currentLang"
+      >
+        {{lang}}
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,61 @@
+<div class="container-fluid">
+  <h3 class="text-left text-muted text-uppercase title-container">
+      {{'Menu' | translate}} > {{'languageMenu' | translate}}
+  </h3>
+  <hr>
+  <app-loader *ngIf="!supportedLanguages" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+  <div *ngIf="supportedLanguages" class="container-fluid ctr">
+    <mat-slide-toggle
+      [checked]="isMultiple"
+      (change)="updateIsMultiLang({languages: {isMultiLanguage: $event.checked}})"
+    >
+      {{'MultipleLanguages' | translate}}
+    </mat-slide-toggle>
+    <div class="mat-block fieldset-multiple lc-widget text-center c-filters-wrapper">
+      <fieldset>
+        <legend>{{'languageMenu' | translate}}</legend>
+        <span
+          (click)="toggleLanguage(language.code, 'language')"
+          *ngFor="let language of supportedLanguages"
+          class="label label-pill filter label-primary c-filter"
+          [class.checked]="selected.indexOf(language.code) > -1"
+          >
+          {{language.label.split('_').join(' ') | translate}}
+          <mat-icon *ngIf=" selected.indexOf(language.code) === -1">add</mat-icon>
+          <mat-icon *ngIf=" selected.indexOf(language.code) > -1">done</mat-icon>
+        </span><br>
+
+        <div style="margin-top:10px" *ngIf="selected.length < 1">
+            <h5 style="color:red">
+              <mat-icon style="font-size: 30px;">warning</mat-icon>
+              {{'errlang' | translate}}
+            </h5>
+        </div>
+      </fieldset>
+    </div>
+    <h4 style="float:left;margin-top: 15px">{{'defaultLanguage' | translate}} : </h4>
+    <mat-form-field style="float:left;     margin-left: 16px;  ">
+      <mat-select placeholder="{{'defaultLanguage' | translate}}" [(value)]="defaultLangselected" name="food">
+        <mat-option (click)="toggleDefaultLang(lang)" *ngFor="let lang of selected" [value]="lang">
+          {{lang}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="mat-block clearfix">
+      <div class="pull-right">
+        <button
+        type="submit"
+        mat-raised-button
+        class="mat-raised lc-btn-primary"
+        (click)="updateMenuLanguage()"
+        [disabled]="isButtonDisabled"
+        >
+          {{'updateLanguageMenu' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,88 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    {{'entryDetails' | translate}}
+  </h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss(false)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>
+<div class="modal-body clearfix">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="entry-details mrgn-b-lg">
+        <div class="entry-details-title mrgn-b-lg">
+          <h3 class="text-capitalize">{{entry.name}}</h3>
+        </div>
+        <div class="entry-details-content">
+          <div class="entry-list">
+            <ul class="list-unstyled">
+              <li class="clearfix" *ngIf="entry.size">
+                <h5>{{'sizes' | translate}}</h5>
+                <div class="pull-left">
+                  <span class="entry-item">{{entry.size.name}}</span>
+                </div>
+                <div class="pull-right">
+                  <span class="entry-item">
+                    {{entry.size.additional_price === "0.0" ? '' : '+'}}
+                    {{entry.size.additional_price === "0.0" ? '' : entry.size.additional_price | snugCurrency:currentCurrency:true}}
+                  </span>
+                </div>
+              </li>
+              <li class="clearfix" *ngIf="entry.variety">
+                <h5>{{'varieties' | translate}}</h5>
+                <div class="pull-left">
+                  <span class="entry-item">{{entry.variety.name}}</span>
+                </div>
+                <div class="pull-right">
+                  <span class="entry-item">
+                    {{entry.variety.additional_price === "0.0" ? '' : '+'}}
+                    {{entry.variety.additional_price === "0.0" ? '' : entry.variety.additional_price | snugCurrency:currentCurrency:true}}
+                  </span>
+                </div>
+              </li>
+              <li class="clearfix" *ngIf="entry.extra && entry.extra.length">
+                <h5>{{'extraConfig' | translate}}</h5>
+                <div class="entry-extra-list clearfix" *ngFor="let ext of entry.extra;">
+                  <div class="pull-left">
+                    <span class="entry-item">{{ext.name}}</span>
+                  </div>
+                  <div class="pull-right">
+                    <span class="entry-item">
+                      {{ext.additional_price === "0.0" ? '' : '+'}}
+                      {{ext.additional_price === "0.0" ? '' : ext.additional_price | snugCurrency:currentCurrency:true}}
+                    </span>
+                  </div>
+                  <br>
+                </div>
+              </li>
+              <li class="clearfix" *ngIf="entry.adhoc_reduction !=='0.0'">
+                <h5>{{'reduction' | translate}}</h5>
+                <div class="pull-left">
+                  <span class="entry-item">{{entry.adhoc_reduction}} %</span>&nbsp;&nbsp;
+                  (<span class="old-price">{{entry.totalPrice | snugCurrency:currentCurrency:true}}</span>
+                  &nbsp;&nbsp; {{entry.finalTotalPrice | snugCurrency:currentCurrency:true}}&emsp;&emsp;)
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    mat-raised-button
+    class="mat-raised"
+    (click)="activeModal.close(true)"
+  >
+    {{'close' | translate}}
+  </button>
+</div>
+

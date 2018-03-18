@@ -1,0 +1,105 @@
+<form
+  name="markAsPaid"
+  class="mark-as-paid"
+  [formGroup]="markAsPaidForm"
+>
+  <div class="modal-header">
+    <h4 class="modal-title">{{'markpaid' | translate}}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <div class="row justify-content-center">
+      <div class="p-4 text-left col-lg-8">
+        <mat-select
+          required
+          name="paymentMethod"
+          formControlName="paymentMethod"
+          placeholder="{{'seletpaymentmethod' | translate}}"
+        >
+          <mat-option *ngFor="let opt of paymentMethods" [value]="opt">
+            {{opt | translate}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="markAsPaidForm.get('paymentMethod').errors && markAsPaidForm.get('pinCode').errors['required']">
+          {{'form_error_required' | translate}}
+        </mat-error>
+      </div>
+      <div class="text-left col-lg-8 pl-4" *ngIf="waiterPinCode && isAssignWaiter">
+        <mat-form-field class="field-full-width">
+          <input
+            matInput
+            #pinCode
+            required
+            autocomplete="off"
+            formControlName="pinCode"
+            [type]="showPin ? 'text' : 'password'"
+            placeholder="{{'pinCode' | translate}}"
+          >
+          <span matSuffix>
+            <button
+              type="button"
+              tabindex="-1"
+              mat-raised-button
+              (click)="showPin = !showPin"
+              class="btn btn-sm lc-btn-primary show-pin text-capitalize"
+            >
+              <span [hidden]="!showPin"><i class="fa fa-eye-slash fa-2x"></i></span>
+              <span [hidden]="showPin"><i class="fa fa-eye fa-2x"></i></span>
+            </button>
+          </span>
+          <mat-error *ngIf="markAsPaidForm.get('pinCode').errors && markAsPaidForm.get('pinCode').errors['required']">
+            {{'form_error_required' | translate}}
+          </mat-error>
+          <mat-error *ngIf="markAsPaidForm.get('pinCode').errors && markAsPaidForm.get('pinCode').errors['pattern']">
+            {{'postiveonly' | translate}}
+          </mat-error>
+          <mat-error *ngIf="markAsPaidForm.get('pinCode').errors && !markAsPaidForm.get('pinCode').errors['pattern'] && markAsPaidForm.get('pinCode').errors['wrongPinCode']">
+            {{'wrongPinCode' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div
+        *ngIf="!waiterPinCode && !isAssignWaiter"
+        class="mat-block-alert col-lg-8 text-center pl-0 pt-0"
+      >
+          <mat-icon>error</mat-icon> <span class="inline up">{{'notFoundpinCode' | translate}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div
+      class="group-mat-checkbox"
+      [class.first]="order?.status === 'Completed'"
+    >
+      <mat-checkbox
+        class="margin-l"
+        formControlName="printReceipt"
+      >
+        {{'printreceipt' | translate}}
+      </mat-checkbox>
+    </div>
+    <button
+      type="submit"
+      mat-raised-button
+      (click)="markAsPaid()"
+      class="mat-raised lc-btn-primary"
+      [disabled]="!markAsPaidForm.valid"
+    >
+      {{'submit' | translate}}
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,62 @@
+@import '../../sass/mixins';
+
+:host {
+  width: 3.5%;
+  z-index: 9999;
+  position: relative;
+  @media screen and (max-width: 1024px) {
+    width: 4.6%;
+    margin-right: 15px;
+  }
+  #language {
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: none;
+    font-weight: 500;
+    background-color: transparent;
+    & > i {
+      margin-left: 2px;
+    }
+    @media screen and (max-width: 1366px) {
+      font-size: 13px;
+    }
+  }
+  .dropdown-toggle {
+    margin-left: -14px;
+  }
+  .dropdown-menu {
+    left: -6px;
+    min-width: 70px;
+    border-top: none;
+    background-color: #ff9900;
+    & > li {
+      position: relative;
+       & > a {
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+        text-transform: uppercase;
+        &:hover,
+        &:focus {
+          background-color: transparent;
+          text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.4);
+        }
+      }
+      .select::before {
+        content: '●';
+        margin-right: 5px;
+        margin-left: -15px;
+      }
+      .selected {
+        top: 10px;
+        left: 7px;
+        position: absolute;
+        border-radius: 50%;
+        background-color: #fff;
+        @include size(5px);
+      }
+    }
+  }
+}

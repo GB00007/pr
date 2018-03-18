@@ -1,0 +1,153 @@
+<div class="container-fluid">
+  <div>
+    <h3 class="text-left text-muted text-uppercase title-container">
+      {{'rk' | translate}} > {{'receiptSettingsTitle' | translate}}
+    </h3>
+    <hr>
+    <app-loader  *ngIf="!printFormats" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+    <!-- <app-no-content [label]="'noUsers'" ></app-no-content> -->
+    <div class="cash-register-wrapper text-center"  *ngIf="printFormats">
+      <h2>{{'printSettingsTitle' | translate}}</h2>
+      <p>{{'printPageSubTitle' | translate}}</p>
+      <form
+        novalidate
+        class="lc-receipt-settings"
+        [formGroup]="defaultPrinterForm"
+      >
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          fxLayoutAlign="center center"
+        >
+          <div [fxFlex]="70" fxFlexOffset="30">
+            <mat-card
+              class="p-2 mat-elevation-z10"
+              [class.in-desktop]="inDesktop()"
+            >
+              <mat-card-content class="mb-0 pb-0 pt-0">
+                <div
+                  fxLayoutWrap
+                  fxLayout="row"
+                  fxLayoutAlign="start stretch"
+                >
+                  <div class="text-left pt-2">
+                    <h5>{{'defaultPrint' | translate}}</h5>
+                  </div>
+                </div>
+                <div class="mat-block text-left">
+                  <div
+                    fxLayoutWrap
+                    fxLayout="row"
+                    fxLayoutAlign="start stretch"
+                  >
+                    <div fxFlex="100">
+                      <mat-select
+                        formControlName="language"
+                        class="mat-input-element mat-block"
+                        [ngModel]="defaultPrinter?.language"
+                        [placeholder]="'recieptLanguage' | translate"
+                      >
+                        <mat-option
+                          [value]="language.code"
+                          *ngFor="let language of languages"
+                        >
+                          {{language.name | translate}}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="mat-block text-left">
+                  <div
+                    fxLayoutWrap
+                    fxLayout="row"
+                    fxLayoutAlign="start stretch"
+                  >
+                    <div fxFlex="100">
+                      <mat-select
+                        formControlName="format"
+                        class="mat-input-element mat-block"
+                        [ngModel]="defaultPrinter?.format"
+                        [placeholder]="'recieptFormat' | translate"
+                      >
+                        <mat-option
+                          [value]="format"
+                          *ngFor="let format of printFormats"
+                        >
+                          {{format}}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="mat-block text-left">
+                  <div
+                    fxLayoutWrap
+                    fxLayout="row"
+                    fxLayoutAlign="start stretch"
+                  >
+                    <div fxFlex="100">
+                      <mat-select
+                        formControlName="name"
+                        [ngModel]="defaultPrinter?.name"
+                        *ngIf="!isWinOs && inDesktop()"
+                        class="mat-input-element mat-block"
+                        [placeholder]="'printerName' | translate"
+                      >
+                        <mat-option [value]="printer" *ngFor="let printer of printers">
+                          {{printer}}
+                        </mat-option>
+                      </mat-select>
+                      <p class="using-printer-default" *ngIf="isWinOs">
+                        {{'usingPrinterDefault' | translate}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  fxLayoutWrap
+                  fxLayout="row"
+                  *ngIf="inDesktop()"
+                  fxLayoutAlign="start stretch"
+                >
+                  <div [fxFlex]="70" class="text-left"></div>
+                  <div [fxFlex]="30" class="text-right default-footer-settings">
+                    <button
+                      type="button"
+                      mat-raised-button
+                      (click)="openPrintPreview()"
+                      class="lc-btn-default lc-btn-xs ml-0 mr-0 mt-0 mb-0"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        class="inline middle"
+                        style="width: 21px;height: 21px;padding-right: 2px;margin-top: -1px;"
+                      >
+                        <path
+                          fill="#ffffff"
+                          d="M 6 2 L 6 6 L 18 6 L 18 2 L 6 2 z M 6 7 C 3.8 7 2 8.8 2 11 L 2 17 L 6 17 L 6 22 L 18 22 L 18 17 L 22 17 L 22 11 C 22 8.8 20.2 7 18 7 L 6 7 z M 19 9 C 19.6 9 20 9.4 20 10 C 20 10.6 19.6 11 19 11 C 18.4 11 18 10.6 18 10 C 18 9.4 18.4 9 19 9 z M 8 15 L 16 15 L 16 20 L 8 20 L 8 15 z">
+                        </path>
+                      </svg>
+                      <span class="inline middle">{{'print' | translate}}</span>
+                    </button>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div [fxFlex]="70" fxFlexOffset="30">
+            <button
+              type="submit"
+              mat-raised-button
+              class="lc-btn-primary"
+              [disabled]="isButtonDisabled"
+              (click)="updateDefaultPrinter()"
+            >
+              {{'updatePrintInformation' | translate}}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

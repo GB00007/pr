@@ -1,0 +1,131 @@
+
+    <h2 mat-dialog-title>{{'itemStampCardModal' | translate}}</h2>
+    <mat-dialog-content>
+        <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutWrap>
+            <!-- Categories -->
+            <fieldset fxFlex="32" class="fieldset-category">
+              <legend>{{'categories' | translate}}</legend>
+              <div *ngIf="!data.categories || !language_item">
+                <app-loader [diameter] ='100' [strokeWidth]='10' [pos]="{'margin-top' : '120px', 'margin-left' : '150px'}"> </app-loader>
+              </div>
+              <div *ngIf="data.categories && language_item"  class="space-pad div-cat" fxLayoutAlign="left" fxLayoutWrap>
+                <div
+                  [fxFlex]="33"
+                  class="square-button-wrapper"
+                  fxLayoutAlign="space-around stretch"
+                  *ngFor="let cat of data.categories; let i = index "
+                >
+                  <div
+                    fxFlexFill
+                    class="space"
+                    fxLayoutWrap
+                    fxLayoutAlign="space-around center"
+                    (click)="getItemByCategoey(cat.id)"
+                    [class.checked]="cat.id === categoryId "
+                    [class.disabled]="item?.role === 'cook' || item?.role === 'barman' || item?.out_of_stock"
+                    [ngClass]="'square-button square-button-' + (cat?.color?.name || ((isInernalCategoriesActive && cat?.internal_category?.color?.name) ? cat?.internal_category?.color?.name : cat?.category?.color?.name) || 'indigo')"
+                  >
+                    <span>
+                      <div *ngFor="let lang of language_item;  let j = index">
+                        <div *ngIf="lang.isDefault == true">
+                          <div *ngFor="let x of cat?.translation ; let k = index">
+                            <div *ngIf="cat?.translation[k]?.language_code === lang.code">
+                              {{cat?.translation[k]?.name}}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="cat?.name === 'Favorite'">{{'favorite' | translate}}</div>
+                      <div *ngIf="cat?.name === 'Recent'">{{'recent' | translate}}</div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <!-- Items -->
+            <fieldset fxFlex="32" class="fieldset-items">
+                <legend>{{'items' | translate}}</legend>
+                <div *ngIf="!isItemLoaded">
+                    <app-loader *ngIf="!simpleItems" [diameter] ='100' [strokeWidth]='10' [pos]="{'margin-top' : '120px', 'margin-left' : '150px'}" ></app-loader>
+                </div>
+                <div *ngIf="isItemLoaded">
+                    <div class="space-pad div-item" fxLayoutAlign="left" fxLayoutWrap>
+                        <div
+                            [fxFlex]="33"
+                            class="square-button-wrapper"
+                            *ngFor="let item of items"
+                            fxLayoutAlign="space-around stretch"
+                        >
+                            <div
+                                *ngIf="language_item"
+                                fxFlexFill
+                                class="space"
+                                fxLayoutAlign="space-around center"
+                                fxLayoutWrap
+                                (click)="addToStampCardList(item)"
+                                [ngClass]="'square-button square-button-' + (item?.color?.name || ((isInernalCategoriesActive && item?.internal_category?.color?.name) ? item?.internal_category?.color?.name : item?.category?.color?.name) || 'indigo')"
+                            >
+                                <span>
+                                    <div *ngFor="let lang of language_item;  let j = index">
+                                        <div *ngIf="lang.isDefault == true">
+                                            <div *ngFor="let x of item?.translation ; let k = index">
+                                                <div *ngIf="item?.translation[k]?.language_code === lang.code">
+                                                    {{item?.translation[k]?.name}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- StampCardItem -->
+            <fieldset  fxFlex="32" class="fieldset-selected">
+                <legend class="text-left">{{'itemsSelected' | translate}}</legend>
+                <div fxLayoutAlign="end end" *ngIf="isStampcardList.length" class="div-clear">
+                    <button
+                        mat-button
+                        type="button"
+                        class="clear-button"
+                        aria-label="Clear All"
+                        (click)="clearAll()"
+                    >
+                        {{'clearAll' | translate}}
+                    </button>
+                </div>
+                <div class="div-selected" *ngIf="isStampcardList">
+                    <div  *ngFor="let item of isStampcardList; let i = index">
+                        <div  fxLayout="row" fxLayoutAlign="start stretch" fxLayoutWrap fxLayoutGap="10px" class="clearfix pt-3 item" >
+                            <div fxFlex="5">
+                                <mat-icon  (click)="removeItemFromStampCard(item)" class="mat-18">delete_forever</mat-icon>
+                            </div>
+                            <div fxFlex="90">
+                                <div *ngFor="let lang of language_item;  let j = index">
+                                    <div *ngIf="lang.isDefault == true">
+                                        <div *ngFor="let x of item?.translation ; let k = index">
+                                            <div *ngIf="item?.translation[k]?.language_code === lang.code">
+                                                {{item?.translation[k]?.name}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions fxLayoutAlign="end end">
+        <button color="warn" mat-raised-button mat-dialog-close fx>{{'cancel' | translate}}</button>
+        <button
+            color="primary"
+            mat-raised-button
+            [disabled]="!isStampcardList.length"
+            (click)="addSelectedItemStampCard()"
+        >
+            {{'submit' | translate}}
+    </button>
+    </mat-dialog-actions>

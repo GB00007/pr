@@ -1,0 +1,69 @@
+<form
+  novalidate
+  name="addUserForm"
+  class="add-table-form"
+  [formGroup]="tableForm"
+>
+  <div class="modal-header">
+   <h4>{{(table ? 'editTable' : 'addTable') | translate}}</h4>
+   <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!--<div class="mat-block text-sm-center" *ngIf="notificationMessage">
+      <span class="inline alert alert-warning">
+        <mat-icon class="inline middle">warning</mat-icon>
+        <span class="inline middle">{{(notificationMessage) | translate}}</span>
+      </span>
+    </div>-->
+    <div class="mat-block text-center">
+            
+      <mat-form-field
+        class="field-full-width"
+        dividerColor="{{getDividerColor(tableForm.get('number'))}}"
+      >
+          <input
+          [(ngModel)]="tablenbr"
+            matInput
+            formControlName="number"
+            placeholder="{{'tableNbr' | translate}}"
+          >
+        <mat-hint align="start">
+          <span
+            class="text-danger"
+            [hidden]="tableForm.get('number').valid || tableForm.get('number').pristine"
+          >
+            <small *ngIf="tableForm.get('number').errors && tableForm.get('number').errors['required']">
+              {{'form_error_required' | translate}}
+            </small>
+          </span>
+        </mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="modal-footer pull-right">
+    <button
+      type="submit"
+      mat-raised-button
+      matDialogClose
+      class="lc-btn-primary"
+      (click)="table ? editTable() : addTable()"
+      [disabled]="!tableForm.valid || !selectedUsers"
+    >
+      {{'confirm' | translate}}
+     </button>
+    <button
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+    {{'cancel' | translate}}
+    </button>
+  </div>
+</form>

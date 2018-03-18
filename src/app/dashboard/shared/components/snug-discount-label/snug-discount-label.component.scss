@@ -1,0 +1,44 @@
+@import '../../../../shared/sass/_variables.scss';
+@import '../../../../shared/sass/_mixins.scss';
+
+:host {
+  .snug-discount-label {
+    color: #fff;
+    font-size: .750em;
+    line-height: 35px;
+    position: relative;
+    border-radius: 50%;
+    background: #4caf50;
+    letter-spacing: -0.7px;
+    @include size(35px);
+    &.no-shared {
+      background: #f94877;
+    }
+  }
+}
+:host-context(.new-order),
+:host-context(.item-price) {
+  .snug-discount-label {
+    height: 20px;
+    color: #000000;
+    line-height: 20px;
+    font-size: .7rem;
+    text-align: center;
+    letter-spacing: 0px;
+    background-color: rgba(76, 175, 80, 0.5);
+    small {
+      font-size: 85%;
+    }
+  }
+}
+
+:host-context(.new-order) {
+
+  position: absolute;
+  top: 7px;
+  left: 60px;
+
+  .snug-discount-label {
+    opacity: .85;
+  }
+}

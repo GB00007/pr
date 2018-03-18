@@ -1,0 +1,28 @@
+<div class="card">
+  <div class="card-header">
+    <h5>{{'revokeTablesAssigned' | translate}}</h5>
+  </div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>{{'revokeTablesAssignedContent' | translate }}</p>
+      <p>{{'confirmContinue' | translate }}</p>
+    </div>
+  </div>
+  <div class="card-footer text-right">
+    <button
+      type="sumbit"
+      mat-raised-button
+      (click)="revoke()"
+      class="card-link lc-btn-danger"
+    >
+      {{'revoke' | translate}}
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</div>

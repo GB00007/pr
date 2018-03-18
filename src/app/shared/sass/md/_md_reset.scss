@@ -1,0 +1,116 @@
+@import './md_theme/md_theme';
+@import './md_overwrite/md_overwrite';
+
+
+.field-full-width {
+  width: 100% !important;
+}
+.mat-input-underline .mat-input-ripple {
+  background-color: $orange-text-color !important;
+}
+mat-option.mat-selected,
+.mat-input-placeholder.mat-focused {
+  color: $orange-text-color !important;
+}
+// .mat-select:focus:not(.mat-select-disabled) {
+//   .mat-select-trigger {
+//     color: $orange-text-color !important;
+//     border-bottom: 1px solid $orange-text-color !important;
+//   }
+//   .mat-select-arrow {
+//     color: $orange-text-color !important;
+//   }
+//   .mat-select-underline {
+//     background-color: transparent !important;
+//   }
+// }
+.mat-primary.mat-checked {
+  .mat-slide-toggle-thumb {
+    background-color: #5cb85c !important;
+  }
+  .mat-slide-toggle-bar {
+    background-color: rgba(92,184,92,.5) !important;
+  }
+}
+mat-form-field:not(.mat-input-invalid).mat-input-focused .mat-input {
+    border-color: #5cb85c;
+}
+mat-sidenav-container.mat-pushed {
+  padding-left: 0px;
+}
+.mat-fab-top-right.print-btn,
+.mat-fab-top-right.refresh-orders-btn {
+  right: 90px !important;
+}
+.mat-fab-top-right.income-btn,
+.mat-fab-top-right.cached-btn {
+  right: 155px !important;
+}
+.wide-xxl {
+  width: 450px;
+}
+.p-b-lg {
+  padding-bottom: 15px;
+}
+.mat-text-primary {
+  color: #3d5afe !important;
+}
+.mat-success[mat-fab],
+.mat-success[mat-mini-fab],
+.mat-success[mat-raised-button] {
+  color: #fff;
+  border-top-width: 0;
+  border-right-width: 0;
+  border-bottom-width: 0;
+  background-color: $success;
+  &:disabled {
+    cursor: not-allowed;
+    color: #fff !important;
+    background-color: lighten($success, 10%) !important;
+  }
+}
+mat-whiteframe {
+  max-width: 100%;
+  &.mat-whiteframe-column {
+    flex-direction: column;
+  }
+  &.mat-whiteframe-p-10 {
+    padding: 10px;
+  }
+  &.mat-whiteframe-p-15 {
+    padding: 15px;
+  }
+  &.mat-whiteframe-p-20 {
+    padding: 20px;
+  }
+  &.mat-whiteframe-p-25 {
+    padding: 25px;
+  }
+  & > h4 {
+    text-transform: uppercase;
+  }
+  &.mat-whiteframe-description {
+    min-height: 310px;
+    h4 {
+      text-align: center;
+    }
+  }
+}
+.mat-overlay-container {
+  .matTooltip {
+    margin-left: -70px;
+  }
+  .mat-menu {
+    margin-left: -130px;
+    overflow: inherit !important;
+    button {
+      line-height: 1 !important;
+      span + span {
+        padding-left: 5px;
+      }
+    }
+  }
+}
+.matTooltip.total-item-tooltip {
+  font-size: 0.920rem;
+}

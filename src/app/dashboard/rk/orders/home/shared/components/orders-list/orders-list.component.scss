@@ -1,0 +1,61 @@
+@import '../../../../../../../shared/sass/_variables.scss';
+@import '../../../../../../../shared/sass/_mixins.scss';
+@import '../../../../../../../shared/sass/_loader.scss';
+
+:host {
+   width: 100%;
+  .lc-order {
+    width: 100%;
+    margin: 7px 0;
+    display: block;
+    border: 1px solid #C8C7CC;
+    box-shadow: 0 3px 5px -4px;
+    @include border-radius(3px);
+    @include animation-delay(2s);
+    @include animation-duration(3s);
+    @include animation-iteration-count(infinite);
+    &.not-paid {
+      border-color: #F44336;
+    }
+    &.paid {
+      border-color: #5cb85c;
+    }
+    &.open {
+      border-color: #0275d8;
+    }
+    &.in-progress {
+      border-color: #5bc0de;
+    }
+    &:last-of-type {
+      & > hr {
+        display: none;
+      }
+    }
+    &:hover {
+      cursor: pointer;
+      .lc-order-links-print {
+        opacity: 1 !important;
+      }
+    }
+    hr {
+      width: 100%;
+      border: 0;
+      top: -3px;
+      position: relative;
+      border-top: 1px solid #eee;
+      left: 0;
+      float: left;
+    }
+  }
+}
+.orders-filter {
+  font-size: 15px;
+  margin-left: 25px;
+  .mat-checkbox,
+  .mat-radio-button {
+    margin: 0 .7rem;
+  }
+  .orders-filter-label {
+    font-weight: 400 !important;
+  }
+}

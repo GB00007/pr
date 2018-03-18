@@ -1,0 +1,105 @@
+@import '../../../../../../../shared/sass/_variables.scss';
+@import '../../../../../../../shared/sass/_mixins.scss';
+
+:host {
+  > div {
+    margin: 15px 0;
+  }
+  button {
+    top: -14px;
+    font-size: 0.875rem;
+    @media screen and (max-width: 1440px) {
+      font-size: 0.8125rem;
+    }
+    @media screen and (max-width: 1366px) {
+      font-size: 0.75rem;
+    }
+    @media screen and (max-width: 1280px) {
+      font-size: 0.6875rem;
+    }
+    @media screen and (max-width: 1024px) {
+      padding: 0;
+      font-size: 0.625rem;
+    }
+    svg {
+      padding-right: 2px;
+      @include size(24px);
+      @media screen and (max-width: 1280px) {
+        padding-right: 0px;
+        @include size(26px);
+      }
+    }
+    span {
+      @media screen and (max-width: 1024px) {
+        display: none;
+      }
+    }
+  }
+}
+
+.led {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: #EDF4F9;
+  vertical-align: text-bottom;
+  @include box-shadow(inset 0px 1px 4px rgba(0, 0, 0, 0.8));
+  /*box-shadow: inset 0 2px 5px 0 rgba(0,0,0,.16), inset 0 2px 10px 0 rgba(0,0,0,.12);*/
+   @media screen and (max-width: 1280px) {
+    @include size(16px);
+  }
+}
+label {
+  color: #eee;
+  font-size: 0.813em;
+
+  &.active {
+    box-shadow: none;
+    .led {
+      &.open {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffaf4b+0,ff920a+46 */
+        background: #ffaf4b; /* Old browsers */
+        background: -moz-linear-gradient(left,  #ffaf4b 0%, #ff920a 46%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(left,  #ffaf4b 0%,#ff920a 46%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to right,  #ffaf4b 0%,#ff920a 46%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=1 ); /* IE6-9 */
+
+      }
+      &.in-progress {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#87e0fd+0,53cbf1+40,05abe0+100;Blue+3D+%23+16 */
+        background: #87e0fd; /* Old browsers */
+        background: -moz-linear-gradient(left,  #87e0fd 0%, #53cbf1 40%, #05abe0 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(left,  #87e0fd 0%,#53cbf1 40%,#05abe0 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to right,  #87e0fd 0%,#53cbf1 40%,#05abe0 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0',GradientType=1 ); /* IE6-9 */
+
+      }
+      &.completed {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#8fc400+0,8fc400+100;Green+Flat+%236 */
+        background: #8fc400; /* Old browsers */
+        background: -moz-linear-gradient(left,  #8fc400 0%, #8fc400 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(left,  #8fc400 0%,#8fc400 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to right,  #8fc400 0%,#8fc400 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8fc400', endColorstr='#8fc400',GradientType=1 ); /* IE6-9 */
+      }
+      &.cancelled {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff3019+0,cf0404+100;Red+3D */
+        background: #ff3019; /* Old browsers */
+        background: -moz-linear-gradient(left,  #ff3019 0%, #cf0404 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(left,  #ff3019 0%,#cf0404 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to right,  #ff3019 0%,#cf0404 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3019', endColorstr='#cf0404',GradientType=1 ); /* IE6-9 */
+      }
+    }
+  }
+  @media screen and (max-width: 1280px) {
+    font-size: 0.9rem;
+    padding: .375rem .1rem;
+  }
+}
+label:hover {
+    color: #fff;
+    /* font-size: 16.5px;*/
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.10);
+}

@@ -1,0 +1,155 @@
+<div class="container-fluid">
+  <h3 class="text-left text-muted text-uppercase title-container">
+    {{'menuManager' | translate}} <span> > {{'menuOfTheDay' | translate}}</span>
+  </h3>
+  <hr>
+  <app-loader *ngIf="!isdayMenusLoaded" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+  <!-- <app-no-content [label]="'nodayMenu'" *ngIf="isdayMenusEmpty"></app-no-content> -->
+  <div
+    *ngIf="isdayMenusLoaded && !isdayMenusEmpty"
+    fxLayoutWrap
+    fxLayout="row"
+    fxLayoutAlign="start stretch"
+  >
+    <div
+      [fxFlex]="cardWidth"
+      *ngFor="let dayMenu of dayMenus; let i = index;"
+    >
+      <mat-card
+        class="pt-0 pl-0 pr-0 mat-elevation-z6"
+        [class.disabled-status]="!dayMenu?.is_actif"
+      >
+        <mat-card-header class="pl-0 pr-0">
+          <mat-card-title class="pl-1 mb-0">
+            <div
+              fxLayoutWrap
+              fxLayout="row"
+              fxLayoutAlign="start stretch"
+            >
+              <div fxFlex="90">
+                <h4 class="inline mb-0 mt-2">
+                  {{dayMenu.name.split('_').join(' ') | capitalize}}
+                </h4>
+              </div>
+              <div fxFlex="10">
+                <span
+                  ngbDropdown
+                  placement="bottom-right"
+                  class="d-inline-block pl-0 pr-1"
+                >
+                  <button
+                    mat-button
+                    type="button"
+                    aria-label="More"
+                    ngbDropdownToggle
+                    class="mat-icon-button mat-text-primary ml-0 mr-0 mt-0 mb-2"
+                  >
+                    <mat-icon>settings</mat-icon>
+                  </button>
+                  <ul
+                    ngbDropdownMenu
+                    aria-labelledby="settings"
+                    [class.last]="(i + 1) % (cardWidth === 33.33 ? 3 : 2) === 0"
+                  >
+                    <li class="dropdown-item" (click)="openDetailsDayMenuDialog(i, dayMenu)">
+                        <a class="mat-text-primary">
+                          <span class="inline"><mat-icon>details</mat-icon></span>
+                          <span class="inline up">{{'details' | translate}}</span>
+                        </a>
+                      </li>
+                    <li class="dropdown-item" (click)="openEditDayMenuDialog(i, dayMenu)">
+                      <a class="mat-text-primary">
+                        <span class="inline"><mat-icon>mode_edit</mat-icon></span>
+                        <span class="inline up">{{'edit' | translate}}</span>
+                      </a>
+                    </li>
+                    <li class="dropdown-item" (click)="openDeleteDayMenuConfirmDialog(i, dayMenu)">
+                      <a class="text-danger">
+                      <span class="inline"><mat-icon>delete_forever</mat-icon></span>
+                      <span class="inline up">{{'delete' | translate}}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </span>
+              </div>
+            </div>
+          </mat-card-title>
+          <mat-card-subtitle class="mt-1 mb-1">
+            <div
+              fxLayoutWrap
+              fxLayout="row"
+              fxLayoutAlign="start stretch"
+            >
+              <div fxFlex="50" class="inline price-day-menu">
+                {{dayMenu.price | snugCurrency:currentCurrency:true}}
+              </div>
+              <div fxFlex="50">
+                <mat-chip-list class="pull-right">
+                  <mat-chip
+                    class="mat-elevation-z3"
+                    [color]="dayMenu?.is_actif ? 'text-green' : 'text-red'"
+                  >
+                    <mat-slide-toggle
+                      color="primary"
+                      class="inline"
+                      [checked]="dayMenu?.is_actif"
+                      (change)="updateMenuStatus($event, dayMenu)"
+                      [title]="(dayMenu?.is_actif ? 'clickToDisable' : 'clickToEnable') | translate"
+                    >
+                    </mat-slide-toggle>
+                    <span class="inline text-right middle status">
+                      <strong>({{dayMenu?.is_actif ? ('enabled' | translate) : ('disabled' | translate)}})</strong>
+                    </span>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div
+            class="menu-items"
+            *ngFor="let entry of dayMenu.composed_item.entries | slice:0:2"
+          >
+            <div
+              fxLayoutWrap
+              fxLayout="row"
+              class="details-entries"
+              fxLayoutAlign="space-around stretch"
+            >
+              <div fxFlex="30">
+                <img
+                  class="inline"
+                  [alt]="entry?.picture?.title"
+                  [title]="entry?.picture?.title"
+                  [src]="entry?.picture?.base_url + img_daymenu_url + entry?.picture?.path"
+                >
+              </div>
+              <div fxFlex="70">
+                <h3 class="inline">{{entry.name}}</h3>
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="dayMenu.composed_item.entries.length > 2"
+            class="block text-center show-more-items"
+            (click)="openDetailsDayMenuDialog(i, dayMenu)"
+          >
+            <span class="inline top">{{"showMore" | translate}}</span>
+            <span class="inline middle"><mat-icon>expand_more</mat-icon></span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <button
+      mat-fab
+      type="button"
+      tooltip-position="below"
+      (click)="openAddDayMenuDialog()"
+      matTooltip="{{'addDayMenu' | translate}}"
+      class="mat-btn mat-fab-top-right pos-fix accent"
+    >
+    <mat-icon class="mat-48">add</mat-icon>
+  </button>
+</div>

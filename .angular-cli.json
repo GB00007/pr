@@ -1,0 +1,70 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "card"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist-prod",
+      "assets": [
+        "assets",
+        ".htaccess",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.json",
+      "prefix": "app",
+      "serviceWorker": false,
+      "styles": [
+        "styles.css",
+        "app/shared/sass/_reset.scss",
+        "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "beta": "environments/environment.beta.ts",
+        "prod": "environments/environment.prod.ts",
+        "appDD": "environments/environment.appdd.ts",
+        "remoteDev": "environments/environment.remote-dev.ts"
+      }
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "files": "src/**/*.ts",
+      "project": "src/tsconfig.json"
+    },
+    {
+      "files": "e2e/**/*.ts",
+      "project": "e2e/tsconfig.json"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "component": {},
+    "styleExt": "scss",
+    "serve": {
+      "port": 4528,
+      "host": "dev.snug.menu",
+      "ssl": true,
+      "sslKey": "ws.key",
+      "sslCert": "ws.crt"
+    }
+  },
+  "packageManager": "yarn"
+}

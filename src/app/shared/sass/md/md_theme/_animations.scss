@@ -1,0 +1,86 @@
+@import '../../_mixins.scss';
+
+[ui-view].ng-leave {
+  display: none;
+  &.smooth {
+    display: block;
+  }
+}
+.smooth.ng-animate {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.fade-in-right-big {
+  &.ng-enter {
+    @include animation(fadeInRightBig 0.5s);
+  }
+  &.ng-leave {
+      @include animation(fadeOutLeftBig 0.5s);
+  }
+}
+.fade-in-left-big {
+  &.ng-enter {
+    @include animation(fadeInLeftBig 0.5s);
+  }
+  &.ng-leave {
+    @include animation(fadeOutRightBig 0.5s);
+  }
+}
+.fade-in-up-big {
+  &.ng-enter {
+    @include animation(fadeInUpBig 0.5s);
+  }
+  &.ng-leave {
+    @include animation(fadeOutUpBig 0.5s);
+  }
+}
+.fade-in-down-big {
+  &.ng-enter {
+    @include animation(fadeInDownBig 0.5s);
+  }
+  &.ng-leave {
+    @include animation(fadeOutDownBig 0.5s);
+  }
+}
+.fade-in {
+  &.ng-enter {
+    @include animation(fadeIn 0.5s);
+  }
+  &.ng-leave {
+    @include animation(fadeOut 0.5s);
+  }
+}
+.fade-in-right {
+  &.ng-enter {
+    @include animation(fadeInRight 0.5s);
+  }
+  &.ng-leave {
+    @include animation(fadeOutLeft 0.5s);
+  }
+}
+.fade-in-left {
+  &.ng-enter {
+    @include animation(fadeInLeft 0.5s);
+  }
+  .ng-leave {
+    @include animation(fadeOutRight 0.5s);
+  }
+}
+.fade-in-up {
+  &.ng-enter {
+    @include animation(fadeInUp 0.5s);
+  }
+  &.ng-leave {
+    @include animation(fadeOutUp 0.5s);
+  }
+}
+.fade-in-down {
+  &.ng-enter {
+    @include animation(fadeInDown 0.5s);
+  }
+  &.ng-leave {
+    @include animation(fadeOutDown 0.5s);
+  }
+}

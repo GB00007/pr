@@ -1,0 +1,13 @@
+@import './_md_cards.overwrite.scss';
+@import './_md_modal.overwrite.scss';
+@import './_md_select.overwrite.scss';
+@import './_md_tables.overwrite.scss';
+@import './_md_buttons.overwrite.scss';
+@import './_md_sidenav.overwrite.scss';
+@import './_md_toolbars.overwrite.scss';
+@import './_md_checkboxes.overwrite.scss';
+@import './_md_whiteframe.overwrite.scss';
+
+.mat-radio-label {
+  white-space: initial !important;
+}

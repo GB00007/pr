@@ -1,0 +1,12 @@
+@import '../../../../shared/sass/_mixins.scss';
+@import '../../../../shared/sass/_variables.scss';
+
+:host {
+  clear:    both;
+  width:    100%;
+  display:  block;
+  position: relative;
+}
+.row > .col-lg-4 {
+  @include center-x(50%);
+}

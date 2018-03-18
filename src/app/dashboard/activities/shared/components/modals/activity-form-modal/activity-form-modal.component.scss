@@ -1,0 +1,10 @@
+@import '../../../../../../shared/sass/_mixins.scss';
+
+:host {
+  mat-panel-title {
+    color: rgba(0, 0, 0, .87) !important;
+  }
+  .coin {
+    @include size(25px);
+  }
+}

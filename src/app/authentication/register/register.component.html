@@ -1,0 +1,199 @@
+<form
+  role="form"
+  fxLayout="row"
+  autocomplete="off"
+  class="lc-profile-form"
+  [formGroup]="registerForm"
+  fxLayoutAlign="center stretch"
+>
+  <div
+    fxFlex="50"
+    fxLayout="column"
+    fxLayoutAlign="space-between stretch"
+  >
+    <div class="title-authentification">{{'createBusiness' | translate}}</div>
+    <mat-form-field class="field-full-width px-3">
+      <input
+        matInput
+        id="name"
+        formControlName="name"
+        placeholder="{{'pageName' | translate}}"
+      >
+      <mat-error *ngIf="registerForm.get('name').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width px-3">
+      <mat-select
+        class="mat-input-element"
+        formControlName="country"
+        placeholder="{{'country' | translate}}"
+      >
+        <mat-option disabled>{{'country' | translate}}</mat-option>
+        <mat-option [value]="country" *ngFor="let country of countries">
+          {{country | translate}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="field-full-width px-3">
+      <mat-select
+        class="mat-input-element"
+        [(ngModel)]="selectedPageType"
+        (change)="getCategories($event)"
+        [ngModelOptions]="{standalone: true}"
+        placeholder="{{'pageType' | translate}}"
+      >
+        <mat-option disabled>{{'pageType' | translate}}</mat-option>
+        <mat-option [value]="pageType.id" *ngFor="let pageType of pageTypes">
+          {{pageType.name | translate}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="field-full-width px-3">
+      <mat-select
+        class="mat-input-element"
+        formControlName="sector"
+        placeholder="{{'category' | translate}}"
+      >
+        <mat-option disabled>{{'category' | translate}}</mat-option>
+        <mat-option [value]="sector.id" *ngFor="let sector of categories">
+          {{sector.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="registerForm.get('sector').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width px-3">
+      <mat-select
+        class="mat-input-element"
+        formControlName="official_currency"
+        placeholder="{{'currency' | translate}}"
+      >
+        <mat-option disabled>{{'currency' | translate}}</mat-option>
+        <mat-option [value]="currency" *ngFor="let currency of currencies">
+          {{currency}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="registerForm.get('official_currency').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width px-3">
+      <input
+        matInput
+        id="tan"
+        formControlName="tan"
+        placeholder="{{'tanCode' | translate}}"
+      >
+      <mat-error *ngIf="registerForm.get('tan').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+      <mat-error *ngIf="registerForm.get('tan').hasError('invalidTanCode') && !registerForm.get('tan').hasError('required')">
+        {{'invalidTanCode' | translate}}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div
+    fxFlex="50"
+    fxLayout="column"
+    fxLayoutAlign="space-between stretch"
+  >
+    <div class="title-authentification">{{'createAccount' | translate}}</div>
+    <mat-form-field class="field-full-width px-3">
+      <input
+        matInput
+        id="firstname"
+        formControlName="firstname"
+        placeholder="{{'firstname' | translate}}"
+      >
+      <mat-error *ngIf="registerForm.get('firstname').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width px-3">
+      <input
+        matInput
+        id="lastname"
+        formControlName="lastname"
+        placeholder="{{'lastname' | translate}}"
+      >
+      <mat-error *ngIf="registerForm.get('lastname').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width px-3">
+      <input
+        matInput
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="{{'email' | translate}}"
+      >
+      <mat-error *ngIf="registerForm.get('email').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+      <mat-error *ngIf="registerForm.get('email').hasError('invalidEmailAddress')">
+        {{'form_error_email' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width px-3">
+      <input
+        matInput
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="{{'password' | translate}}"
+      >
+      <mat-error *ngIf="registerForm.get('password').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+      <mat-error *ngIf="registerForm.get('password').hasError('invalidPassword')">
+        {{'invalidPassword' | translate}}
+      </mat-error>
+      <mat-error *ngIf="registerForm.get('password').hasError('mismatchedPasswords')">
+        {{'passwordMismatch' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width px-3">
+      <input
+        matInput
+        type="password"
+        id="confirm_password"
+        formControlName="confirm_password"
+        placeholder="{{'confirmNew' | translate}}"
+      >
+      <mat-error *ngIf="registerForm.get('confirm_password').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+      <mat-error *ngIf="registerForm.get('confirm_password').hasError('invalidPassword')">
+        {{'invalidPassword' | translate}}
+      </mat-error>
+      <mat-error *ngIf="registerForm.get('confirm_password').hasError('mismatchedPasswords')">
+        {{'passwordMismatch' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <div class="select-options text-center px-3">
+      <mat-radio-group name="gender" formControlName="gender">
+        <mat-radio-button class="mat-warn" value="male">{{'male' | translate}}</mat-radio-button>
+        <mat-radio-button value="female">{{'female' | translate}}</mat-radio-button>
+      </mat-radio-group>
+      <span
+        class="error-message text-danger"
+        [hidden]="registerForm.get('gender').valid || registerForm.get('gender').pristine"
+      >
+        <small>{{'form_error_required' | translate}}</small>
+      </span>
+    </div>
+    <button
+      type="submit"
+      color="success"
+      mat-raised-button
+      (click)="register()"
+      [disabled]="!registerForm.valid"
+      class="btn-block mat-success p-h-mat pull-right"
+    >
+      {{'signup' | translate}}
+    </button>
+  </div>
+</form>

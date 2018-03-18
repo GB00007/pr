@@ -1,0 +1,24 @@
+@import '../../../../../../shared/sass/_mixins.scss';
+@import '../../../../../../shared/sass/_variables.scss';
+
+:host {
+  display:       flex;
+  width:         100%;
+  margin:        1rem 0;
+  align-items:   center;
+  place-content: center;
+  flex-flow:     row wrap;
+  box-sizing:    border-box;
+  > div:not(:last-of-type) {
+    margin-right: 1rem;
+  }
+  p {
+    margin: 0;
+    font-size: 1rem;
+    text-align: left;
+    font-weight: 900;
+  }
+  .icon-font{
+    font-size: 1.5625rem; // 25px
+  }
+}

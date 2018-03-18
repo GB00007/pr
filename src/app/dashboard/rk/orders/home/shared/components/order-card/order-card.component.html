@@ -1,0 +1,413 @@
+<div
+  class="col-lg-12 lc-order-summary"
+  [ngClass]= "{
+    'bg-primary': order?.status?.toLowerCase() === 'open',
+    'bg-danger':  order?.status?.toLowerCase() === 'cancelled',
+    'bg-success': order?.status?.toLowerCase() === 'completed',
+    'bg-info':    order?.status?.toLowerCase() === 'in progress'
+  }"
+>
+  <div class="row">
+    <div class="col-xl-5 col-lg-6 col-mat-6 text-left m-y-15">
+      <span class="text-summary-order">
+        <i class="fa fa-calendar mr-1"></i>
+        {{getDateWithLocale(order?.date?.ordered) | capitalize}}
+      </span>
+      <span class="text-summary-order ml-2">
+        <i class="fa fa-clock-o mr-1"></i>
+        {{order?.date?.ordered | date: 'shortTime'}}
+      </span>
+    </div>
+    <div class="col-xl-7 col-lg-6 col-mat-6 text-right" *ngIf="order?.signature?.type_of_receipt === 'START_BELEG'">
+      {{'START_BELEG' | translate}}
+    </div>
+    <div class="col-xl-7 col-lg-6 col-mat-6 text-right" *ngIf="order?.signature?.type_of_receipt !== 'START_BELEG'">
+      <div
+        class="text-summary-order btn-group-order"
+        [ngClass]="order?.status?.split(' ').join('-').toLowerCase()"
+      >
+        <app-order-status
+          [statuses]="statuses"
+          (updateOrdersList)="updateOrdersList.emit($event)"
+          [order]="{order_id: order?.id, status: order?.status}"
+        >
+        </app-order-status>
+        <div class="ribbon-wrapper">
+          <div class="ribbon-inner-wrapper">
+            <div
+              class="ribbon text-capitalize"
+              [ngClass]="{
+                'paid': order?.payment_method,
+                'unpaid': !order?.payment_method
+              }"
+            >
+              {{order?.payment_method ? ('paid' | translate) : ('unpaid' | translate)}}
+            </div>
+          </div>
+        </div>​
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-lg-12" *ngIf="order?.signature?.type_of_receipt !== 'START_BELEG'">
+  <div class="row lc-order-infos clearfix">
+    <div class="col-xl-7 col-lg-8 text-left">
+      <div class="row">
+        <div class="col-xl-3 col-lg-3 pr-0">
+          <span class="label-summary-order">{{'tableNbr' | translate}}</span>
+        </div>
+        <div class="col-xl-9 col-lg-9">
+          <span class="text-summary-order" *ngIf="order?.table_number">
+            {{order?.table_number}}
+          </span>
+          <small *ngIf="!order?.table_number">
+            <mat-icon >format_quote</mat-icon>
+              {{'noTableNumber' | translate}}
+              <mat-icon>format_quote</mat-icon>
+            </small>
+            <mat-icon
+              (click)="openEditTableNumberModal()"
+              [matTooltip]="('editTableNumber' | translate)"
+              style="color:darkorange;padding-left: 5px;font-size: 25px;"
+            >
+              edit
+            </mat-icon>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-mat-3 pr-0">
+          <span class="label-summary-order">
+            {{'client' | translate }}
+          </span>
+        </div>
+        <div class="col-lg-9 col-mat-9">
+          <span class="text-summary-order" *ngIf="order?.user_account?.full_name">
+            {{order?.user_account?.full_name}}
+          </span>
+          <small *ngIf="!order?.user_account?.full_name">
+            <mat-icon>format_quote</mat-icon>
+              {{'noClients' | translate}}
+            <mat-icon>format_quote</mat-icon>
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-mat-3 pr-0">
+          <span class="label-summary-order">{{'waiter' | translate}}</span>
+        </div>
+        <div class="col-lg-9 col-mat-9">
+          <span class="text-summary-order" *ngIf="order?.waiter?.full_name">
+            {{order?.waiter?.full_name}}
+          </span>
+          <span *ngIf="!order?.waiter?.full_name">
+            <small>
+              <mat-icon>format_quote</mat-icon>
+                {{'noWaiter' | translate}}
+              <mat-icon>format_quote</mat-icon>
+            </small><br>
+            <span *ngIf="isCurrentUserAdmin">
+              <button
+                type="button"
+                (click)="openAssignWaiterDialog()"
+                class="btn lc-btn-default btn-sm ml-0"
+              >
+                <span class="inline middle">{{'assignWaiter' | translate}}</span>
+              </button>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-mat-3 pr-0">
+          <span class="label-summary-order">{{'shared' | translate}}</span>
+        </div>
+        <div class="col-lg-9 col-mat-9">
+          <span class="inline" *ngIf="!order?.reductions?.length">
+            <small>
+              <mat-icon>format_quote</mat-icon>
+                {{'noSharedLink' | translate}}
+              <mat-icon>format_quote</mat-icon>
+            </small>
+          </span>
+          <span class="text-summary-order" *ngIf="order?.reductions?.length">
+            <ul class="list-inline">
+              <li class="list-inline-item" *ngFor="let reduction of order?.reductions">
+                <span
+                  class="btn-social-icon facebook"
+                  *ngIf="reduction.social_provider === 'facebook'"
+                >
+                  <i class="fa fa-{{reduction.social_provider}}"></i>
+                </span>
+                <span
+                  class="btn-social-icon foursquare"
+                  *ngIf="reduction.social_provider === 'foursquare'"
+                >
+                  <i class="fa fa-{{reduction.social_provider}}"></i>
+                </span>
+                <span
+                  class="btn-social-icon twitter"
+                  *ngIf="reduction.social_provider === 'twitter'"
+                >
+                  <i class="fa fa-{{reduction.social_provider}}"></i>
+                </span>
+              </li>
+            </ul>
+          </span>
+        </div>
+      </div>
+      <div class="row" *ngIf="order?.payment_method">
+        <div class="col-lg-3 col-mat-3 pr-0">
+          <span class="label-summary-order">
+            {{'paymentMethod' | translate }}
+          </span>
+        </div>
+        <div class="col-lg-9 col-mat-9">
+          <span class="text-summary-order">
+            {{order?.payment_method | translate}}
+          </span>
+        </div>
+      </div>
+      <div class="row" *ngIf="order?.mark_as_paid">
+        <div class="col-lg-3 col-mat-3 pr-0">
+          <span class="label-summary-order">
+            {{'paidBy' | translate }}
+          </span>
+        </div>
+        <div class="col-lg-9 col-mat-9">
+          <span class="text-summary-order">
+            {{order?.mark_as_paid?.full_name}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-5 col-lg-4">
+      <div class="lc-order-total center-block">
+        <span class="label-summary-order">{{'total' | translate}}</span>
+        <div class="text-summary-order inline">
+          <app-snug-price [itemOrOrder]="order"></app-snug-price>
+          <button
+            color="green"
+            type="button"
+            mat-raised-button
+            tooltip-position="below"
+            class="ml-0 mr-0 pl-2 pr-2"
+            (click)="openMarkAsPaidDialog()"
+            [matTooltip]="'markpaid' | translate"
+            *ngIf="order?.status !== 'Cancelled' && order?.status !== 'Completed' && order?.payment_method === null "
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="inline middle"
+              style="margin-top: -4px;"
+            >
+              <path
+                fill="#ffffff"
+                d="M 11.84375 4 A 1.0001 1.0001 0 0 0 11.1875 4.40625 L 7.1875 10 L 7 10 C 6.756 10 6.3845 9.996 5.9375 10 L 3 10 C 2.45 10 2 10.45 2 11 C 2 11.227 4.858 18.755 5 19 C 5.347 19.597 6.263 20 7 20 L 17 20 C 17.736 20 18.653 19.597 19 19 C 19.143 18.755 22 11.227 22 11 C 22 10.45 21.55 10 21 10 L 18.0625 10 C 17.6155 9.996 17.244 10 17 10 L 16.8125 10 L 12.8125 4.40625 A 1.0001 1.0001 0 0 0 11.84375 4 z M 12 6.71875 L 14.34375 10 L 9.65625 10 L 12 6.71875 z M 14.34375 12.71875 L 15.375 13.78125 L 11.71875 17.46875 L 9.15625 14.90625 L 10.21875 13.84375 L 11.71875 15.34375 L 14.34375 12.71875 z"
+              >
+              </path>
+            </svg>
+            <span class="inline middle">{{'markpaid' | translate}}</span>
+          </button>
+          <button
+            type="button"
+            color="primary"
+            mat-raised-button
+            tooltip-position="below"
+            class="ml-0 mr-0 pl-2 pr-2"
+            [matTooltip]="'signOrder' | translate"
+            (click)="signOrder(order, 'STANDARD_BELEG')"
+            *ngIf="order?.payment_method && inDesktop() && !order?.is_signed"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="inline middle"
+              style="margin-top: -2px;"
+            >
+              <g>
+                <path
+                  fill="#ffffff"
+                  d="M 4 2 L 4 15 L 6 15 L 6 4 L 18 4 L 18 11 L 16.34375 11 C 16.011719 11 15.777344 10.828125 15.625 10.53125 L 14.90625 9.5625 C 14.640625 9.046875 14.21875 8.613281 13.6875 8.375 L 12.125 7.6875 L 11.03125 7.28125 C 10.351563 7.046875 9.515625 7.242188 8.875 7.5625 L 6 9 L 6.78125 10.5625 L 9.65625 9.15625 C 9.871094 9.050781 10.101563 9.019531 10.3125 9.09375 L 11.25 9.25 L 9.375 12.5 C 8.890625 13.28125 9.101563 14.300781 9.84375 14.84375 L 12.65625 16.84375 C 12.796875 17.074219 12.851563 17.335938 12.75 17.59375 L 11.0625 22 L 13 22 L 14.4375 18.25 C 14.820313 17.273438 14.585938 16.148438 13.84375 15.40625 L 12.09375 13.84375 L 13.65625 11 L 14.03125 11.5625 C 14.488281 12.449219 15.410156 13 16.40625 13 L 18 13 L 18 22 L 20 22 L 20 2 Z M 14.75 4.46875 C 13.773438 4.46875 13 5.273438 13 6.25 C 13 7.226563 13.773438 8 14.75 8 C 15.726563 8 16.53125 7.226563 16.53125 6.25 C 16.53125 5.273438 15.726563 4.46875 14.75 4.46875 Z M 8.75 15.3125 L 8.53125 15.65625 C 8.363281 15.878906 8.085938 16 7.8125 16 L 4 16 L 4 18 L 7.8125 18 C 8.644531 18 9.558594 17.476563 10.0625 16.8125 L 10.28125 16.5 Z M 4 19 L 4 22 L 6 22 L 6 19 Z "
+                >
+                </path>
+              </g>
+            </svg>
+            <span class="inline middle">{{'signOrder' | translate}}</span>
+          </button>
+          <!-- class="btn lc-btn-primary btn-sm block" -->
+          <button
+            type="button"
+            color="amber"
+            mat-raised-button
+            tooltip-position="below"
+            class="ml-0 mr-0 pl-2 pr-2"
+            *ngIf="order?.status === 'Open'"
+            (click)="openEditReductionModal()"
+            [matTooltip]="(order?.discount ? 'editReduction' : 'addReduction') | translate"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="inline middle"
+              style="padding-top: 4px;margin-top: -4px;"
+            >
+              <g fill="none" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="sans-serif" font-weight="normal" font-size="12" text-anchor="start">
+                <g>
+                  <g>
+                    <path d="M0,24l0,-24l24,0l0,24z" fill="none"></path>
+                    <g fill="#000000"><g>
+                      <path d="M8,5c-1.65234,0 -3,1.34766 -3,3c0,1.65234 1.34766,3 3,3c1.65234,0 3,-1.34766 3,-3c0,-1.65234 -1.34766,-3 -3,-3z M15.15625,5.4375l-8,12l1.6875,1.125l8,-12z M8,7c0.55078,0 1,0.44922 1,1c0,0.55078 -0.44922,1 -1,1c-0.55078,0 -1,-0.44922 -1,-1c0,-0.55078 0.44922,-1 1,-1z M16,13c-1.65234,0 -3,1.34766 -3,3c0,1.65234 1.34766,3 3,3c1.65234,0 3,-1.34766 3,-3c0,-1.65234 -1.34766,-3 -3,-3z M16,15c0.55078,0 1,0.44922 1,1c0,0.55078 -0.44922,1 -1,1c-0.55078,0 -1,-0.44922 -1,-1c0,-0.55078 0.44922,-1 1,-1z"></path>
+                    </g>
+                  </g>
+                </g>
+                </g>
+              </g>
+            </svg>
+            <span class="inline middle">{{(order?.discount ? 'editReduction' : 'addReduction') | translate}}</span>
+          </button>
+          <button
+            type="button"
+            color="primary"
+            mat-raised-button
+            tooltip-position="below"
+            class="ml-0 mr-0 pl-2 pr-2"
+            (click)="printReceipt(order)"
+            [matTooltip]="'printreceipt' | translate"
+            *ngIf="order?.payment_method && inDesktop() && order?.is_signed"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="inline middle"
+              style="width: 21px;height: 21px;padding-right: 2px;margin-top: -1px;"
+            >
+              <path
+                fill="#ffffff"
+                d="M 6 2 L 6 6 L 18 6 L 18 2 L 6 2 z M 6 7 C 3.8 7 2 8.8 2 11 L 2 17 L 6 17 L 6 22 L 18 22 L 18 17 L 22 17 L 22 11 C 22 8.8 20.2 7 18 7 L 6 7 z M 19 9 C 19.6 9 20 9.4 20 10 C 20 10.6 19.6 11 19 11 C 18.4 11 18 10.6 18 10 C 18 9.4 18.4 9 19 9 z M 8 15 L 16 15 L 16 20 L 8 20 L 8 15 z">
+              </path>
+            </svg>
+            <span class="inline middle">{{'printreceipt' | translate}}</span>
+          </button>
+          <!-- <div class="clearfix"> -->
+          <div class="clearfix" *ngIf="inDesktop()">
+            <button
+              type="button"
+              color="primary"
+              mat-raised-button
+              tooltip-position="below"
+              class="ml-0 mr-0 pl-2 pr-2"
+              (click)="printOrder(order)"
+              [matTooltip]="'printOrder' | translate"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                class="inline middle"
+                style="width: 21px;height: 21px;padding-right: 2px;margin-top: -1px;"
+              >
+                <path
+                  fill="#ffffff"
+                  d="M 6 2 L 6 6 L 18 6 L 18 2 L 6 2 z M 6 7 C 3.8 7 2 8.8 2 11 L 2 17 L 6 17 L 6 22 L 18 22 L 18 17 L 22 17 L 22 11 C 22 8.8 20.2 7 18 7 L 6 7 z M 19 9 C 19.6 9 20 9.4 20 10 C 20 10.6 19.6 11 19 11 C 18.4 11 18 10.6 18 10 C 18 9.4 18.4 9 19 9 z M 8 15 L 16 15 L 16 20 L 8 20 L 8 15 z">
+                </path>
+              </svg>
+              <span class="inline middle">{{'printOrder' | translate}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-lg-12 lc-order-body clearfix" *ngIf="order?.signature?.type_of_receipt !== 'START_BELEG'">
+  <table class="mat-data-table" *ngIf="order?.price !== 0">
+    <thead>
+    <tr>
+      <th class="mat-text-cell text-left">{{'products' | translate}}</th>
+      <th class="mat-text-cell">{{'quantity' | translate}}</th>
+      <th class="mat-text-cell">{{'vat' | translate}}%</th>
+      <th class="mat-text-cell hidden-mat">{{'net' | translate}}</th>
+      <th class="mat-text-cell hidden-mat">{{'vat' | translate}}</th>
+      <th class="mat-text-cell">{{'unitPrice' | translate}}</th>
+      <th class="mat-text-cell text-right">{{'price' | translate}}</th>
+      <th class="mat-text-cell text-right"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let entry of order?.entries?.items; let i = index">
+      <td class="mat-text-cell text-left entry-name" [class.name-two-line]="entry.name.length >= 70">
+        {{entry.name}}
+      </td>
+      <td class="mat-text-cell">{{entry.quantity}}</td>
+      <td class="mat-text-cell">{{entry.tax | number:'1.1-2'}}</td>
+      <td class="mat-text-cell hidden-mat">
+        {{entry.item_net_price | snugCurrency: order?.official_currency}}
+      </td>
+      <td class="mat-text-cell hidden-mat">
+        {{entry.taxValue | snugCurrency: order?.official_currency}}
+      </td>
+      <td class="mat-text-cell">
+        {{entry.item_price  | snugCurrency: order?.official_currency}}
+      </td>
+      <td class="mat-text-cell text-right">
+        <!-- <app-snug-price
+          class="item-price"
+          [itemOrOrder]="{
+            discount:          entry.adhocReduction,
+            totalGross:        entry.finalTotalPrice,
+            official_currency: order.official_currency,
+            finalSum:          entry.finalTotalPriceAfterReduction
+          }"
+        >
+        </app-snug-price> -->
+        {{entry.finalTotalPrice | snugCurrency: order?.official_currency:true}}
+      </td>
+      <td class="mat-text-cell text-right settings">
+        <ul class="list-inline my-0 px-0 pt-2">
+          <li class="list-inline-item" *ngIf="entry.size || entry.variety || entry.extra.length || entry.adhocReductionValue">
+            <span
+              matTooltipPosition="below"
+              class="details-entry-icon"
+              [matTooltip]="'details' | translate"
+              (click)="openOrderDetailsDialog(i, entry)"
+            >
+              <mat-icon >art_track</mat-icon>
+            </span>
+          </li>
+          <!-- <li class="list-inline-item" *ngIf="entry.size || entry.variety || entry.extra.length">
+            <span
+              class="edit-entry-icon"
+              matTooltipPosition="below"
+              [matTooltip]="'edit' | translate"
+              (click)="openItemsToOrderDialog(i, entry)"
+            >
+              <mat-icon >edit</mat-icon>
+            </span>
+          </li> -->
+          <li
+            class="list-inline-item"
+            *ngIf="(order?.entries?.items?.length > 1 || entry.quantity > 1) && !order?.payment_method"
+          >
+            <span
+              class="delete-entry-icon"
+              matTooltipPosition="below"
+              (click)="openDeleteEntriesModal(entry)"
+              [matTooltip]="'deleteItemTitle' | translate"
+            >
+              <mat-icon >delete_forever</mat-icon>
+            </span>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div
+    class="add-items"
+    *ngIf="!order?.payment_method"
+    (click)="openAddItemsToOrderDialog()"
+  >
+    <span class="inline"><i class="fa fa-plus-circle"></i> Add items</span>
+  </div>
+</div>
+<div class="quote-container" *ngIf="order?.description && order?.signature?.type_of_receipt !== 'START_BELEG'">
+  <i class="pin"></i>
+  <blockquote class="note">
+    <strong>Note:</strong> {{order?.description}}
+  </blockquote>
+</div>

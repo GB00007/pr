@@ -1,0 +1,42 @@
+@import '../../../../../../../../shared/sass/_variables.scss';
+@import '../../../../../../../../shared/sass/_mixins.scss';
+
+
+:host {
+  mat-button-toggle-group {
+    @include box-shadow(none);
+    mat-button-toggle {
+      color: #333;
+      height: 36px;
+      &.mat-button-toggle-checked {
+        color: #fff;
+        background-color: #5cb85c !important;
+      }
+      &.mat-button-toggle-disabled {
+        cursor: not-allowed;
+        color: rgba(0,0,0,.2);
+        background-color: #ccc;
+      }
+      &.without-icon {
+        top: 1px;
+        font-weight: 600;
+        font-size: 1.2rem;
+      }
+    }
+  }
+  .show-pin {
+    margin: 0;
+    padding: 0 4px;
+    min-width: 25px;
+    font-size: 0.5rem;
+    line-height: 18px;
+    box-shadow: none;
+    color: #000 !important;
+    background-color: transparent !important;
+  }
+  .wrong-message {
+    top: 105px;
+    right: 50%;
+    position: absolute;
+  }
+}

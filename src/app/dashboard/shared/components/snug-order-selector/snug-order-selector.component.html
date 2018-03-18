@@ -1,0 +1,155 @@
+<div
+  fxLayout="row"
+  fxLayoutAlign="space-between stretch"
+>
+<!-- Categories -->
+  <div
+    [ngClass]="{'div-13p':height === '800', 'div-15p': height === '768', 'div-19p':height === '900', 'div-22p':height === '1050', 'div-23p':height === '1080'}"
+    fxFlex="35"
+    class="selection-section"
+  >
+    <app-snug-buttons-list
+      [label]="'categories'"
+      [items]="internalCategories"
+      [noContent]="'notfound_shopcategory'"
+      (onButtonClick)="toggleCategory($event)"
+      [isInernalCategoriesActive]="isInernalCategoriesActive"
+      [selectedId]="selectedCategoryId || internalCategories[0]?.id"
+    >
+    </app-snug-buttons-list>
+  </div>
+  <!-- items -->
+  <div
+    [ngClass]="{'div-13p':height === '800', 'div-15p': height === '768', 'div-19p':height === '900', 'div-22p':height === '1050', 'div-23p':height === '1080'}"
+    fxLayout="column"
+    fxLayoutAlign="space-between stretch"
+    fxFlex="35"
+    class="selection-section"
+  >
+    <!-- <div  fxFlex="10" class="text-center">
+      <button
+        type="button"
+        tabindex="-1"
+        mat-raised-button
+        *ngIf="!isDayMenu"
+        (click)="addMenuOfTheDay()"
+        class="btn btn-sm lc-btn-primary show-pin text-capitalize"
+      >
+        {{'menuOfTheDay' | translate}}
+      </button>
+    </div> -->
+    <!-- [menuOfDay]= false -->
+    <!-- [composedItems]="composedItems" -->
+    <app-snug-buttons-list
+      [isRecentEmptyy]="isRecentEmpty"
+      [isLastPage]="isLastPage"
+      [currentPage]="currentPage"
+      [items]="items"
+      [label]="'items'"
+      [isLoadItems]="isLoadItems"
+      (onButtonClick)="toggleItem($event)"
+      [noContent]="'noItemsInThisCategory'"
+      [isInernalCategoriesActive]="isInernalCategoriesActive"
+    >
+    </app-snug-buttons-list>
+    <div>
+      <button
+        type="button"
+        mat-raised-button
+        *ngIf="currentPage"
+        (click)="getPrevious()"
+        tooltip-position="right"
+        class="lc-btn-primary pull-left"
+        [matTooltip]="'previous' | translate"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        *ngIf="!isLastPage"
+        (click)="getNext()"
+        tooltip-position="left"
+        class="lc-btn-primary pull-right"
+        [matTooltip]="'next' | translate"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div
+  [ngClass]="{'div-13p':height === '800', 'div-15p': height === '768', 'div-19p':height === '900', 'div-22p':height === '1050', 'div-23p':height === '1080'}"
+  fxFlex="30"
+  class="selection-section"
+  >
+  <div class=" c-filters-wrapper">
+    <!-- [deletePin]="deletePin" -->
+    <!-- Selected Items -->
+      <app-snug-items-selected
+        [hideQte]="!isNotOrder"
+        [selectedItems]="selectedItems"
+        (unSelectItems)="unSelectItems($event)"
+      >
+      </app-snug-items-selected>
+      <!-- Add Notes -->
+      <fieldset
+        [ngClass]="{'fieldset-13p':height === '800', 'fieldset-15p': height === '768', 'fieldset-19p':height === '900', 'fieldset-22p':height === '1050', 'fieldset-23p':height === '1080'}"
+        class="selected-items add-notes"
+        *ngIf=" !isNotOrder"
+      >
+        <legend class="text-left">{{'addNotes' | translate}}</legend>
+        <div class="mat-block text-left">
+          <mat-form-field class="field-full-width">
+            <textarea
+              matInput
+              rows="4"
+              cols="100"
+              #description
+              minlength="7"
+              maxlength="500"
+              [ngModel]="noteValue"
+              (ngModelChange)="changeNote($event)"x
+              [placeholder]="'description' | translate"
+            >
+            </textarea>
+            <mat-hint align="end">{{description.value.length}} / 500</mat-hint>
+          </mat-form-field>
+        </div>
+      </fieldset>
+      <fieldset class="selected-items" *ngIf="isNotOrder || isDayMenu">
+        <legend class="text-left">{{'addNotes' | translate}}</legend>
+        <div class="mat-block text-left">
+          <div class="mat-block" *ngIf="isDayMenu">
+            <mat-form-field class="field-full-width">
+              <input
+              #name
+              matInput
+              required
+              autocomplete="off"
+              [ngModel]="nameField"
+              [placeholder]="'name' | translate"
+              (ngModelChange)="changeNameField($event)"
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="mat-block">
+            <mat-form-field class="field-full-width">
+              <input
+              #price
+                matInput
+                required
+                type="number"
+                autocomplete="off"
+                [ngModel]="priceField"
+                [placeholder]="'price' | translate"
+                (ngModelChange)="changePriceField($event)"
+              >
+              <span matSuffix>{{currencySymbole}}</span>
+            </mat-form-field>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>

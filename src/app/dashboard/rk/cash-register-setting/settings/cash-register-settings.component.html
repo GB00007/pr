@@ -1,0 +1,151 @@
+
+<div class="container-fluid" *ngIf="page">
+    <div class="cash-register-wrapper text-center">
+      <form [formGroup]="rkSettingsForm" class="lc-profile-form" novalidate>
+        <mat-form-field class="field-full-width">
+          <input
+            matInput
+            type="text"
+            formControlName="company_id"
+            [placeholder]="'rkCompanyIdPlaceholder' | translate"
+            [ngModel]="rkSettings?.signature_settings?.company_id || ''"
+          >
+          <span matSuffix>
+            <!-- (click)="companyId = !companyId" -->
+            <button
+              type="button"
+              tabindex="-1"
+              mat-raised-button
+              tooltip-position="below"
+              class="btn btn-sm btn-company-status m-0 text-capitalize"
+              [matTooltip]="(!companyId ? 'clickTochangeCompanyId' : '') | translate"
+            >
+              <span [hidden]="!companyId"><i class="fa fa-unlock"></i></span>
+              <span [hidden]="companyId" (click)="openVerifyCodePinDialog()"><i class="fa fa-lock"></i></span>
+            </button>
+          </span>
+        </mat-form-field>
+        <mat-form-field class="field-full-width">
+          <input
+            matInput
+            id="name"
+            type="text"
+            formControlName="name"
+            [ngModel]="rkSettings?.name || ''"
+            placeholder="{{'rkNamePlaceholder' | translate}}"
+          >
+          <mat-error *ngIf="rkSettingsForm.get('name').hasError('required')">
+            {{'form_error_required' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="field-full-width">
+          <textarea
+            matInput
+            #header
+            rows="4"
+            cols="100"
+            minlength="7"
+            maxlength="500"
+            formControlName="header"
+            [ngModel]="rkSettings?.header || ''"
+            placeholder="{{'rkHeaderPlaceholder' | translate}}"
+          >
+          </textarea>
+          <mat-error *ngIf="rkSettingsForm.get('header').hasError('required')">
+            {{'form_error_required' | translate}}
+          </mat-error>
+          <mat-error *ngIf="rkSettingsForm.get('header').hasError('minlength')">
+            {{'textareaMinLength' | translate}}
+          </mat-error>
+          <mat-error *ngIf="rkSettingsForm.get('header').hasError('maxlength')">
+            {{'textareaMaxLength' | translate}}
+          </mat-error>
+          <mat-hint align="end">{{header.value.length}} / 500</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="field-full-width">
+          <textarea
+            matInput
+            #footer
+            rows="4"
+            cols="100"
+            minlength="7"
+            maxlength="500"
+            formControlName="footer"
+            [ngModel]="rkSettings?.footer || ''"
+            placeholder="{{'rkFooterPlaceholder' | translate}}"
+          >
+          </textarea>
+          <mat-error *ngIf="rkSettingsForm.get('footer').hasError('required')">
+            {{'form_error_required' | translate}}
+          </mat-error>
+          <mat-error *ngIf="rkSettingsForm.get('footer').hasError('minlength')">
+            {{'textareaMinLength' | translate}}
+          </mat-error>
+          <mat-error *ngIf="rkSettingsForm.get('footer').hasError('maxlength')">
+            {{'textareaMaxLength' | translate}}
+          </mat-error>
+          <mat-hint align="end">{{footer.value.length}} / 500</mat-hint>
+        </mat-form-field>
+        <div class="mat-block text-left" *ngIf="pictureData || rkSettings?.logo?.path">
+          <label for="logo">{{'currentPicture' | translate}}</label>
+          <button
+            type="button"
+            aria-label="Close"
+            *ngIf="rkSettings?.logo"
+            class="close remove-pic"
+            (click)="removePicture()"
+          >
+            <mat-icon>cancel</mat-icon>
+          </button>
+          <div >
+            <img [src]="logoUrl" class="img-dimension" *ngIf="!pictureData && logoUrl">
+            <img *ngIf="pictureData" src="{{pictureData.image}}" class="img-dimension" class="img-preview desaturate">
+          </div>
+        </div>
+        <div class="md-block text-left">
+          <button
+            style="margin-left: 0px!important"
+
+            mat-raised-button
+            (click)="openAddImageDialog()"
+            class="mat-raised lc-btn-success"
+          >
+            {{'uploadLogo' | translate}} {{'picture' | translate}}
+          </button>
+        </div>
+        <div class="pull-right">
+          <button
+            type="submit"
+            mat-raised-button
+            (click)="updateRkSettings()"
+            class="mat-raised lc-btn-primary"
+          >
+            {{'updateRkInformation' | translate}}
+          </button>
+        </div>
+      </form>
+    </div>
+  <div class="group-btns-rk">
+    <button
+      mat-fab
+      type="button"
+      class="mat-btn success"
+      tooltip-position="below"
+      matTooltip="{{'initCashRegister' | translate}}"
+      (click)="openInitCashRegisterConfirmationDialog()"
+      *ngIf="!rkSettings?.signature_settings.cashbox_id"
+      >
+      <mat-icon class="mat-48">play_for_work</mat-icon>
+    </button>
+    <button
+      mat-fab
+      type="button"
+      tooltip-position="below"
+      class="mat-btn start-beleg-btn success"
+      (click)="openGenerateStartBelegDialog()"
+      [matTooltip]="(this.hasStartedBeleg ? 'StartBelegDetails' : 'generateStartBeleg') | translate"
+    >
+      <mat-icon class="mat-48">replay</mat-icon>
+    </button>
+  </div>
+</div>

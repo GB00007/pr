@@ -1,0 +1,290 @@
+<form
+  novalidate
+  name="userForm"
+  class="add-modal-user"
+  [formGroup]="userForm"
+>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{(user ? 'editUser' : 'addUser') | translate}}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <div class="row">
+      <div class="col-lg-12 text-center" *ngIf="notificationMessage">
+        <span class="col-lg-12 inline alert alert-warning">
+          <span class="inline middle"><mat-icon>warning</mat-icon></span>
+          <span class="inline middle">{{(notificationMessage) | translate}}</span>
+        </span>
+      </div>
+      <div class="col-lg-12">
+        <mat-form-field class="field-full-width">
+          <input
+            matInput
+            required
+            formControlName="firstname"
+            placeholder="{{'yourFirstname' | translate}}"
+          >
+          <mat-error *ngIf="userForm.get('firstname').errors && userForm.get('firstname').errors['required']">
+            {{'form_error_required' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="field-full-width">
+          <input
+            matInput
+            required
+            formControlName="lastname"
+            placeholder="{{'yourlastname' | translate}}"
+          >
+          <mat-error *ngIf="userForm.get('lastname').errors && userForm.get('lastname').errors['required']">
+            {{'form_error_required' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="field-full-width">
+          <input
+            matInput
+            autocomplete="false"
+            formControlName="internal_reference"
+            placeholder="{{'internalReference' | translate}}"
+          >
+        </mat-form-field>
+        <mat-form-field class="field-full-width">
+          <input
+            matInput
+            required
+            formControlName="email"
+            placeholder="{{'yourEmail' | translate}}"
+          >
+          <mat-error *ngIf="userForm.get('email').errors && userForm.get('email').errors['invalidEmailAddress']">
+            {{'form_error_email' | translate}}
+          </mat-error>
+          <mat-error *ngIf="userForm.get('email').errors && userForm.get('email').errors['required']">
+            {{'form_error_required' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="field-full-width">
+          <mat-select
+            formControlName="language"
+            [placeholder]="'language' | translate"
+            class="mat-input-element field-full-width"
+          >
+            <mat-option
+              [value]="language.code"
+              *ngFor="let language of languages"
+            >
+              {{language.name | translate}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="userForm.get('language').errors && userForm.get('language').errors['required']">
+            {{'form_error_required' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="field-full-width">
+          <input
+            matInput
+            #password
+            autocomplete="off"
+            formControlName="password"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="{{'yourPassword' | translate}}"
+          >
+          <span matSuffix>
+            <button
+              type="button"
+              tabindex="-1"
+              mat-raised-button
+              (click)="showPassword = !showPassword"
+              class="btn btn-sm lc-btn-primary show-password text-capitalize"
+            >
+              <span [hidden]="!showPassword"> <i class="fa fa-eye-slash fa-2x"></i></span>
+              <span [hidden]="showPassword"> <i class="fa fa-eye fa-2x"></i></span>
+            </button>
+          </span>
+          <mat-error *ngIf="userForm.get('password').hasError('required')">
+            {{'form_error_required' | translate}}
+          </mat-error>
+          <mat-error *ngIf="userForm.get('password').hasError('invalidPassword')">
+            {{'invalidPassword' | translate}}
+          </mat-error>
+          <mat-error *ngIf="userForm.get('confirm_password').hasError('mismatchedPasswords')">
+            {{'passwordMismatch' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="field-full-width">
+          <input
+            matInput
+            #confirmPassword
+            autocomplete="off"
+            ngControl="confirm_password"
+            (blur)="checkEqualPassword()"
+            formControlName="confirm_password"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            placeholder="{{'yourConfirmPassword' | translate}}"
+          >
+          <span matSuffix>
+            <button
+              type="button"
+              tabindex="-1"
+              mat-raised-button
+              (click)="showConfirmPassword = !showConfirmPassword"
+              class="btn btn-sm lc-btn-primary show-password text-capitalize"
+            >
+              <span [hidden]="!showConfirmPassword"> <i class="fa fa-eye-slash fa-2x"></i></span>
+              <span [hidden]="showConfirmPassword"> <i class="fa fa-eye fa-2x"></i></span>
+            </button>
+          </span>
+          <mat-error *ngIf="userForm.get('confirm_password').hasError('required')">
+            {{'form_error_required' | translate}}
+          </mat-error>
+          <mat-error *ngIf="userForm.get('confirm_password').hasError('invalidPassword')">
+            {{'invalidPassword' | translate}}
+          </mat-error>
+          <mat-error *ngIf="userForm.get('confirm_password').hasError('mismatchedPasswords')">
+            {{'passwordMismatch' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="field-full-width">
+          <mat-select
+            formControlName="role"
+            [placeholder]="'role' | translate"
+            class="mat-input-element field-full-width"
+            (change)="user ? checkIfWaiter($event, user.role) : ''"
+          >
+            <mat-option
+              [value]="role"
+              class="text-capitalize"
+              *ngFor="let role of roles"
+            >
+              {{role | translate}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="userForm.get('role').errors && userForm.get('role').errors['required']">
+              {{'form_error_required' | translate}}
+            </mat-error>
+        </mat-form-field>
+        <fieldset
+          class="form-group"
+          *ngIf="(user && user.picture.base_url) || pictureData"
+        >
+          <label for="picture">{{'currentPicture' | translate}}</label>
+          <div class="preview-picture">
+              <div class="mat-block">{{'preview' | translate}}</div>
+              <!-- <img
+              *ngIf="user && !pictureData"
+                class="img-preview img-fluid"
+              [src]="user.picture.base_url + user_avatars_url + user.picture.path"
+              >
+              <img
+                *ngIf="pictureData.image"
+                [src]="pictureData?.image"
+              > -->
+            <img
+              class="rounded-circle"
+              [alt]="user.picture.title"
+              [title]="user.picture.title"
+              *ngIf="user && !pictureData"
+              [src]="user.picture.base_url + user_avatars_url + user.picture.path"
+            >
+            <img
+              *ngIf="pictureData"
+              [src]="pictureData.url"
+              class="img-preview img-fluid rounded-circle"
+            >
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div
+            fxLayoutWrap
+            fxLayout="row"
+            class="form-group mat-block mt-1"
+            fxLayoutAlign="space-around center"
+          >
+            <div fxFlex="50">
+              <label for="picture">{{'picture' | translate}}</label>
+              <!-- <img-cropper
+              [image]="pictureData"
+              (change)="uploadFile($event)"
+              (onCrop)="cropped($event)"
+              [settings]="cropperRkLogo"
+              >
+            </img-cropper> -->
+              <button
+                mat-raised-button
+                (click)="file.click()"
+                class="lc-btn-success ml-2"
+              >
+                {{'upload' | translate}} {{'picture' | translate}}
+              </button>
+              <input
+                #file
+                type="file"
+                (change)="uploadFile($event)"
+                class="form-control-file file"
+              >
+              <div class="clearfix">
+                <small class="text-muted">
+                  {{'infoPicture' | translate}} <br> {{'infoPictureSize' | translate}}
+                </small>
+              </div>
+            </div>
+            <div fxFlex="50">
+              <mat-progress-spinner *ngIf="!deactivated" color="warn" mode="indeterminate"></mat-progress-spinner>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      mat-raised-button
+      class="lc-btn-primary"
+      (click)="user ? editUser() : addUser()"
+      [disabled]="user ? isFormInvalid() : !userForm.valid"
+    >
+      {{'confirm' | translate}}
+    </button>
+    <button mat-raised-button 	 (click)="activeModal.dismiss(false)" type="button">
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>
+<div class="confirm-role" [hidden]="!confirmRole">
+  <div class="card">
+    <div class="card-header">
+      <h5>{{'revokeTablesAssigned' | translate}}</h5>
+    </div>
+    <div class="card-body">
+      <p>{{'revokeTablesAssignedContent' | translate }}</p>
+      <p>{{'confirmContinue' | translate }}</p>
+    </div>
+    <div class="card-footer text-right">
+      <button
+        type="button"
+        mat-raised-button
+        (click)="revoke()"
+        class="lc-btn-danger"
+      >
+        {{'revoke' | translate}}
+      </button>
+      <button
+        class="ml-2"
+        type="button"
+        mat-raised-button
+        (click)="revertRoleChange()"
+      >
+        {{'cancel' | translate}}
+      </button>
+    </div>
+  </div>
+</div>
+<div class="lc-cover" [hidden]="!confirmRole"></div>

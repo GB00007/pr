@@ -1,0 +1,28 @@
+.no-content {
+  // height: 100%;
+  display: block;
+  // min-height: unset;
+  // position: relative;
+  // padding-top: 35%;
+  background-color:#fafafa;
+
+  .alert {
+    top: 50%;
+    left: 50%;
+    font-size: 23px;
+    position: absolute;
+    transform: translate(-50%, 50%);
+    @media screen and (max-width: 1680px) {
+      font-size: 22px;
+    }
+    @media screen and (max-width: 1440px) {
+      font-size: 17px;
+    }
+    @media screen and (max-width: 1366px) {
+      font-size: 16px;
+    }
+  }
+}
+.middle-display{
+  top: 0%!important;
+}

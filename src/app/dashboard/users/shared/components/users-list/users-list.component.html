@@ -1,0 +1,232 @@
+<div class="show-disabled-users" *ngIf="isUsersLoaded">
+  <mat-checkbox (click)="showDisabledUsers(isChecked)">
+    <span class="show-disabled-users-label">{{'showDisabledUsers'| translate }}</span>
+  </mat-checkbox>
+</div>
+<table class="mat-data-table" layout-fill *ngIf="isUsersLoaded">
+  <!--<mat-data-table layout-fill [hidden]="users ? !users.length : true">-->
+  <thead>
+    <tr>
+      <th class="mat-text-cell">{{'status' | translate}}</th>
+      <th class="mat-text-cell">{{'picture' | translate}}</th>
+      <th class="mat-text-cell hidden-mat">{{'firstname' | translate}}</th>
+      <th class="mat-text-cell hidden-mat">{{'lastname' | translate}}</th>
+      <th class="mat-text-cell hidden-mat">{{'internalReference' | translate}}</th>
+      <th class="mat-text-cell">{{'email' | translate}}</th>
+      <th class="mat-text-cell">{{'role' | translate}}</th>
+      <th class="mat-text-cell">&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-template ngFor let-user [ngForOf]="users" let-i="index">
+      <tr *ngIf="user?.isEnabled || isChecked">
+        <td
+          class="mat-text-cell"
+          [ngClass]="{
+            'text-danger': user?.isEnabled,
+            'text-success': !user?.isEnabled
+          }"
+        >
+          <span class="label label-primary user-tag" *ngIf="user?.id === currentUserId">
+            <span class="user-tag-text">{{'you' | translate}}</span>
+          </span>
+          <div class="lightbulb-wrapper">
+            <div class="lightbulb-block">
+              <div
+                class="light"
+                [ngClass]="{
+                  'enabled': user?.isEnabled,
+                  'disabled-user': !user?.isEnabled
+                }"
+                title="{{user?.isEnabled === true ? ('enabled' | translate) : 'disabled' | translate}}"
+              >
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="mat-text-cell">
+          <img
+            class="img-fluid rounded-circle"
+            src="{{user?.picture.base_url+ user_avatars_url + user?.picture.path}}"
+          >
+        </td>
+        <td class="mat-text-cell hidden-mat">
+          {{user?.firstname || ''}}
+        </td>
+        <td class="mat-text-cell hidden-mat">{{user?.lastname || ''}}</td>
+        <td class="mat-text-cell language hidden-mat">{{user?.internal_reference ? (user?.internal_reference | translate) : ''}}</td>
+        <td class="mat-text-cell">
+          <span
+            class="inline valid-icon-user"
+            [title]="!user?.email.isValid ? ('notfound_user_email' | translate) : ''"
+          >
+            <mat-icon class="text-success" *ngIf="user?.email.isValid">check</mat-icon>
+            <mat-icon class="text-warning" *ngIf="!user?.email.isValid">warning</mat-icon>
+          </span>
+          <span class="inline email-colonne text-left">
+            {{user?.email?.email || ''}}
+          </span>
+          <a
+            class="resend-email"
+            *ngIf="!user?.email?.isValid"
+            (click)="resendVerificationEmail(user?.email?.email)"
+          >
+            <span class="inline">{{'resendEmail' | translate}}</span>
+          </a>
+        </td>
+        <!--<td class="mat-text-cell language">{{user?.language | lang | translate}}</td>-->
+        <td class="mat-text-cell role text-capitalize">
+          {{user?.role === 'admin' ? 'Admin' : (user?.role | translate)}}
+        </td>
+        <td *ngIf="user?.isEnabled" class="lc-reset-padding-r">
+          <!--
+            <button type="button" mat-icon-button [mat-menu-trigger-for]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button type="button" mat-menu-item (click)="openEditUserDialog(i, user)">
+                <span class="inline"><mat-icon>mode_edit</mat-icon></span>
+                <span class="inline up">{{'edit' | translate}}</span>
+              </button>
+              <button
+                type="button"
+                mat-menu-item
+                (click)="openManageTablesDialog(i, user)"
+                *ngIf="user?.role === 'waiter' && user?.isEnabled"
+              >
+                <span class="inline"><mat-icon>widgets</mat-icon></span>
+                <span class="inline up">{{'manageTablesLink' | translate}}</span>
+              </button>
+              <button
+                type="button"
+                mat-menu-item
+                [hidden]="user?.id === currentUserId"
+                (click)="openEnableDisableUserDialog(i, user)"
+              >
+                <span class="inline">
+                  <mat-icon *ngIf="!user.isEnabled">check</mat-icon>
+                  <mat-icon *ngIf="user.isEnabled">delete_forever</mat-icon>
+                </span>
+                <span class="inline up" *ngIf="!user.isEnabled">{{'enable' | translate}}</span>
+                <span class="inline up" *ngIf="user.isEnabled">{{'disable' | translate}}</span>
+              </button>
+            </mat-menu>
+          -->
+          <span ngbDropdown class="d-inline-block" placement="bottom-right">
+            <button
+              mat-button
+              id="settings"
+              type="button"
+              aria-label="More"
+              ngbDropdownToggle
+              class="mat-icon-button mat-text-primary"
+            >
+              <mat-icon>settings</mat-icon>
+            </button>
+            <ul
+              class="last"
+              ngbDropdownMenu
+              aria-labelledby="settings"
+              [class.push-right]="translate.currentLang === 'de'"
+            >
+              <li class="dropdown-item" (click)="openEditUserDialog(i, user)" title="Edit user">
+                <a class="mat-text-primary">
+                  <span class="inline"><mat-icon>mode_edit</mat-icon></span>
+                  <span class="inline up">{{'edit' | translate}}</span>
+                </a>
+              </li>
+              <li
+                title="show income"
+                class="dropdown-item"
+                (click)="openIncomeDialog(user)"
+                *ngIf="((user?.id === currentUserId) && isAdmin) || user?.role === 'waiter'"
+              >
+                <a class="mat-text-primary">
+                  <span class="inline"><mat-icon>monetization_on</mat-icon></span>
+                  <span class="inline up">{{'income' | translate}}</span>
+                </a>
+              </li>
+              <li
+                title="Edit user"
+                class="dropdown-item"
+                *ngIf="user?.role === 'waiter' && user?.isEnabled"
+                (click)="openManageTablesDialog(i, user)"
+              >
+                <a class="mat-text-primary">
+                  <span class="inline"><mat-icon>widgets</mat-icon></span>
+                  <span class="inline up">{{'manageTablesLink' | translate}}</span>
+                </a>
+              </li>
+              <li
+                class="dropdown-item"
+                [title]="'setPinCode' | translate"
+                (click)="openSetPinCodeDialog(i, user)"
+                [hidden]="((user?.id !== currentUserId) && !isAdmin)"
+              >
+                <a class="mat-text-primary">
+                  <span class="inline"><mat-icon>fiber_pin</mat-icon></span>
+                  <span class="inline up">{{user?.pinCode ? ('editPinCode' | translate) : ('setPinCode' | translate)}}</span>
+                </a>
+              </li>
+              <li
+                class="dropdown-item"
+                [hidden]="user?.id === currentUserId"
+                (click)="openEnableDisableUserDialog(i, user)"
+              >
+                <a
+                  [ngClass]="{
+                    'text-danger': user.isEnabled,
+                    'text-success': !user.isEnabled
+                  }"
+                  [title]="(user.isEnabled ? 'disable' : 'enable') | translate"
+                >
+                  <span class="inline">
+                    <mat-icon *ngIf="!user.isEnabled">check</mat-icon>
+                    <mat-icon *ngIf="user.isEnabled">delete_forever</mat-icon>
+                  </span>
+                  <span class="inline up" *ngIf="!user.isEnabled">{{'enable' | translate}}</span>
+                  <span class="inline up" *ngIf="user.isEnabled">{{'disable' | translate}}</span>
+                </a>
+              </li>
+            </ul>
+          </span>
+        </td>
+        <td *ngIf="!user?.isEnabled" class="lc-reset-padding-r">
+          <a
+            title="{{'clickToEnable' | translate}}"
+            class="enabel-user btn btn-xs"
+            (click)="openEnableDisableUserDialog(i, user)"
+          >
+            <span class="inline">
+              <small>
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path fill="#F44336" d="M14,2A8,8 0 0,0 6,10A8,8 0 0,0 14,18A8,8 0 0,0 22,10A8,8 0 0,0 14,2M4.93,5.82C3.08,7.34 2,9.61 2,12A8,8 0 0,0 10,20C10.64,20 11.27,19.92 11.88,19.77C10.12,19.38 8.5,18.5 7.17,17.29C5.22,16.25 4,14.21 4,12C4,11.7 4.03,11.41 4.07,11.11C4.03,10.74 4,10.37 4,10C4,8.56 4.32,7.13 4.93,5.82M18.09,6.08L19.5,7.5L13,14L9.21,10.21L10.63,8.79L13,11.17" />
+                </svg>
+              </small>
+            </span>
+            <span class="inline up enabel-user-label">{{'enable' | translate}}</span>
+          </a>
+        </td>
+      </tr>
+    </ng-template>
+  </tbody>
+  <!--</mat-data-table>-->
+</table>
+<app-loader
+  [diameter] ='150'
+  [strokeWidth]='15'
+  *ngIf="!isUsersLoaded"
+  [pos]="{'margin-top': '20%', 'margin-left': '45%'}"
+>
+</app-loader>
+<app-no-content [label]="'noUsers'" *ngIf="users && !users.length && isUsersLoaded"></app-no-content>
+<button
+  mat-fab
+  type="button"
+  tooltip-position="below"
+  (click)="openAddUserDialog()"
+  [matTooltip]="'addUser' | translate"
+  class="mat-btn mat-fab-top-right pos-fix accent"
+>
+  <mat-icon class="mat-48">add</mat-icon>
+</button>

@@ -1,0 +1,27 @@
+@import '../../../shared/sass/_mixins.scss';
+@import '../../../shared/sass/_variables';
+
+:host {
+  hr{
+    margin-bottom: 0px!important;
+  }
+  .name-item-type {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    &:first-letter {
+      text-transform: capitalize;
+    }
+  }
+  .mat-chip {
+    line-height: 1;
+    padding: 2px 6px;
+    .mat-slide-toggle {
+      padding-top: 5px;
+    }
+    .status {
+      margin-top: 0;
+    }
+  }
+}

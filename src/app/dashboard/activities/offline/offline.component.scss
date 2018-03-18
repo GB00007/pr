@@ -1,0 +1,30 @@
+@import '../../../shared/sass/mixins';
+@import '../../../shared/sass/variables';
+
+:host {
+  hr{
+    margin-bottom: 0px!important;
+  }
+  padding-left:  0;
+  padding-right: 0;
+  width:         100%;
+  margin-left:   auto;
+  margin-right:  auto;
+  .lc-widget {
+    @include fieldset();
+    @include border-radius(0.1875rem); // 3px
+    @include box-shadow(none !important);
+    padding:          0;
+    background-color: #fff;
+    position:         relative;
+    margin:           0.9375rem 0 1.875rem; // 15px 0 30px
+    .arrow {
+      font-weight: 900;
+      font-size: 2.5rem; // 40px
+      @include size(2.5rem); // 40px
+    }
+  }
+  .status {
+    font-weight: 900;
+  }
+}

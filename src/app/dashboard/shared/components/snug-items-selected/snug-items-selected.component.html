@@ -1,0 +1,127 @@
+<fieldset  #fiedset class="selected-items">
+    <legend class="text-left">{{'itemsSelected' | translate}}</legend>
+    <button
+      mat-button
+      type="button"
+      class="clear-button"
+      aria-label="Clear All"
+      *ngIf="selectedItems.length"
+      (click)="unSelectItems.emit()"
+    >
+      {{'clearAll' | translate}}
+    </button>
+    <!-- <app-no-content [label]="'noSelectedItems'" *ngIf="!selectedItems.length"></app-no-content> -->
+    <div
+    [class.show-qte]="!hideQte"
+    #div>
+    <div  *ngFor="let item of selectedItems; index as i" class="clearfix pt-3 item">
+      <div
+        fxLayoutWrap
+        fxLayout="row"
+        class="center-block"
+        fxLayoutAlign="space-around center"
+      >
+      <div fxFlex="10"
+        role="group"
+        *ngIf="hideQte"
+        class="btn-group qte-wrapper"
+        aria-label="Basic example"
+      >
+        <!-- <button
+           matTooltipPosition="above"
+          [matTooltip]="'reduction' | translate"
+          class="delete"
+          (click)="openAddItemReductionDialog(item)"
+          >
+            <i
+            aria-hidden="true"
+            class="fa fa-percent"
+            >
+            </i>
+        </button> -->
+        <button
+          class="delete"
+          (click)="item.quantity = item.quantity >= 1 ? item.quantity + 1 : 1"
+        >
+          <mat-icon
+          color="warn"
+          matTooltipPosition="above"
+          (click)="unSelectItems.emit(item)"
+          [matTooltip]="'deleteItemTitle' | translate"
+          >
+           delete_forever
+          </mat-icon>
+        </button>
+      </div>
+
+      <!-- <app-snug-discount-label class="new-order" [discount]="item.item_reduction"></app-snug-discount-label> -->
+      <div fxFlex="55" class="name">
+          <div fxFlex="5" >
+            </div>
+          <div fxFlex="75">
+            <span>
+                <div *ngFor="let lang of languages;  let j = index">
+                    <div *ngIf="lang.isDefault == true">
+                      <div *ngFor="let x of item?.translation ; let k = index">
+                        <div *ngIf= "item?.translation[k]?.language_code === lang.code">
+                          <h4>{{item?.translation[k]?.name}} </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </span>
+          </div>
+      </div>
+      <div fxFlex="15"
+        *ngIf="hideQte"
+        class="text-right "
+      >
+        <span class="inline middle value span-middle">{{item.price}} {{currencySymbole}}</span>
+      </div>
+
+      <div fxFlex="20"
+        role="group"
+        *ngIf="hideQte"
+        class="btn-group qte-wrapper"
+        aria-label="Basic example"
+      >
+        <button
+          class="qte"
+          (click)="item.quantity = item.quantity > 1 ? item.quantity - 1 : 1"
+        >
+        <i
+        aria-hidden="true"
+        class="fa fa-minus"
+        >
+        </i>
+              </button>
+        <span class="text-center">{{item.quantity}}</span>
+        <button
+          class="qte"
+          (click)="item.quantity = item.quantity >= 1 ? item.quantity + 1 : 1"
+        >
+        <i
+        aria-hidden="true"
+        class="fa fa-plus"
+        >
+        </i>          </button>
+      </div>
+      </div>
+    </div>
+    </div>
+    <div
+      class="somme-position"
+      fxLayoutWrap
+      fxLayout="row"
+      fxLayoutAlign="space-around center"
+      *ngIf="!hideQte && selectedItems.length"
+    >
+      <hr>
+      <div fxFlex="60" fxFlexOffset="10">
+        {{'total' | translate}}
+      </div>
+      <div fxFlex="30" class="text-right pr-5">
+        {{getTotalSum() | number:'1.1-2'}} {{currencySymbole}}
+      </div>
+    </div>
+  </fieldset>

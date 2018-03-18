@@ -1,0 +1,73 @@
+<div class="modal-header">
+  <button
+    mat-raised-button
+    (click)="file.click()"
+    class="mat-raised lc-btn-success fixed-width"
+  >
+    {{'upload' | translate}} {{'picture' | translate}}
+  </button>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="matDialogRef.close(false)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>
+<div class="modal-body clearfix">
+  <div
+    fxFlex="100"
+    fxLayout="row"
+    fxLayoutGap="1rem"
+    fxLayoutAlign="space-between center"
+    class="mat-block sizes-varieties mt-3"
+  >
+    <div fxFlex="50"
+         fxLayout="column"
+         fxLayoutAlign="start">
+
+      <input
+        style="display: none"
+        #file
+        type="file"
+        accept=".gif,.jpg,.jpeg,.png,.doc,.docx"
+        (change)="fileChangeListener($event)"
+      >
+      <img-cropper #cropper [image]="pictureData"
+                   [settings]="cropperSettings"
+                   [(cropPosition)]="cropPosition"
+      >
+      </img-cropper>
+    </div>
+    <div fxFlex="50">
+      <img
+        *ngIf="pictureData && pictureData.image"
+        [src]="pictureData.image"
+      >
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <mat-spinner
+    *ngIf="uploading" [diameter]="50">
+  </mat-spinner>
+  <button
+    *ngIf="!uploading"
+    type="submit"
+    mat-raised-button
+    class="lc-btn-primary"
+    [disabled]="!uploadedImage && !data.page.logo"
+    (click)="updateLogo()"
+  >
+    {{'submit' | translate}}
+  </button>
+  <button
+    type="button"
+    mat-raised-button
+    (click)="matDialogRef.close(false)"
+  >
+    {{'cancel' | translate}}
+  </button>
+</div>
+

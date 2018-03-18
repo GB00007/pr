@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div>
+    <h3 class="text-left text-muted text-uppercase title-container">
+      {{'rk' | translate}} > {{'settings' | translate}}
+    </h3>
+    <hr>
+    <app-loader [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}" *ngIf="!page"></app-loader>
+    <mat-tab-group (selectChange)="tabChanged($event)" *ngIf="page">
+      <mat-tab label="{{'receiptSettingsTitle' | translate}}">
+        <div class="page-settings-wrapper text-center">
+          <div class="page-settings-container text-left">
+            <h2 class="text-center margin">{{'receiptSettingsTitle' | translate}}</h2>
+            <!-- <app-lc-page-form [page]="page" *ngIf="page"></app-lc-page-form> -->
+            <app-receipt-settings  [page]="page"> </app-receipt-settings>
+
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="{{'orderSettings' | translate}}">
+        <div class="page-settings-wrapper text-center">
+          <div class="page-settings-container text-left">
+            <h2 class="text-center margin mb-4">{{'orderSettings' | translate}}</h2>
+            <app-cash-register-settings  [page]="page"></app-cash-register-settings>
+            <!-- <app-loader *ngIf="!page"></app-loader> -->
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+

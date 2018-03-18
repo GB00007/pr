@@ -1,0 +1,204 @@
+<form
+  novalidate
+  name="extraConfigForm"
+  class="extra-config-form"
+  [formGroup]="extraConfigForm"
+>
+<div class="modal-header">
+  <h4 class="modal-title">{{(extra ? 'editExtraConfig' : 'addExtraConfig') | translate}}</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>
+<div class="modal-body clearfix">
+  <div
+    fxLayoutWrap
+    fxLayout="row"
+    fxLayoutAlign="space-around center"
+  >
+    <div fxFlex="100">
+      <fieldset class="form-group">
+        <mat-form-field class="field-full-width" dividerColor="{{getDividerColor(extraConfigForm.get('name'))}}">
+          <input
+            matInput
+            formControlName="name"
+            placeholder="{{'yourExtraConfigName' | translate}}"
+          >
+          <mat-hint align="start">
+            <span
+              class="text-danger"
+              [hidden]="extraConfigForm.get('name').valid || extraConfigForm.get('name').pristine"
+            >
+              <small>{{'form_error_required' | translate}}</small>
+            </span>
+          </mat-hint>
+        </mat-form-field>
+      </fieldset>
+    </div>
+    <div fxFlex="100" class="fieldset-multiple-choices">
+      <fieldset class="form-group text-capitalize">
+        <legend>{{"multipleChoice" | translate}}</legend>
+        <div class="input-lg">
+          <mat-radio-group
+            class="block item-restrict"
+            formControlName="multiple_choice"
+            (change)="toggleEnabledMinChoice($event)"
+          >
+            <mat-radio-button #multiYes [value]="true" >
+              <span class="inline inset text-capitalize">{{'yes' | translate}}</span>
+            </mat-radio-button>
+            <mat-radio-button #multiNo [value]="false" >
+              <span class="inline inset text-capitalize">{{'no' | translate}}</span>
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </fieldset>
+    </div>
+    <div fxFlex="100">
+      <fieldset class="form-group">
+        <mat-form-field class="field-full-width" dividerColor="{{getDividerColor(extraConfigForm.get('minimum_choice'))}}">
+          <input
+            matInput
+            type="number"
+            class="form-control"
+            (change)="checkMinChoice($event)"
+            formControlName="minimum_choice"
+            placeholder="{{'minChoiceExtra' | translate}}"
+          >
+            <mat-hint align="start">
+              <span
+                class="text-danger"
+                [hidden]="!extraConfigForm.get('required').value || extraConfigForm.get('minimum_choice').valid || extraConfigForm.get('minimum_choice').pristine"
+              >
+                <small *ngIf="extraConfigForm.get('minimum_choice').errors && extraConfigForm.get('minimum_choice').errors['pattern']">
+                  {{'postiveonly' | translate}}
+                </small>
+                <small *ngIf="extraConfigForm.get('minimum_choice').errors && extraConfigForm.get('minimum_choice').errors['required']">
+                  {{'form_error_required' | translate}}
+                </small>
+              </span>
+            </mat-hint>
+          </mat-form-field>
+      </fieldset>
+    </div>
+    <div fxFlex="100" class="fieldset-multiple-choices">
+      <fieldset class="form-group text-capitalize">
+        <legend>{{"required" | translate}}</legend>
+        <div class="input-lg">
+          <mat-radio-group
+            formControlName="required"
+            class="block item-restrict"
+          >
+            <mat-radio-button [value]="true">
+              <span class="inline inset text-capitalize">{{'yes' | translate}}</span>
+            </mat-radio-button>
+            <mat-radio-button [value]="false">
+              <span class="inline inset text-capitalize">{{'no' | translate}}</span>
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </fieldset>
+    </div>
+    <div fxFlex="100" class="fieldset-multiple-choices">
+      <fieldset class="form-group text-capitalize">
+        <legend >{{'options' | translate}}</legend>
+        <!-- [disabled]="defaultExisted" -->
+        <mat-checkbox
+          #Default
+        >
+          <span>{{'default' | translate}}</span>
+        </mat-checkbox>
+        <div fxLayout="column" fxLayoutAlign="space-around center" >
+          <div
+            fxLayoutWrap
+            fxLayout="row"
+            fxLayoutAlign="space-around center"
+            class="form-group extra-ingrd mt-1 pl-0"
+          >
+          <mat-form-field fxFlex="33">
+            <input
+              matInput
+              #ExtName
+              (input)="null"
+              placeholder="{{'typeTheNameHere' | translate}}"
+            >
+          </mat-form-field>
+          <mat-form-field fxFlex="33" class="mat-input-sm">
+            <input
+              matInput
+              #ExtAddPrice
+              type="number"
+              (input)="null"
+              [disabled]="!ExtName.value"
+              [(ngModel)]="additionalPrice"
+              [ngModelOptions]="{standalone: true}"
+              [placeholder]="'additionalPrice' | translate"
+              >
+            <span matSuffix>{{ currentCurrency }}</span>
+          </mat-form-field>
+          <div fxFlex="33">
+            <button
+              type="button"
+              [disabled]="!ExtAddPrice.value"
+              class="btn lc-btn-success btn-sm"
+              (click)="addExtraIngredient(ExtName, ExtAddPrice, Default)"
+            >
+              {{'add' | translate}}
+            </button>
+            <button
+              type="button"
+              *ngIf="inEditMode"
+              class="btn lc-btn-danger btn-sm"
+              (click)="cancelEditExtraIngredient(ExtName, ExtAddPrice, Default)"
+            >
+              {{'cancel' | translate}}
+            </button>
+          </div>
+          </div>
+          </div>
+        <div class="clearfix c-filters-wrapper">
+          <span *ngFor="let extraIngredient of addedExtraIngrd; let i = index;">
+            <span
+              [class.checked]="!extraIngredient?.default"
+              class="label label-pill filter label-primary c-filter"
+            >
+              <span (click)="editExtraIngredient(i, ExtName, ExtAddPrice, Default)">
+                {{extraIngredient?.name}}
+              </span>
+              <a (click)="deleteExtraIngredient(extraIngredient)">
+                <mat-icon>close</mat-icon>
+              </a>
+            </span>
+          </span>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
+  <div class="modal-footer">
+   <button
+      class="pull-right ml-2"
+      type="button"
+      mat-raised-button
+      matDialogClose
+      (click)="activeModal.dismiss(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+    <button
+      type="submit"
+      mat-raised-button
+      class="lc-btn-primary pull-right"
+      [disabled]="isButtonDisabled"
+      (click)="extra ? updateExtraConfig() : addExtraConfig()"
+    >
+      {{(extra ? 'update' : 'confirm') | translate}}
+    </button>
+  </div>
+</form>

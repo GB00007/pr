@@ -1,0 +1,161 @@
+@import '../../_mixins.scss';
+@import '../../_colors.scss';
+
+[mat-ink-ripple] {
+  position: relative;
+}
+.mat-btn {
+
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    text-decoration: none;
+  }
+  &.mat-fab {
+    border-radius: 50%;
+    transition: 0.2s linear;
+    transition-property: -webkit-transform, box-shadow;
+    transition-property:         transform, box-shadow;
+    @include transform(translate3d(0, 0, 0));
+    /*&:not([disabled]):hover,
+    &:not([disabled]):focus {
+      background-color: rgba(158, 158, 158, 0.2);
+    }*/
+  }
+  &.mat-raised {
+    @include transform(translate3d(0, 0, 0));
+  }
+  &.mat-cornered {
+    border-radius: 0;
+  }
+  &.mat-fab {
+    @include box-shadow(0 2px 5px 0 rgba(0, 0, 0, 0.26));
+    &.mat-fab-bottom-right {
+      position: absolute;
+      top: auto;
+      right: 20px;
+      bottom: 20px;
+      left: auto;
+    }
+    &.mat-fab-bottom-left {
+      position: absolute;
+      top: auto;
+      right: auto;
+      bottom: 20px;
+      left: 20px;
+    }
+    &.mat-fab-top-right {
+      top: 56px;
+      left: auto;
+      right: 25px;
+      bottom: auto;
+      position: fixed;
+      @media screen and (max-width: 1366px) {
+        top: 53px;
+      }
+      @media screen and (max-width: 1280px) {
+        top: 52px;
+      }
+    }
+    &.mat-fab-top-left {
+      top: 20px;
+      left: 20px;
+      right: auto;
+      bottom: auto;
+      position: absolute;
+    }
+    & mat-icon {
+      margin-top: 0;
+    }
+    & mat-icon.mat-48 {
+      margin-top: -8px;
+    }
+    &.mat-mini {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  &.mat-icon {
+    padding: 0;
+    background: none;
+  }
+  &[disabled],
+  &.mat-raised[disabled],
+  &.mat-fab[disabled] {
+    cursor: not-allowed;
+    color: rgba(0, 0, 0, 0.26);
+    background-color: transparent;
+  }
+  &.mat-raised:not([disabled]),
+  &.mat-raised:not([disabled]):focus,
+  &.mat-raised:not([disabled]):hover,
+  &.mat-fab:not([disabled]):focus,
+  &.mat-fab:not([disabled]):hover {
+    @include box-shadow(0 4px 8px 0 rgba(0, 0, 0, 0.4));
+  }
+  &:not([disabled]).mat-raised:focus,
+  &:not([disabled]).mat-raised:hover,
+  &:not([disabled]).mat-fab:focus,
+  &:not([disabled]).mat-fab:hover {
+    @include transform(translate3d(0, -1px, 0));
+  }
+}
+.mat-btn-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+.mat-fab-offset {
+  margin-top: -28px;
+  margin-bottom: -28px;
+}
+.mat-toast-open-top .mat-btn {
+  &.mat-toast-open-top .mat-btn.mat-fab-top-left,
+  &.mat-toast-open-top .mat-btn.mat-fab-top-right {
+    @include transform(translate3d(0, 42px, 0));
+  }
+  &.mat-fab-top-left:not([disabled]):focus,
+  &.mat-fab-top-left:not([disabled]):hover,
+  &.mat-fab-top-right:not([disabled]):focus,
+  &.mat-fab-top-right:not([disabled]):hover {
+    @include transform(translate3d(0, 42px, 0));
+  }
+}
+.mat-toast-open-bottom .mat-btn {
+  &.mat-fab-bottom-left,
+  &.mat-fab-bottom-right {
+    @include transform(translate3d(0, -42px, 0));
+  }
+  &.mat-fab-bottom-left:not([disabled]):focus,
+  &.mat-fab-bottom-left:not([disabled]):hover,
+  &.mat-fab-bottom-right:not([disabled]):focus,
+  &.mat-fab-bottom-right:not([disabled]):hover {
+    @include transform(translate3d(0, -43px, 0));
+  }
+}
+[mat-fab],
+[mat-mini-fab],
+[mat-raised-button] {
+  &.mat-orange {
+    background-color: $orange-text-color;
+    &:not([disabled]):hover,
+    &:not([disabled]):focus {
+      background-color: $orange-text-hover;
+    }
+  }
+  &.mat-cyan {
+    background-color: $primary-color;
+    &:not([disabled]):hover,
+    &:not([disabled]):focus {
+      background-color: $blue;
+    }
+  }
+}
+.mat-btn.mat-fab {
+  .mat-48 {
+    font-size: 40px;
+    @include size(48px);
+  }
+}
+

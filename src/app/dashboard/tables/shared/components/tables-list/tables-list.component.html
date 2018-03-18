@@ -1,0 +1,173 @@
+<div class="container-fluid">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <div fxFlex="60">
+          <h3 class="text-left text-muted text-uppercase title-container">
+              {{'tablesManager' | translate}}
+          </h3>
+      </div>
+      <div fxFlex="40">
+        <mat-form-field>
+          <mat-select
+            [disabled]="!tables"
+            placeholder="Select color"
+            [(ngModel)]="selectedColor"
+            >
+            <mat-option
+              [value]="color.id"
+              *ngFor="let color of colors"
+              (click)="updateColor({others: {qrcode_color: color.hex_code}})"
+            >
+              <span
+                class="inline middle mat-{{color.name}}"
+                [ngStyle]="{'width': '30px', 'height': '30px'}"
+              >
+              </span>
+                {{color.name.split('-').join(' ') | capitalize}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <hr style=" margin-top: 0px;margin-bottom: 0px;">
+  </div>
+  <app-loader *ngIf="!tables" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+  <!-- <app-no-content [label]="'noTables'" *ngIf="tables && tables.length == '0'"></app-no-content> -->
+  <div *ngIf="tables" class="row mat-padding" [hidden]="!tables">
+            <div class="col-xl-3 col-lg-4 col-mat-6 lc-reset-padding-r" *ngFor="let table of tables; let idx = index">
+              <mat-card class="-blue lc-widget mat-card-flat">
+                <mat-card-title-group>
+                  <div class="col-lg-12">
+                    <mat-card-title>
+                      <span
+                        class="inline shiny"
+                        [ngClass]="{
+                          'paid': table?.is_paid,
+                          'unpaid': !table?.is_paid
+                        }"
+                      >
+                      </span>
+                      <span class="inline">{{'tableNbr' | translate}}: {{table?.number}}</span>
+                    </mat-card-title>
+                    <mat-card-subtitle class="title-max" [class.no-waiter]="!table.total_waiters">
+                      <span *ngIf="!table.total_waiters" [title]="'noWaiterAssigned' | translate">
+                        <mat-icon class="inline">warning</mat-icon>
+                        <span class="inline top">{{'noWaiterAssigned' | translate}}</span>
+                      </span>
+                      <span *ngIf="!!table.total_waiters" >
+                        {{table.total_waiters && table.total_waiters > 1 ? (table.total_waiters + ' ' + ('waitersManageTable' | translate)) : ('waiterManageTable' | translate) }}
+                      </span>
+                    </mat-card-subtitle>
+                  </div>
+                </mat-card-title-group>
+                <mat-card-actions>
+                  <span
+                    ngbDropdown
+                    class="d-inline-block"
+                    placement="bottom-right"
+                  >
+                    <button
+                      mat-button
+                      type="button"
+                      id="settings"
+                      aria-label="More"
+                      ngbDropdownToggle
+                      class="mat-icon-button mat-text-primary"
+                    >
+                      <mat-icon>settings</mat-icon>
+                    </button>
+                    <ul
+                      ngbDropdownMenu
+                      aria-labelledby="settings"
+                      [class.last]="(idx + 1) % 4 === 0"
+                      [class.pushed-left]="translate.currentLang === 'fr'"
+                    >
+                      <li class="dropdown-item" (click)="openEditTableDialog(idx, table)">
+                        <a class="mat-text-primary">
+                          <span class="inline"><mat-icon>mode_edit</mat-icon></span>
+                          <span class="inline up">{{'editTable' | translate}}</span>
+                        </a>
+                      </li>
+                      <li class="dropdown-item" (click)="openRegenerateQrcodeDialog(idx, table)">
+                        <a class="mat-text-primary">
+                          <span class="inline"><mat-icon>autorenew</mat-icon></span>
+                          <span class="inline up">{{'regenerateQrcode' | translate}}</span>
+                        </a>
+                      </li>
+                        <li class="dropdown-item" (click)="openDeleteTableDialog(idx, table)">
+                        <a class="text-danger">
+                          <span class="inline"><mat-icon>delete_forever</mat-icon></span>
+                          <span class="inline up">{{'deleteTable' | translate}}</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </span>
+                </mat-card-actions>
+                <div>
+                  <app-qrcode-image
+                    width="215"
+                    height="215"
+                    class="mat-card-image"
+                    [qrdata]="table?.qrcode"
+                    [color]="page?.others?.qrcodeColor"
+                  >
+                  </app-qrcode-image>
+                </div>
+              </mat-card>
+            </div>
+          </div>
+
+<div id="print-section" #printSection >
+  <div class="page" size="A4" *ngIf="printTables">
+    <div class="print-content" *ngFor="let table of printTables; let idx = index">
+        <div class="print-title">
+        <div class="print-number">{{table?.number}}</div>
+      </div>
+      <div class="print-title-1">
+          <img class="print-number" [src]="snugMenuLogoUrl">
+      </div>
+      <app-qrcode-image
+        width="200"
+        height="200"
+        class="print-image"
+        [qrdata]="table?.qrcode"
+        [color]="page?.others?.qrcodeColor"
+        >
+      </app-qrcode-image>
+    </div>
+  </div>
+</div>
+<button
+  type="button"
+  mat-fab
+  aria-label="Add table"
+  tooltip-position="below"
+  (click)="openAddTableDialog()"
+  title="{{'addTable' | translate}}"
+  matTooltip="{{'addTable' | translate}}"
+  class="mat-btn mat-fab-top-right pos-fix accent"
+  [disabled]="!tables"
+>
+  <mat-icon class="mat-48">add</mat-icon>
+</button>
+<button
+  type="button"
+  mat-fab
+  matTooltip="Print"
+  tooltip-position="below"
+  (click)="openPrintQrcode()"
+  [disabled]="!tables"
+  class="mat-btn mat-fab-top-right pos-fix accent print-btn"
+  >
+  <mat-icon class="mat-48">print</mat-icon>
+</button>
+<button
+  mat-fab
+  type="button"
+  tooltip-position="below"
+  (click)="regenerateAllQrcodes()"
+  matTooltip="Regenerate all Qr codes"
+  [disabled]="!tables"
+  class="mat-btn mat-fab-top-right pos-fix accent cached-btn"
+  >
+  <mat-icon class="mat-48">cached</mat-icon>
+</button>

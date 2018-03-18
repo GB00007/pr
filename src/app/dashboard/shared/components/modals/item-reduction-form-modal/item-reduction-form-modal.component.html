@@ -1,0 +1,124 @@
+<form
+  class="item-form"
+  name="itemReductionGroup"
+  [formGroup]="itemReductionForm"
+>
+  <div class="modal-header">
+    <h4 class="modal-title">{{"itemReduction" | translate}}:</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="select-options text-center modal-body">
+    <mat-button-toggle-group formControlName="discount" #group="matButtonToggleGroup">
+      <mat-button-toggle
+        #none
+        value="none"
+        tooltip-position="below"
+        (change)="updateAmount('none')"
+        matTooltip="{{'none' | translate}}"
+      >
+        <mat-icon>not_interested</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle
+        value="10"
+        matTooltip="10%"
+        class="without-icon"
+        tooltip-position="below"
+        (change)="updateAmount('adhoc', 10)"
+      >
+        10%
+      </mat-button-toggle>
+      <mat-button-toggle
+        value="20"
+        matTooltip="20%"
+        class="without-icon"
+        tooltip-position="below"
+        (change)="updateAmount('adhoc', 20)"
+      >
+        20%
+      </mat-button-toggle>
+      <mat-button-toggle
+        value="30"
+        matTooltip="30%"
+        class="without-icon"
+        tooltip-position="below"
+        (change)="updateAmount('adhoc', 30)"
+      >
+        30%
+      </mat-button-toggle>
+      <mat-button-toggle
+        value="50"
+        matTooltip="50%"
+        class="without-icon"
+        tooltip-position="below"
+        (change)="updateAmount('adhoc', 50)"
+      >
+        50%
+      </mat-button-toggle>
+      <mat-button-toggle
+        value="free"
+        class="without-icon"
+        tooltip-position="below"
+        matTooltip="{{'free' | translate}}"
+        (change)="openConfirmationDialog('adhoc', 100)"
+      >
+        {{'free' | translate}}
+      </mat-button-toggle>
+      <!-- <mat-button-toggle
+        value="owner"
+        tooltip-position="below"
+        *ngIf="ownerDiscount?.is_actif"
+        matTooltip="{{'owner' | translate}}"
+        (change)="openConfirmationDialog('owner')"
+      >
+        <mat-icon>person</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle
+        value="staff"
+        tooltip-position="below"
+        (change)="updateAmount('staff')"
+        *ngIf="staffDiscount?.is_actif"
+        matTooltip="{{'staff' | translate}}"
+      >
+        <mat-icon>people</mat-icon>
+      </mat-button-toggle> -->
+      <mat-button-toggle
+        value="custom"
+        tooltip-position="below"
+        (change)="updateAmount('custom')"
+        matTooltip="{{'custom' | translate}}"
+      >
+        <mat-icon>mode_edit</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-form-field
+      class="amount-input"
+      [dividerColor]="getDividerColor(itemReductionForm.controls['amount'])"
+    >
+      <input
+        matInput
+        max="90"
+        type="number"
+        placeholder="%"
+        formControlName="amount"
+      >
+    </mat-form-field>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      color="primary"
+      mat-raised-button
+      (click)="setReduction()"
+      [disabled]="isButtonDisabled()"
+    >
+      {{'submit' | translate}}
+    </button>
+  </div>
+</form>

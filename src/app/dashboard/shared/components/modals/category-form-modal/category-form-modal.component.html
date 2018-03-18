@@ -1,0 +1,79 @@
+<form class="category-form" [formGroup]="categoryForm">
+    <div class="modal-header">
+      <h4 class="modal-title">{{(category ? 'updateCategory' : 'addCategory') | translate}}</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="activeModal.dismiss(false)"
+      >
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </div>
+    <div class="modal-body clearfix">
+        <mat-form-field class="color">
+            <mat-select
+              formControlName="color"
+              [placeholder]="'color' | translate"
+              class="mat-input-element field-full-width"
+            >
+              <mat-option [value]="color.id" *ngFor="let color of colors">
+                <span class="inline middle mat-{{color.name}}"[ngStyle]="{'width': '30px','height': '30px'}"></span>
+                {{color.name.split('-').join(' ') | capitalize}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+      <div class="row" formGroupName="name_translation">
+        <div
+          *ngFor="let language of categoryForm.get('name_translation').controls; index as i"
+          [ngClass]="(languages.length == '6' || languages.length == '9' || languages.length == '3' )?'col-sm-4':
+                      (languages.length == '4' || languages.length == '8')       ?'col-sm-3' :
+                      (languages.length == '1' || languages.length == '2')       ?'col-sm-6' :
+                      (languages.length == '5' || languages.length == '7')       ?'col-sm-4' :
+                      col-sm-3"
+          >
+          <mat-form-field
+          [formArrayName]="i"
+          [ngClass]=" (languages.length == '1')?'tran1':
+                      (languages.length == '2')?'tran2' :
+                      (languages.length == '3')?'tran3' :
+                      (languages.length == '4')?'tran4' :
+                      (languages.length == '5')?'tran5' :
+                      (languages.length == '6')?'tran6' :
+                      (languages.length == '7')?'tran7' :
+                      (languages.length == '8')?'tran8' :
+                      (languages.length == '9')?'tran9' :
+                      'tran9' "
+          >
+            <input
+              matInput
+              formControlName="name"
+              [placeholder]="'yourItemName' | translate"
+            >
+            <span matSuffix>{{language.value.language_code | translate}}</span>
+          </mat-form-field>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <div class="group-mat-checkbox">
+        <mat-checkbox formControlName="withoutPic">
+          {{'withoutPicture' | translate}}
+        </mat-checkbox>
+      </div>
+      <button
+        type="submit"
+        color="primary"
+        mat-raised-button
+        class="lc-btn-primary"
+        [disabled]="category ? isDisabledBtn : !categoryForm.valid"
+        (click)="category ? updateCategory() : addCategory()"
+      >
+        {{(category ? 'updateCategory' : 'addCategory') | translate}}
+      </button>
+      <button type="button" mat-raised-button (click)="activeModal.close(false)">
+        {{'cancel' | translate}}
+      </button>
+    </div>
+  </form>

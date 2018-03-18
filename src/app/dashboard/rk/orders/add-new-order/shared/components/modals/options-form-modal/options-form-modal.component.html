@@ -1,0 +1,89 @@
+<form name="extraConfigForm">
+  <div class="modal-header">
+    <h3 class="modal-title">{{'addOptions' | translate}}</h3>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <p>{{"introTextOptions" | translate}}</p>
+    <div class="col-lg-12 c-filters-wrapper">
+      <fieldset *ngFor="let option of item.options">
+        <legend><strong>{{option.name | translate}}</strong></legend>
+        <div class="input-lg">
+          <br>
+          <br>
+          <span *ngIf="option.minimum_choice" class="text-danger error-message">
+            <small>{{'minimumChoiceIs' | translate:{minimumChoice: option.minimum_choice} }}</small>
+          </span>
+          <br *ngIf="option.minimum_choice">
+          <span
+            class="text-danger error-message"
+            *ngIf="option.required || option.type === 'sizes' || option.type === 'varieties'"
+          >
+            <small >{{'Required' | translate}}</small>
+          </span>
+          <mat-radio-group
+            class="block item-restrict"
+            *ngIf="!option.multiple_choice"
+          >
+            <!--[ngModelOptions]="{standalone: true}"-->
+            <!--[(ngModel)]="selected[(option.type === 'sizes' || option.type === 'varieties') ? 'size' : 'oneChoiceConfig']"-->
+            <span *ngFor="let extraIngredient of option.extra_ingredients;">
+              <mat-radio-button
+                [checked]="extraIngredient.default || extraIngredient.is_default"
+                [value]="(extraIngredient.type === 'sizes' || extraIngredient.type === 'varieties') ? extraIngredient.id : extraIngredient"
+                (click)="(extraIngredient.type === 'sizes' || extraIngredient.type === 'varieties') ? toggleSizeVariety(extraIngredient.id) : toggleOneExtraConfig(extraIngredient)"
+              >
+                <span class="inline inset text-capitalize">
+                  {{extraIngredient.name}}
+                  <span *ngIf="extraIngredient.additional_price !== '0.0'">
+                    ( + {{extraIngredient.additional_price}} {{currentCurrency}})
+                  </span>
+                </span>
+              </mat-radio-button>
+            </span>
+          </mat-radio-group>
+          <span *ngIf="option.multiple_choice">
+            <mat-checkbox
+              name="extra"
+              [checked]="extraIngredient.default"
+              (change)="toggleMultipleExtraConfig(extraIngredient, $event)"
+              *ngFor="let extraIngredient of option.extra_ingredients;let i = index"
+            >
+              <span class="inline inset text-capitalize" >
+                {{extraIngredient.name}}
+                <span *ngIf="extraIngredient.additional_price !== '0.0'">
+                  ( + {{(extraIngredient.additional_price) | currency:currentCurrency:true:'1.2-3'}})
+                </span>
+              </span>
+            </mat-checkbox>
+          </span>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      mat-raised-button
+      (click)="submitToppings()"
+      [disabled]="isButtonDisabled"
+      class="mat-raised lc-btn-primary"
+    >
+      {{'submit' | translate}}
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>

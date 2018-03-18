@@ -1,0 +1,19 @@
+<div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown" >
+  <ng-content > </ng-content>
+  <div class="number-pad"    ngbDropdownMenu >
+    <div class="space-pad" fxLayoutAlign="space-around center" fxLayoutWrap>
+      <div
+        (click)="onSelect(key)"      
+        [matTooltip]="((key === 'CA') ? 'clearAll' : 'delete')"
+        class="button-wrapper dropdown-item square-button square-button-indigo"
+        [matTooltipDisabled]="(key !== 'CA') && (key !== 'C') "
+        fxFlex="33"
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        *ngFor="let key of numbersPadKeys"
+      >
+          {{key}}
+      </div>
+    </div> 
+  </div>
+</div>

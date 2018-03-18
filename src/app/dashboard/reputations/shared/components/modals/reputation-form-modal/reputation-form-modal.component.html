@@ -1,0 +1,67 @@
+<form [formGroup]="reputationForm">
+  <div class="modal-header">
+    <h4 class="modal-title">{{'updateReputation' | translate}}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="matDialogRef.close()"
+      >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div
+    fxLayout="column"
+    class="modal-body clearfix"
+    fxLayoutAlign="space-evenly stretch"
+  >
+    <mat-form-field class="field-full-width">
+      <input
+        matInput
+        type="number"
+        formControlName="transitionAmount"
+        placeholder="{{'transitionAmount' | translate}}"
+      >
+      <mat-error *ngIf="reputationForm.get('transitionAmount').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width">
+      <input
+        matInput
+        type="number"
+        formControlName="inactivityPeriodDays"
+        placeholder="{{'inactivityPeriodDays' | translate}}"
+      >
+      <mat-error *ngIf="reputationForm.get('inactivityPeriodDays').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width">
+      <input
+        matInput
+        type="number"
+        formControlName="lossAmount"
+        placeholder="{{'lossAmount' | translate}}"
+      >
+      <mat-error *ngIf="reputationForm.get('lossAmount').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      color="primary"
+      mat-raised-button
+      class="lc-btn-primary"
+      [disabled]="isButtonDisabled"
+      (click)="updateReputationLevelDefinition()"
+    >
+      {{'updateActivity' | translate}}
+    </button>
+    <button type="button" mat-raised-button (click)="matDialogRef.close()">
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>

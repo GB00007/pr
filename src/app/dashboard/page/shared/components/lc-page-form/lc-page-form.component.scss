@@ -1,0 +1,65 @@
+@import '../../../../../shared/sass/_colors.scss';
+
+:host {
+  display: block;
+  padding: 0 1rem;
+  .restaurant-type {
+    display: block;
+    text-align: center;
+    position: relative;
+  }
+  .description-page {
+    resize: none;
+    height: 145px;
+  }
+  .edit-page-description .lc-alert {
+    top: -184px;
+  }
+  .alert {
+    width: 100%;
+  }
+  fieldset {
+    min-height: 175px;
+    border: 1px solid #ccc;
+    legend {
+      width: initial;
+    }
+    .description {
+      font-size: 14px;
+      padding: 6px 8px;
+      @media screen and (max-width: 1366px) {
+        font-size: 13px;
+      }
+    }
+  }
+}
+.lc-edit-page {
+  margin-bottom: 90px;
+}
+label {
+  margin-bottom: 1.000em;
+  color: $secondary-text-color;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  .mat-radio-label {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+}
+mat-radio-button {
+  margin: 0 7.5px;
+  color: #6e6e6e;
+  font-weight: 500;
+  font-size: 0.762em;
+  display: inline-block;
+  .mat-radio-checked .mat-radio-outer-circle {
+    border-color: $green;
+  }
+  .mat-radio-inner-circle {
+    background-color: $green;
+  }
+}
+.mat-radio-disabled {
+  color: rgba(0, 0, 0, 0.12);
+}

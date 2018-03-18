@@ -1,0 +1,59 @@
+@import '../../../shared/sass/_mixins.scss';
+@import '../../../shared/sass/_colors.scss';
+:host {
+  hr{
+    margin-bottom: 0px!important;
+  }
+  .internal-category {
+    width: 98%;
+    padding: 0 5px;
+    margin-top: 8px;
+    overflow: hidden;
+    font-size: 1.8rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+  }
+  mat-card-actions ul li {
+    cursor: pointer;
+  }
+  .status-button {
+    top: 9px;
+    right: 80px;
+    position: absolute;
+    &.de {
+      right: 106px;
+    }
+    &.fr {
+      right: 90px;
+    }
+  }
+  .status {
+    top: 9px;
+    right: 15px;
+    position: absolute;
+  }
+  .dnd-drag-start {
+    opacity:0.7;
+    border: 2px dashed #000;
+    @include transform(scale(0.8));
+  }
+  .dnd-drag-enter {
+    opacity: 0.7;
+    border: 2px dashed #000;
+  }
+  .dnd-drag-over {
+    border: 2px dashed #000;
+  }
+  .dnd-sortable-drag {
+    opacity: 0.7;
+    border: 1px dashed #000;
+    @include transform(scale(0.9));
+  }
+  .mat-form-field {
+    padding-right: 65px;
+  }
+  .hrStyle{
+    max-width: 50%
+  }
+}

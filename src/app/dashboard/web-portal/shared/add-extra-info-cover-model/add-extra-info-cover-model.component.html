@@ -1,0 +1,68 @@
+<div class="modal-header">
+  <button
+    mat-raised-button
+    (click)="file.click()"
+    class="mat-raised lc-btn-success fixed-width"
+  >
+    {{'upload' | translate}} {{'picture' | translate}}
+  </button>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="matDialogRef.close(false)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>
+<div class="modal-body clearfix">
+  <div fxLayout="column"
+       fxLayoutAlign="space-around center" >
+
+
+      <input
+        style="display: none"
+        #file
+        type="file"
+        accept=".gif,.jpg,.jpeg,.png,.doc,.docx"
+        (change)="fileChangeListener($event)"
+      >
+      <img-cropper #cropper
+                   [image]="pictureData"
+                   [settings]="cropperSettings"
+                   [(cropPosition)]="cropPosition"
+      >
+      </img-cropper>
+      <img
+        style="max-height: 250px"
+        *ngIf="pictureData && pictureData.image"
+        [src]="pictureData.image"
+      >
+  </div>
+</div>
+<div class="modal-footer">
+  <mat-spinner
+    *ngIf="uploading" [diameter]="50">
+  </mat-spinner>
+  <label class="error" *ngIf="isCropValid()">
+    {{'Dimensions not suitable for cover' | translate}}
+  </label>
+  <button
+    *ngIf="!uploading"
+    type="submit"
+    mat-raised-button
+    class="lc-btn-primary"
+    [disabled]="(!this.uploadedImage && !this.data.page.pictures.cover)|| isCropValid()"
+    (click)="updateCover()"
+  >
+    {{'submit' | translate}}
+  </button>
+  <button
+    type="button"
+    mat-raised-button
+    (click)="matDialogRef.close(false)"
+  >
+    {{'cancel' | translate}}
+  </button>
+</div>
+

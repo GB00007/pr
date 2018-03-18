@@ -1,0 +1,269 @@
+<div flex layout="row">
+  <div class="container-fluid">
+    <div class="text-center">
+      <h3 class="text-left text-muted m-t-20 m-b-25 title-container">{{'addOrder' | translate}}</h3>
+      <span class="value-selections" *ngIf="secondSection">
+        <span class="inline middle">
+          <svg class="icon-selections" viewBox="0 0 24 24">
+            <path fill="#000000" d="M 6 3 C 4.3431458 3 3 4.3431458 3 6 C 3 7.6568542 4.3431458 9 6 9 C 7.6568542 9 9 7.6568542 9 6 C 9 4.3431458 7.6568542 3 6 3 z M 18 5 C 17.558172 5 17.1875 5.3706722 17.1875 5.8125 C 17.1875 5.9123361 17.216592 6.0056238 17.25 6.09375 C 15.930578 6.4121707 15 7.559384 15 9 L 14 9 L 14 11 L 22 11 L 22 9 L 21 9 C 21 7.559384 20.069422 6.4121707 18.75 6.09375 C 18.783408 6.0056238 18.8125 5.9123361 18.8125 5.8125 C 18.8125 5.3706722 18.441828 5 18 5 z M 4 10 C 3.8 10 2.4 10.3 2 10.5 L 2 20 C 2 21.1 2.9 22 4 22 L 9 22 C 10.1 22 11 21.1 11 20 L 11 15.1875 L 13 17.59375 C 13.3 17.89375 13.60625 18 13.90625 18 C 14.20625 18 14.6125 17.89375 14.8125 17.59375 L 16.8125 13.8125 C 17.5125 13.3125 20.3125 12.9 20.3125 12 L 15.3125 12 L 14 14.90625 L 11.1875 10.6875 C 10.6875 10.2875 8.3 10 8 10 L 6.1875 19.5 L 4 10 z"></path>
+          </svg>
+        </span>:
+        <span class="inline">{{selectedWaiter?.firstname.split('_').join(' ')}} {{selectedWaiter?.lastname.split('_').join(' ')}}</span>
+        <span class="inline ml-4 p-3">
+          <span class="inline middle">
+            <svg class="icon-selections" viewBox="0 0 24 24">
+              <path fill="#000000" d="M 6 5 L 2 7 L 2 10 L 22 10 L 22 7 L 18 5 L 6 5 z M 2 11 L 2 20 L 4 20 L 4 11 L 2 11 z M 6 11 L 6 16 L 8 16 L 8 11 L 6 11 z M 16 11 L 16 16 L 18 16 L 18 11 L 16 11 z M 20 11 L 20 20 L 22 20 L 22 11 L 20 11 z"></path>
+            </svg>
+          </span>:
+          <span class="inline">{{selectedTable.number}}</span>
+        </span>
+      </span>
+      <hr>
+      <div
+        fxLayoutWrap
+        fxLayout="row"
+        class="center-block"
+        fxLayoutAlign="space-around center"
+      >
+        <button
+          fxFlex="15"
+          type="button"
+          mat-raised-button
+          *ngIf="secondSection"
+          tooltip-position="above"
+          [disabled]="!selectedTable"
+          class="lc-btn-primary m-x-0"
+          [matTooltip]="'returnToThePreviousStep' | translate"
+          (click)="firstSection = true;secondSection = false;selectedTable = undefined;"
+        >
+          <mat-icon>keyboard_arrow_left</mat-icon>
+          <span class="hidden-lg-down">{{'previous' | translate}}</span>
+        </button>
+        <form
+          fxFlex="75"
+          class="item-form"
+          name="orderReductionGroup"
+          [formGroup]="orderReductionGroup"
+          *ngIf="!firstSection && secondSection"
+        >
+          <div class="select-options text-center">
+            <span class="snug-reduction-label">{{"overallReduction" | translate}}:</span>
+            <mat-button-toggle-group formControlName="discount" #group="matButtonToggleGroup">
+              <mat-button-toggle
+                #none
+                value="none"
+                tooltip-position="below"
+                (change)="updateAmount('none')"
+                matTooltip="{{'none' | translate}}"
+              >
+                <mat-icon>not_interested</mat-icon>
+              </mat-button-toggle>
+              <mat-button-toggle
+                value="10"
+                matTooltip="10%"
+                class="without-icon"
+                tooltip-position="below"
+                (change)="updateAmount('adhoc', 10)"
+              >
+                10%
+              </mat-button-toggle>
+              <mat-button-toggle
+                value="20"
+                matTooltip="20%"
+                class="without-icon"
+                tooltip-position="below"
+                (change)="updateAmount('adhoc', 20)"
+              >
+                20%
+              </mat-button-toggle>
+              <mat-button-toggle
+                value="30"
+                matTooltip="30%"
+                class="without-icon"
+                tooltip-position="below"
+                (change)="updateAmount('adhoc', 30)"
+              >
+                30%
+              </mat-button-toggle>
+              <mat-button-toggle
+                value="50"
+                matTooltip="50%"
+                class="without-icon"
+                tooltip-position="below"
+                (change)="updateAmount('adhoc', 50)"
+              >
+                50%
+              </mat-button-toggle>
+              <mat-button-toggle
+                value="free"
+                class="without-icon"
+                tooltip-position="below"
+                matTooltip="{{'free' | translate}}"
+                (change)="openConfirmationDialog('adhoc', 100)"
+              >
+                {{'free' | translate}}
+              </mat-button-toggle>
+              <mat-button-toggle
+                value="owner"
+                tooltip-position="below"
+                *ngIf="ownerDiscount.is_actif"
+                (change)="openConfirmationDialog('owner')"
+                matTooltip="{{'owner' | translate}}"
+              >
+                <mat-icon>person</mat-icon>
+              </mat-button-toggle>
+              <mat-button-toggle
+                value="staff"
+                tooltip-position="below"
+                *ngIf="staffDiscount.is_actif"
+                (change)="updateAmount('staff')"
+                matTooltip="{{'staff' | translate}}"
+              >
+                <mat-icon>people</mat-icon>
+              </mat-button-toggle>
+              <mat-button-toggle
+                value="custom"
+                tooltip-position="below"
+                (change)="updateAmount('custom')"
+                matTooltip="{{'custom' | translate}}"
+              >
+                <mat-icon>mode_edit</mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+            <mat-form-field class="amount-input">
+              <input
+                matInput
+                max="90"
+                type="number"
+                placeholder="%"
+                formControlName="amount"
+                (change)="updateButtonStatus()"
+              >
+            </mat-form-field>
+          </div>
+        </form>
+        <button
+          fxFlex="10"
+          type="submit"
+          mat-raised-button
+          (click)="addOrder()"
+          class="lc-btn-success m-x-0"
+          [disabled]="isSubmitButtonDisabled"
+          *ngIf="!firstSection && secondSection"
+        >
+          {{'confirm' | translate}}
+        </button>
+      </div>
+      <!-- <app-loader *ngIf="!isWaitersLoaded"></app-loader> -->
+      <!-- <app-no-content [label]="'noUsers'" *ngIf="isWaitersEmpty"></app-no-content> -->
+      <div class="row">
+        <div
+          [hidden]="secondSection && !firstSection"
+          *ngIf="isWaitersLoaded && userRole === 'admin' || userRole === 'cashdesk'"
+          class="col-xl-11 col-lg-12 center-block c-filters-wrapper"
+        >
+        <!-- Waiterrrrs -->
+          <app-snug-buttons-list
+            *ngIf="!isWaitersEmpty"
+            [items]="users"
+            [label]="'waiter'"
+            [noContent]="'noWaiter'"
+            [selectedId]="selectedWaiter?.id"
+            (onButtonClick)="toggleWaiter($event)"
+          >
+          </app-snug-buttons-list>
+        </div>
+        <!-- Pin_Code -->
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          class="center-block"
+          fxLayoutAlign="space-around center"
+          *ngIf="selectedWaiter && lockNewOrder"
+          [hidden]="secondSection && !firstSection"
+        >
+          <!-- <app-snug-keypad *ngIf=" !checkedPinCode" (InputChanged)="InputChangedHandler($event)">             -->
+            <!-- (click)="open($event)" -->
+            <mat-form-field class="field-full-width">
+              <input
+                  matInput
+                  #pinCode
+                  required
+                  id="pincode"
+                  autofocus="true"
+                  autocomplete="off"
+                  (keyup)="checkPinCode()"
+                  [(ngModel)]="waiterPinCode"
+                  [placeholder]="'pinCode' | translate"
+                  [type]="showPin ? 'text' : 'password'"
+                >
+                <span matSuffix>
+                  <button
+                    type="button"
+                    tabindex="-1"
+                    mat-raised-button
+                    (click)="showPin = !showPin"
+                    class="btn btn-sm lc-btn-primary show-pin text-capitalize"
+                  >
+                    <span [hidden]="!showPin"><i class="fa fa-eye-slash fa-2x"></i></span>
+                    <span [hidden]="showPin"><i class="fa fa-eye fa-2x"></i></span>
+                  </button>
+                </span>
+                <small
+                  [hidden]="checkedPinCode"
+                  class="text-danger error-message"
+                >
+                  {{'wrongPinCode' | translate}}
+                </small>
+              </mat-form-field>
+            <!-- </app-snug-keypad>         -->
+        </div>
+        <!-- Tables -->
+        <div
+          class="col-xl-11 col-lg-12 center-block"
+          [hidden]="secondSection && !firstSection"
+          *ngIf="(selectedWaiter && !lockNewOrder) || (checkedPinCode && lockNewOrder)"
+        >
+          <app-snug-buttons-list
+            *ngIf="tables"
+            [items]="tables"
+            [label]="'tableNbr'"
+            [noContent]="'noTables'"
+            [selectedId]="selectedTable?.id"
+            (onButtonClick)="toggleTable($event)"
+          >
+          </app-snug-buttons-list>
+        </div>
+        <!-- OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO -->
+        <app-snug-order-selector
+          [isRecentEmpty]="isRecentEmpty"
+          [menuOfTheDay]="menuOfTheDay"
+          [items]="items"
+          [composedItems]="composedItems"
+          [deletePin]="deletePin"
+          [isLastPage]="isLastPage"
+          [(noteValue)]="description"
+          (loadItems)="loadItems($event)"
+          [(selectedItems)]="selectedItems"
+          [(selectedComposedItems)]="selectedComposedItems"
+          [(selectedMenuOfTheDay)]="selectedMenuOfTheDay"
+          [hidden]="firstSection && !secondSection"
+          [internalCategories]="internalCategories"
+          (updateButtonStatus)="updateButtonStatus($event)"
+          [isInernalCategoriesActive]="isInernalCategoriesActive"
+        >
+        </app-snug-order-selector>
+      </div>
+    </div>
+    <button
+      mat-fab
+      type="button"
+      tooltip-position="left"
+      matTooltip="{{'redirectToOrders' | translate}}"
+      class="mat-btn mat-fab-top-right pos-fix accent"
+      (click)="redirectToOrders(userRole === 'admin' ? 'Dashboard.Rk.Orders' : 'Dashboard.Orders')"
+    >
+      <mat-icon class="mat-48">directions</mat-icon>
+    </button>
+  </div>
+</div>

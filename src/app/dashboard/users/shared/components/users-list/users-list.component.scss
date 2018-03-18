@@ -1,0 +1,188 @@
+@import '../../../../../shared/sass/_loader.scss';
+
+:host {
+
+    mat-data-table th,
+    mat-data-table td,
+    .mat-data-table th,
+    .mat-data-table td {
+      @media screen and (max-width: 1366px) {
+        padding: 0 36px 0 14px;
+      }
+      @media screen and (max-width: 1280px) {
+        padding: 0 27px 0 14px;
+      }
+    }
+  .resend-email {
+    color:#FF8C00;
+    left: 51px;
+    bottom: 10px;
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    @media screen and (max-width: 1440px) {
+      left: 42px;
+    }
+    @media screen and (max-width: 1366px) {
+      left: 45px;
+    }
+    @media screen and (max-width: 1280px) {
+      left: 15px;
+    }
+    @media screen and (max-width: 1024px) {
+      left: 30px;
+    }
+    span:first-letter {
+      text-transform: capitalize;
+    }
+    &:hover {
+      color:#FF8C00;
+      text-decoration: none;
+    }
+  }
+}
+.show-disabled-users {
+  margin-top: 10px;
+  font-size: 15px;
+  margin-left: 25px;
+  .show-disabled-users-label {
+    font-weight: 400 !important;
+  }
+}
+a.enabel-user {
+  color: #ddd;
+  font-size: 13px;
+  padding: 0px 6px;
+  margin-right: 5px;
+  transition: 200ms;
+  -webkit-transition: 200ms;
+          transition-timing-function: ease-in-out;
+  &:hover {
+    color: #4CAF50;
+    border-color: #4CAF50;
+     svg {
+       padding-top: 6px;
+       & > path {
+        fill: #4CAF50;
+      }
+     }
+    .enabel-user-label {
+      text-indent: inherit;
+      text-transform: capitalize;
+    }
+  }
+  .enabel-user-label {
+    text-indent: -5000px;
+  }
+}
+.mat-icon-button {
+  margin-right: 6px;
+  // &.delete {
+  //   color: #d9534f;
+  // }
+  // &.add {
+  //   color: #02A8F3;
+  // }
+}
+.mat-text-cell {
+  position: relative;
+  .edit,
+  .delete {
+    right: 3px;
+    display: none;
+    cursor: pointer;
+    position: absolute;
+  }
+  .edit {
+    top: 3px;
+    font-size: 12px;
+  }
+  .delete {
+    bottom: 3px;
+    font-size: 14px;
+  }
+  &:hover {
+    .edit,
+    .delete {
+      display: block;
+    }
+  }
+  &.permissions {
+    padding: 15px;
+    .permission {
+      margin: 1px;
+    }
+  }
+  &.edit-permissions {
+    padding: 10px 10px 25px;
+  }
+}
+.editableform {
+  margin-bottom: 50px;
+  .mat-raised.mat-secondary {
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+  .input-group {
+    width: auto;
+    vertical-align: top;
+    white-space: normal;
+    display: inline-block;
+    .form-control {
+      width: auto;
+      padding: 2px 6px;
+      font-size: .9rem;
+      border: 1px solid #ddd;
+    }
+  }
+  .editable-buttons {
+    right: 0;
+    bottom: -25px;
+    position: absolute;
+    span {
+      width: 20px;
+      height: 20px;
+      padding: 4px 2px;
+      min-width: 0;
+      margin: 0;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 24px;
+      .fa-check {
+        color: #5cb85c;
+      }
+      .fa-times {
+        color: #f0ad4e;
+      }
+    }
+    &.edit-permissions {
+      bottom: 10px;
+    }
+  }
+}
+mat-data-table,
+.mat-data-table {
+   mat-checkbox {
+    width: auto;
+   }
+   .dropdown-menu.last {
+    /* right: 0;
+    left: initial;
+    &.push-right {
+      right: 0;
+    } */
+    a {
+      cursor: pointer;
+    }
+  }
+  td:last-of-type {
+    width: 12%;
+    padding-left: 0;
+    padding-right: 3px;
+  }
+}
+@media screen and (max-width: 1440px) {
+  .permission-select-all-checkboxes {
+    max-width: 100%;
+  }
+}

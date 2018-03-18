@@ -1,0 +1,31 @@
+:host {
+  .d-inline-block {
+    width: 271px;
+    .number-pad{
+      width: 250px;
+      margin-top: 20px;
+      padding: 0px;
+     
+    }
+    .mat-fab-top-right.prev-step {
+      right: 90px !important;
+    }
+    .dropdown-menu {
+      position: relative!important;
+    }
+    .square-button {
+        height: 81px;
+        font-size: 2rem;
+        margin-bottom: 1px;
+    }
+    .mat-fab{
+      margin-top: 0px;
+      margin-right: 0px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+    }
+    .space-pad{
+      width:271px
+    }
+  }
+}

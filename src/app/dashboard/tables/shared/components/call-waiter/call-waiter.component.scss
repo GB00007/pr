@@ -1,0 +1,21 @@
+:host {
+  margin-top: 35px;
+  .status-call-waiter {
+    top: 22px;
+    right: 0;
+    position: absolute;
+  }
+  .mat-slide-toggle {
+    margin: 0;
+  }
+  .mat-raised-button {
+    margin: -4px 0;
+  }
+  .lc-edit-wifi {
+    width: 100%;
+  }
+  .mat-input-element{
+    width: initial !important;
+    margin-top: 4px;
+  }
+}

@@ -1,0 +1,101 @@
+@import '../../variables.scss';
+@import '../../colors.scss';
+@import '../../mixins.scss';
+
+mat-sidenav {
+  height: 100%;
+  top: initial !important;
+  &.mat-sidenav-left {
+    z-index: 99;
+    width: 320px;
+    margin-top: 65px;
+    padding-top: 65px;
+    @media screen and (max-width: 1280px) {
+      width: 300px;
+    }
+    a {
+      border: none;
+      outline: none;
+      display: block;
+      text-decoration: none;
+      color: rgba(0, 0, 0, 0.87);
+      &.active {
+        background: rgba(0, 0, 0, 0.04);
+      }
+      &:hover,
+      &:focus {
+        outline: none;
+        outline-offset: -2px;
+        color: rgba(0, 0, 0, 0.87);
+      }
+      .category-name {
+        max-width: 145px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+    .label-menu {
+      font-size: 1.1rem;
+      padding-left: 15px;
+      &::first-letter {
+        text-transform: uppercase;
+      }
+      @media screen and (max-width: 1366px) {
+        font-size: 16px;
+      }
+    }
+    .fa {
+      /*padding-left: 45px;*/
+      top: 37%;
+      right: 36%;
+      position: absolute;
+    }
+    &.mat-sidenav-closed {
+      // width: 300px;
+      // overflow-x: hidden;
+      // visibility: visible !important;
+      // transform: translateX(0);
+    }
+    &.mat-sidenav-opened {
+      // width: 55px;
+      // overflow-x: hidden;
+      // visibility: visible;
+      // transform: translate3d(0%, 0, 0);
+      // .label-menu {
+      //   visibility: hidden;
+      // }
+    //   .collapse.in,
+    //   .open-menu {
+    //     display: none;
+    //   }
+    //   .close-menu,
+    //   .close-label {
+    //     cursor: pointer;
+    //     display: inline-block;
+    //   }
+    }
+  }
+  &.mat-sidenav-right {
+    width: 370px;
+    margin-top: 64px;
+    @include transition(all .5s ease-in-out);
+    lc-profile-form {
+      text-align: left;
+    }
+  }
+  .close-sidebar {
+    z-index: 9;
+    float: right;
+    cursor: pointer;
+    position: relative;
+    .material-icons {
+      opacity: .2;
+      color: #000;
+      &:hover {
+        opacity: 1;
+        color: $accent-color;
+      }
+    }
+  }
+}

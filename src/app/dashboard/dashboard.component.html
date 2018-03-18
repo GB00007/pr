@@ -1,0 +1,686 @@
+
+<div layout="column">
+  <mat-toolbar class="fixed-toolbar" color="primary" *ngIf="page">
+
+    <div class="mat-toolbar-tools no-raduis orange">
+      <button type="button" mat-icon-button (click)="start.toggle()">
+        <mat-icon [hidden]="!isSidebarCollapsed" class="mat-24" >menu</mat-icon>
+        <mat-icon [hidden]="isSidebarCollapsed" class="mat-24">clear</mat-icon>
+      </button>
+      <div class="app-name">
+        <a uiSref="Dashboard.Settings.Socials" uiSrefActive="active">
+          <img src="assets/images/logo-snugstaff.png" class="img-fluid"/>
+        </a>
+      </div>
+      <span class="flex"></span>
+      <a mat-button class="lc-download-app pull-right text-uppercase" href="https://www.snugstaff.com/" target="_blank">
+        <mat-icon class="mat-24">devices</mat-icon>
+        <span class="middle">{{'downloadApp' | translate }}</span>
+      </a>
+      <app-language-selector class="pull-left"></app-language-selector>
+      <span class="inline pl-3 logout-actions" ngbDropdown>
+        <span class="inline avatar">
+          <a aria-label="user" (click)="end.toggle()">
+            <img
+              *ngIf="user?.picture.path"
+              class="img-fluid rounded-circle"
+              src="{{user?.picture.base_url + user_avatars_url + user?.picture.path}}"
+            >
+          </a>
+        </span>
+        <h3 class="inline middle" id="profil" ngbDropdownToggle>
+          <span class="username mr-2">
+            {{user?.firstname}} {{user?.lastname}}
+            <i class="fa fa-caret-down ml-2"></i>
+          </span>
+        </h3>
+        <ul
+          ngbDropdownMenu
+          aria-labelledby="profil"
+          [class.cashdesk-profil]="userRole === 'cashdesk'"
+        >
+          <li (click)="end.toggle()" *ngIf="userRole !== 'cashdesk'">
+            <a class="dropdown-item pl-2 pr-2">
+              <span class="inline"><mat-icon>person</mat-icon></span>
+              <span class="inline up">{{'editProfle' | translate}}</span>
+            </a>
+          </li>
+          <li (click)="loginAsCashdesk()" *ngIf="userRole !== 'cashdesk' && page?.business_sector.id === '2'">
+            <a class="dropdown-item pl-2 pr-2">
+              <span class="inline"><mat-icon>swap_horiz</mat-icon></span>
+              <span class="inline up">{{'cashdesk' | translate}}</span>
+            </a>
+          </li>
+          <li (click)="logout()">
+            <a class="dropdown-item pl-2 pr-2">
+            <span class="inline"><mat-icon>exit_to_app</mat-icon></span>
+            <span class="inline up">{{'logout' | translate}}</span>
+            </a>
+          </li>
+        </ul>
+      </span>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container fullscreen class="demo-root">
+    <mat-sidenav
+      #start
+      mode="side"
+      layout="column"
+      [opened]="!isSidebarCollapsed"
+      (open)="isSidebarCollapsed = false"
+      (close)="isSidebarCollapsed = true"
+      class="mat-sidenav-left mat-whiteframe-4dp"
+    >
+      <mat-nav-list>
+        <nav>
+          <mat-accordion displayMode="flat">
+            <!--orders-->
+            <mat-expansion-panel
+              class="expandable"
+              *ngIf="userRole === 'cashdesk'"
+              [expanded]="isCurrentState('Dashboard.Orders')"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <svg class="inline middle" style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path fill="#000000" d="M 6 2 C 5.4777778 2 4.9395305 2.1854695 4.5625 2.5625 C 4.1854695 2.9395305 4 3.4777778 4 4 L 4 20 C 4 20.522222 4.1854695 21.060469 4.5625 21.4375 C 4.9395305 21.814531 5.4777778 22 6 22 L 18 22 C 18.522222 22 19.060469 21.814531 19.4375 21.4375 C 19.814531 21.060469 20 20.522222 20 20 L 20 4 C 20 3.4777778 19.814531 2.9395305 19.4375 2.5625 C 19.060469 2.1854695 18.522222 2 18 2 L 6 2 z M 6 4 L 18 4 L 18 20 L 6 20 L 6 4 z M 8 7 L 8 9 L 16 9 L 16 7 L 8 7 z M 8 12 L 8 14 L 12 14 L 12 12 L 8 12 z M 14 12 L 14 14 L 16 14 L 16 12 L 14 12 z M 8 15 L 8 17 L 12 17 L 12 15 L 8 15 z M 14 15 L 14 17 L 16 17 L 16 15 L 14 15 z"></path>
+                  </svg>
+                  <span class="label-menu middle text-capitalize">{{'orders' | translate }}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <ng-template matExpansionPanelContent>
+                <ul class="list-unstyled">
+                  <li class="list-group-item list-group-item-wrapper text-left">
+                    <a uiSref="Dashboard.Orders.Home" uiSrefActive="active">
+                      <div class="inline middle">
+                        <svg style="width: 24px;height: 24px;" viewBox="0 0 24 24">
+                          <g fill="none" stroke="none" stroke-width="1">
+                            <g>
+                              <g>
+                                <path d="M0,24l0,-24l24,0l0,24z" fill="none"></path>
+                                <g fill="#000000">
+                                  <path d="M10.52,22l-4.52,0c-0.52222,0 -1.06047,-0.18547 -1.4375,-0.5625c-0.37703,-0.37703 -0.5625,-0.91528 -0.5625,-1.4375l0,-16c0,-0.52222 0.18547,-1.06047 0.5625,-1.4375c0.37703,-0.37703 0.91528,-0.5625 1.4375,-0.5625l12,0c0.52222,0 1.06047,0.18547 1.4375,0.5625c0.37703,0.37703 0.5625,0.91528 0.5625,1.4375l0,5.24571l-2,0l0,-5.24571l-12,0l0,16l4.52,0l0,1.24571z M10.52,14l-2.52,0l0,-2l2.5492,0c-0.01927,0.14534 -0.0292,0.29411 -0.0292,0.44571l0,0.8z M12,15.24571l0,1.75429l-4,0l0,-2l2.52,0l0,0.24571z M16,7l0,2l-8,0l0,-2z"></path>
+                                </g>
+                                <g fill="#000000">
+                                  <g>
+                                    <path d="M22.52,13.24571l1,0l0,-0.8c0,-0.7 -0.5,-1.2 -1.2,-1.2l-8.6,0c-0.7,0 -1.2,0.5 -1.2,1.2l0,0.8l1,0c0.4,2.1 1.7,3.4 2.5,4.1c-0.8,0.7 -2,2.1 -2.4,3.9l-1.1,0l0,0.8c0,0.7 0.5,1.2 1.2,1.2l8.6,0c0.7,0 1.2,-0.5 1.2,-1.2l0,-0.8l-1,0c-0.5,-1.8 -1.7,-3.2 -2.5,-3.9c0.8,-0.7 2.1,-2 2.5,-4.1z M18.82,17.74571c0.6,0.5 2,1.6 2.4,3.5l-0.8,0c-0.7,-1 -1.7,-2 -2.4,-2c-0.7,0 -1.7,1 -2.4,2l-0.8,0c0.5,-1.9 1.8,-3 2.4,-3.5c0.7,-0.5 -0.1,-1 -0.1,-1c-0.1,0 -1.8,-1.1 -2.4,-3.5l6.6,0c-0.6,2.4 -2.3,3.5 -2.4,3.5c0,0 -0.8,0.5 -0.1,1z M16.82,14.24571l2.4,0c0,0.5 -0.7,1.8 -1.2,1.8c-0.5,0 -1.2,-1.3 -1.2,-1.8z"></path>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+                      <div class="inline">
+                        {{'allOrders' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <li
+                    *ngIf="userRole === 'admin' || userRole === 'cashdesk' || userRole === 'waiter'"
+                    class="list-group-item list-group-item-wrapper text-left"
+                  >
+                    <a uiSref="Dashboard.Orders.AddNewOrder" uiSrefActive="active">
+                      <div class="inline middle">
+                        <svg style="width: 24px;height: 24px;padding: 2px;" viewBox="0 0 26 26">
+                          <g fill="none" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0">
+                            <g>
+                              <g>
+                                <path d="M0,26l0,-26l26,0l0,26z" fill="none"></path>
+                                <g fill="#000000" visibility="hidden">
+                                  <path d="M4,0c-1.09425,0 -2,0.90575 -2,2l0,22c0,1.09426 0.90575,2 2,2l18,0c1.09426,0 2,-0.90574 2,-2l0,-22c0,-1.09425 -0.90574,-2 -2,-2z M4,2l18,0l0,22l-18,0z M8.71875,5c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l8,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-8,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M6.71875,11c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l7,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-7,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M17.71875,11c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l1,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-1,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M6.71875,14c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l7,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-7,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M17.71875,14c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l1,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-1,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M6.71875,17c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l7,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-7,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M17.71875,17c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l1,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-1,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z"></path>
+                                </g>
+                                <g fill="#000000">
+                                  <path d="M17.0291,12.57521c-0.08714,-0.12557 -0.14699,-0.2729 -0.16973,-0.43459c-0.07766,-0.55228 0.30709,-1.06296 0.85938,-1.14063c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00147 0.06252,-0.00147 0.09375,0l1,0c0.36064,-0.0051 0.69608,0.18438 0.87789,0.49587c0.09091,0.15575 0.13636,0.32995 0.13635,0.50414c-0.00475,-0.00001 -0.00949,-0.00001 -0.01424,-0.00001c-1.04834,0 -2.05126,0.20436 -2.9709,0.57521z M14.7228,26l-10.7228,0c-1.09425,0 -2,-0.90574 -2,-2l0,-22c0,-1.09425 0.90575,-2 2,-2l18,0c1.09426,0 2,0.90575 2,2l0,11.07897c-0.61947,-0.36038 -1.29103,-0.64002 -2,-0.82423l0,-10.25475l-18,0l0,22l9.07897,0c0.43764,0.75226 0.99435,1.4277 1.64383,2z M12.06264,19l-5.06264,0c-0.55228,0.07766 -1.06296,-0.30709 -1.14063,-0.85938c-0.07766,-0.55228 0.30709,-1.06296 0.85938,-1.14063c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00147 0.06252,-0.00147 0.09375,0l5.58702,0c-0.25744,0.6312 -0.43634,1.30197 -0.52437,2z M13.07897,16l-6.07897,0c-0.55228,0.07766 -1.06296,-0.30709 -1.14063,-0.85938c-0.07766,-0.55228 0.30709,-1.06296 0.85938,-1.14063c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00147 0.06252,-0.00147 0.09375,0l7,0c0.19832,-0.00281 0.38902,0.05323 0.55075,0.15605c-0.57608,0.53772 -1.07329,1.15899 -1.47177,1.84395z M17.87789,5.49587c0.18181,0.3115 0.18181,0.69676 0,1.00825c-0.18181,0.3115 -0.51725,0.50097 -0.87789,0.49587l-8,0c-0.55228,0.07766 -1.06296,-0.30709 -1.14063,-0.85938c-0.07766,-0.55228 0.30709,-1.06296 0.85938,-1.14063c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00147 0.06252,-0.00147 0.09375,0l8,0c0.36064,-0.0051 0.69608,0.18438 0.87789,0.49587z M6.8125,11c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00147 0.06252,-0.00147 0.09375,0l7,0c0.36064,-0.0051 0.69608,0.18438 0.87789,0.49587c0.18181,0.3115 0.18181,0.69676 0,1.00825c-0.18181,0.3115 -0.51725,0.50097 -0.87789,0.49587l-7,0c-0.55228,0.07766 -1.06296,-0.30709 -1.14063,-0.85938c-0.07766,-0.55228 0.30709,-1.06296 0.85938,-1.14063c0.03123,-0.00146 0.06252,-0.00146 0.09375,0z"></path>
+                                </g>
+                                <g>
+                                  <g fill="#000000">
+                                    <path d="M20,14c-3.3,0 -6,2.7 -6,6c0,3.3 2.7,6 6,6c3.3,0 6,-2.7 6,-6c0,-3.3 -2.7,-6 -6,-6z M23,21l-2,0l0,2l-2,0l0,-2l-2,0l0,-2l2,0l0,-2l2,0l0,2l2,0z"></path>
+                                  </g>
+                                  <g fill="#ff0000" opacity="0">
+                                    <path d="M20,28c4.4,0 8,-3.6 8,-8c0,-4.4 -3.6,-8 -8,-8c-4.4,0 -8,3.6 -8,8c0,4.4 3.6,8 8,8z"></path>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+                      <div class="inline">
+                        {{'addOrder' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </ng-template>
+            </mat-expansion-panel>
+
+            <!--page-->
+            <mat-expansion-panel #expPage (opened)="expPage.close()" [hideToggle]="true" *ngIf="userRole === 'admin'">
+              <mat-expansion-panel-header uiSref="Dashboard.Page" uiSrefActive="active">
+                <mat-panel-title>
+                  <mat-icon class="middle">description</mat-icon>
+                  <span class="label-menu text-capitalize active">{{'page' | translate}}</span>
+                </mat-panel-title>
+
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+
+            <!--users-->
+            <mat-expansion-panel #expUsers (opened)="expUsers.close()" [hideToggle]="true" *ngIf="userRole === 'admin'">
+              <mat-expansion-panel-header  uiSref="Dashboard.Users" uiSrefActive="active">
+                <mat-panel-title>
+                  <mat-icon class="middle">people_outline</mat-icon>
+                  <span class="label-menu text-capitalize">{{'users' | translate}}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+
+            <!--reputation-->
+            <mat-expansion-panel #expReputation (opened)="expReputation.close()" [hideToggle]="true" *ngIf="page?.business_sector.id === '1'">
+              <mat-expansion-panel-header uiSref="Dashboard.Reputations">
+                <mat-panel-title>
+                  <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path fill="#000000" d="M15,5V9H11V13H7V17H3V20H10V16H14V12H18V8H22V5H15Z" />
+                  </svg>
+                  <span class="label-menu middle text-capitalize">{{'reputations' | translate}}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+
+            <!--activities-->
+            <mat-expansion-panel class="expandable"
+              *ngIf="page?.business_sector.id === '1'"
+              [expanded]="isCurrentState('Dashboard.Activities')">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon class="mat-24">directions_run</mat-icon>
+                  <span class="label-menu middle text-capitalize">{{'activities' | translate }}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <ng-template matExpansionPanelContent>
+                <ul class="list-unstyled">
+                  <li class="list-group-item list-group-item-wrapper text-left">
+                    <a uiSref="Dashboard.Activities.Online" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">wifi</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'online' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <li class="list-group-item list-group-item-wrapper text-left">
+                    <a uiSref="Dashboard.Activities.Offline" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">signal_wifi_off</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'offline' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </ng-template>
+            </mat-expansion-panel>
+
+            <!--tables-->
+            <mat-expansion-panel class="expandable"
+                *ngIf="(userRole === 'admin') && (page?.business_sector.id === '2')"
+                [expanded]="isCurrentState('Dashboard.Tables')">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <img style="width:30px;height:30px" src="https://image.flaticon.com/icons/svg/490/490357.svg">
+                  <span class="label-menu text-capitalize">{{'tables' | translate }}</span>
+                </mat-panel-title>
+
+              </mat-expansion-panel-header>
+              <ng-template matExpansionPanelContent>
+                <ul class="list-unstyled">
+                  <li
+                    class="list-group-item list-group-item-wrapper text-left"
+                  >
+                    <a uiSref="Dashboard.Tables.TablesManager" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="middle">web_asset</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'tablesManager' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <li
+                    class="list-group-item list-group-item-wrapper text-left"
+                  >
+                    <a uiSref="Dashboard.Tables.Settings" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">settings</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'settings' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </ng-template>
+            </mat-expansion-panel>
+
+            <!--Online payment-->
+            <mat-expansion-panel   class="expandable"
+              *ngIf=" isOnlinePaymentEnabled && (userRole === 'admin') && (page?.business_sector.id === '2')"
+              [expanded]="isCurrentState('Dashboard.Accounting')">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <img class="inline middle" style="width:24px;height:24px"src="https://image.flaticon.com/icons/svg/126/126057.svg">
+                  <span class="label-menu text-capitalize">{{'onlinePayment' | translate }}</span>
+                </mat-panel-title>
+
+              </mat-expansion-panel-header>
+              <ng-template matExpansionPanelContent>
+                <ul class="list-unstyled">
+                  <li class="list-group-item list-group-item-wrapper text-left">
+                    <a uiSref="Dashboard.Accounting.Home" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">link</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'linkStripe' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </ng-template>
+            </mat-expansion-panel>
+
+            <!--rk-->
+            <mat-expansion-panel class="expandable"
+                *ngIf=" isRkEnabled && (!isRkVisble && page?.business_sector.id === '2') && (userRole === 'admin' || userRole === 'cashdesk')"
+                [expanded]="isCurrentState('Dashboard.Rk')">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <svg class="inline middle" style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path fill="#000000" d="M 8 2 L 5 3.5 L 5 9 C 3.346 9 2 10.346 2 12 L 2 22 L 4 22 L 4 12 C 4 11.449 4.448 11 5 11 L 5 15 L 19 15 L 19 11 C 19.552 11 20 11.449 20 12 L 20 22 L 22 22 L 22 12 C 22 10.346 20.654 9 19 9 L 19 3.5 L 16 2 L 14 3 L 12 2 L 10 3 L 8 2 z M 8 4 L 10 5 L 12 4 L 14 5 L 16 4 L 17 4.75 L 17 13 L 7 13 L 7 4.75 L 8 4 z M 8 7 L 8 9 L 16 9 L 16 7 L 8 7 z M 8 10 L 8 12 L 13 12 L 13 10 L 8 10 z M 6 16 L 6 22 L 18 22 L 18 16 L 6 16 z M 8 18 L 16 18 L 16 20 L 8 20 L 8 18 z"></path>
+                  </svg>
+                  <span class="label-menu middle text-capitalize">{{'rk' | translate }}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <ng-template matExpansionPanelContent>
+                <ul class="list-unstyled">
+                  <!-- Orders -->
+                  <li *ngIf="userRole !== 'cashdesk' " class="list-group-item list-group-item-wrapper text-left">
+                    <a uiSref="Dashboard.Rk.Orders" uiSrefActive="active">
+                      <div class="inline middle">
+                        <svg style="width: 24px;height: 24px;" viewBox="0 0 24 24">
+                          <g fill="none" stroke="none" stroke-width="1">
+                            <g>
+                              <g>
+                                <path d="M0,24l0,-24l24,0l0,24z" fill="none"></path>
+                                <g fill="#000000">
+                                  <path d="M10.52,22l-4.52,0c-0.52222,0 -1.06047,-0.18547 -1.4375,-0.5625c-0.37703,-0.37703 -0.5625,-0.91528 -0.5625,-1.4375l0,-16c0,-0.52222 0.18547,-1.06047 0.5625,-1.4375c0.37703,-0.37703 0.91528,-0.5625 1.4375,-0.5625l12,0c0.52222,0 1.06047,0.18547 1.4375,0.5625c0.37703,0.37703 0.5625,0.91528 0.5625,1.4375l0,5.24571l-2,0l0,-5.24571l-12,0l0,16l4.52,0l0,1.24571z M10.52,14l-2.52,0l0,-2l2.5492,0c-0.01927,0.14534 -0.0292,0.29411 -0.0292,0.44571l0,0.8z M12,15.24571l0,1.75429l-4,0l0,-2l2.52,0l0,0.24571z M16,7l0,2l-8,0l0,-2z"></path>
+                                </g>
+                                <g fill="#000000">
+                                  <g>
+                                    <path d="M22.52,13.24571l1,0l0,-0.8c0,-0.7 -0.5,-1.2 -1.2,-1.2l-8.6,0c-0.7,0 -1.2,0.5 -1.2,1.2l0,0.8l1,0c0.4,2.1 1.7,3.4 2.5,4.1c-0.8,0.7 -2,2.1 -2.4,3.9l-1.1,0l0,0.8c0,0.7 0.5,1.2 1.2,1.2l8.6,0c0.7,0 1.2,-0.5 1.2,-1.2l0,-0.8l-1,0c-0.5,-1.8 -1.7,-3.2 -2.5,-3.9c0.8,-0.7 2.1,-2 2.5,-4.1z M18.82,17.74571c0.6,0.5 2,1.6 2.4,3.5l-0.8,0c-0.7,-1 -1.7,-2 -2.4,-2c-0.7,0 -1.7,1 -2.4,2l-0.8,0c0.5,-1.9 1.8,-3 2.4,-3.5c0.7,-0.5 -0.1,-1 -0.1,-1c-0.1,0 -1.8,-1.1 -2.4,-3.5l6.6,0c-0.6,2.4 -2.3,3.5 -2.4,3.5c0,0 -0.8,0.5 -0.1,1z M16.82,14.24571l2.4,0c0,0.5 -0.7,1.8 -1.2,1.8c-0.5,0 -1.2,-1.3 -1.2,-1.8z"></path>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+                      <div class="inline">
+                        {{'orders' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <!-- NewOrder -->
+                  <!-- <li
+                    *ngIf="userRole !== 'cashdesk' "
+                    class="list-group-item list-group-item-wrapper text-left"
+                  >
+                    <a uiSref="Dashboard.Rk.NewOrder" uiSrefActive="active">
+                        <div class="inline middle">
+                          <svg style="width: 24px;height: 24px;padding: 2px;" viewBox="0 0 26 26">
+                            <g fill="none" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0">
+                              <g>
+                                <g>
+                                  <path d="M0,26l0,-26l26,0l0,26z" fill="none"></path>
+                                  <g fill="#000000" visibility="hidden">
+                                    <path d="M4,0c-1.09425,0 -2,0.90575 -2,2l0,22c0,1.09426 0.90575,2 2,2l18,0c1.09426,0 2,-0.90574 2,-2l0,-22c0,-1.09425 -0.90574,-2 -2,-2z M4,2l18,0l0,22l-18,0z M8.71875,5c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l8,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-8,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M6.71875,11c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l7,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-7,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M17.71875,11c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l1,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-1,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M6.71875,14c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l7,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-7,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M17.71875,14c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l1,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-1,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M6.71875,17c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l7,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-7,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z M17.71875,17c-0.55228,0.07766 -0.93704,0.58834 -0.85938,1.14063c0.07766,0.55228 0.58834,0.93704 1.14063,0.85938l1,0c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587l-1,0c-0.03123,-0.00147 -0.06252,-0.00147 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0c-0.03123,-0.00146 -0.06252,-0.00146 -0.09375,0z"></path>
+                                  </g>
+                                  <g fill="#000000">
+                                    <path d="M17.0291,12.57521c-0.08714,-0.12557 -0.14699,-0.2729 -0.16973,-0.43459c-0.07766,-0.55228 0.30709,-1.06296 0.85938,-1.14063c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00147 0.06252,-0.00147 0.09375,0l1,0c0.36064,-0.0051 0.69608,0.18438 0.87789,0.49587c0.09091,0.15575 0.13636,0.32995 0.13635,0.50414c-0.00475,-0.00001 -0.00949,-0.00001 -0.01424,-0.00001c-1.04834,0 -2.05126,0.20436 -2.9709,0.57521z M14.7228,26l-10.7228,0c-1.09425,0 -2,-0.90574 -2,-2l0,-22c0,-1.09425 0.90575,-2 2,-2l18,0c1.09426,0 2,0.90575 2,2l0,11.07897c-0.61947,-0.36038 -1.29103,-0.64002 -2,-0.82423l0,-10.25475l-18,0l0,22l9.07897,0c0.43764,0.75226 0.99435,1.4277 1.64383,2z M12.06264,19l-5.06264,0c-0.55228,0.07766 -1.06296,-0.30709 -1.14063,-0.85938c-0.07766,-0.55228 0.30709,-1.06296 0.85938,-1.14063c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00147 0.06252,-0.00147 0.09375,0l5.58702,0c-0.25744,0.6312 -0.43634,1.30197 -0.52437,2z M13.07897,16l-6.07897,0c-0.55228,0.07766 -1.06296,-0.30709 -1.14063,-0.85938c-0.07766,-0.55228 0.30709,-1.06296 0.85938,-1.14063c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00147 0.06252,-0.00147 0.09375,0l7,0c0.19832,-0.00281 0.38902,0.05323 0.55075,0.15605c-0.57608,0.53772 -1.07329,1.15899 -1.47177,1.84395z M17.87789,5.49587c0.18181,0.3115 0.18181,0.69676 0,1.00825c-0.18181,0.3115 -0.51725,0.50097 -0.87789,0.49587l-8,0c-0.55228,0.07766 -1.06296,-0.30709 -1.14063,-0.85938c-0.07766,-0.55228 0.30709,-1.06296 0.85938,-1.14063c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00147 0.06252,-0.00147 0.09375,0l8,0c0.36064,-0.0051 0.69608,0.18438 0.87789,0.49587z M6.8125,11c0.03123,-0.00146 0.06252,-0.00146 0.09375,0c0.03123,-0.00147 0.06252,-0.00147 0.09375,0l7,0c0.36064,-0.0051 0.69608,0.18438 0.87789,0.49587c0.18181,0.3115 0.18181,0.69676 0,1.00825c-0.18181,0.3115 -0.51725,0.50097 -0.87789,0.49587l-7,0c-0.55228,0.07766 -1.06296,-0.30709 -1.14063,-0.85938c-0.07766,-0.55228 0.30709,-1.06296 0.85938,-1.14063c0.03123,-0.00146 0.06252,-0.00146 0.09375,0z"></path>
+                                    </g>
+                                    <g>
+                                    <g fill="#000000">
+                                      <path d="M20,14c-3.3,0 -6,2.7 -6,6c0,3.3 2.7,6 6,6c3.3,0 6,-2.7 6,-6c0,-3.3 -2.7,-6 -6,-6z M23,21l-2,0l0,2l-2,0l0,-2l-2,0l0,-2l2,0l0,-2l2,0l0,2l2,0z"></path>
+                                    </g>
+                                    <g fill="#ff0000" opacity="0">
+                                      <path d="M20,28c4.4,0 8,-3.6 8,-8c0,-4.4 -3.6,-8 -8,-8c-4.4,0 -8,3.6 -8,8c0,4.4 3.6,8 8,8z"></path>
+                                    </g>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </svg>
+                        </div>
+                        <div class="inline">
+                          {{'addOrder' | translate}}
+                        </div>
+                    </a>
+                  </li> -->
+                  <!-- settings -->
+                  <li
+                    class="list-group-item list-group-item-wrapper text-left"
+                    *ngIf="(page?.business_sector.id === '2')"
+                  >
+                    <a uiSref="Dashboard.Rk.CashRegisterSettings" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">settings</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'rkPageTitle' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <!-- Receipt-setting -->
+                  <li
+                    class="list-group-item list-group-item-wrapper text-left"
+                    *ngIf="(page?.business_sector.id === '2')"
+                  >
+                    <a uiSref="Dashboard.Rk.Receipt" uiSrefActive="active">
+
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">local_atm</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'receiptSettingsTitle' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <!-- print -->
+                  <li
+                    class="list-group-item list-group-item-wrapper text-left"
+                    *ngIf="(page?.business_sector.id === '2')"
+                  >
+                    <a uiSref="Dashboard.Rk.Printers" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">print</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'printers' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <!-- credit-card -->
+                  <li
+                    class="list-group-item list-group-item-wrapper text-left"
+                    *ngIf="(page?.business_sector.id === '2')"
+                  >
+                    <a uiSref="Dashboard.Rk.SmartCards" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">credit_card</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'smartCards' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <li
+                    class="list-group-item list-group-item-wrapper text-left"
+                    *ngIf="(page?.business_sector.id === '2')"
+                  >
+                    <a uiSref="Dashboard.Rk.DapExport" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">file_upload</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'DAPExportTitle' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <!-- item-type -->
+                  <li
+                    *ngIf="(page?.business_sector.id === '2')"
+                    class="list-group-item list-group-item-wrapper text-left"
+                  >
+                    <a uiSref="Dashboard.Rk.ItemTypes" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon>style</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'itemTypes' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <!-- accountings -->
+                  <li class="list-group-item list-group-item-wrapper text-left">
+                    <a uiSref="Dashboard.Rk.Accountings" uiSrefActive="active">
+                      <div class="inline middle">
+                        <svg class="inline middle" style="width:24px;height:24px" viewBox="0 0 24 24">
+                          <path fill="#000000" d="M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,4V8H17V4H7M7,10V12H9V10H7M11,10V12H13V10H11M15,10V12H17V10H15M7,14V16H9V14H7M11,14V16H13V14H11M15,14V16H17V14H15M7,18V20H9V18H7M11,18V20H13V18H11M15,18V20H17V18H15Z" />
+                        </svg>
+                        <!-- <mat-icon class="mat-24">monetization_on</mat-icon> -->
+                      </div>
+                      <div class="inline">
+                        {{'accountings' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <!-- Internal Categories -->
+                  <li class="list-group-item list-group-item-wrapper text-left">
+                    <a uiSref="Dashboard.Rk.InternalCategories" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon>color_lens</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'internalCategories' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <!-- tables -->
+                  <li class="list-group-item list-group-item-wrapper text-left">
+                    <a uiSref="Dashboard.Rk.Tables" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon>web_asset</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'tables' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </ng-template>
+            </mat-expansion-panel>
+
+            <!--menu-->
+            <mat-expansion-panel  class="expandable"
+              *ngIf="userRole === 'admin'"
+              [expanded]="isCurrentState('Dashboard.Menu')">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon class="middle">
+                    {{(page?.business_sector.id === '2') ? 'restaurant_menu' : 'import_contacts'}}
+                  </mat-icon>
+                  <span class="label-menu middle text-capitalize">
+                        {{(page?.business_sector.id === '2') ? 'menus' : 'catalogues' | translate}}
+                    </span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <ng-template matExpansionPanelContent>
+
+                <mat-accordion displayMode="flat" id="menuAccordion">
+
+                  <!--languages-->
+                  <mat-expansion-panel [hideToggle]="true" #expLanguges (opened)="expLanguges.close()">
+                    <mat-expansion-panel-header uiSref="Dashboard.Menu.MenuLanguages" uiSrefActive="active">
+                      <mat-panel-title>
+                        <mat-icon class="middle">language</mat-icon>
+                        <span class="label-menu text-capitalize">
+                          {{'languageMenu' | translate}}
+                        </span>
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                  </mat-expansion-panel>
+
+                  <!--extra Config-->
+                  <mat-expansion-panel [hideToggle]="true" #expExtraConf (opened)="expExtraConf.close()">
+                    <mat-expansion-panel-header uiSref="Dashboard.Menu.ExtraConfig" uiSrefActive="active">
+                      <mat-panel-title>
+                        <mat-icon class="middle">library_add</mat-icon>
+                        <span class="label-menu text-capitalize">
+                          {{'extraConfig' | translate}}
+                        </span>
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                  </mat-expansion-panel>
+
+                  <!--menu of the day-->
+                  <mat-expansion-panel [hideToggle]="true" #expMenuOfTheDay (opened)="expMenuOfTheDay.close()">
+                    <mat-expansion-panel-header uiSrefActive="active" uiSref="Dashboard.Menu.MenuOftheDay">
+                      <mat-panel-title>
+                        <mat-icon class="middle">today</mat-icon>
+                        <span class="label-menu text-capitalize">
+                          {{'menuOfTheDay' | translate}}
+                        </span>
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                  </mat-expansion-panel>
+
+                  <!--favorite-->
+                  <mat-expansion-panel [hideToggle]="true" #expFavorite (opened)="expFavorite.close()">
+                    <mat-expansion-panel-header uiSref="Dashboard.Menu.favorite" uiSrefActive="active">
+                      <mat-panel-title>
+                        <mat-icon class="middle">favorite</mat-icon>
+                        <span class="label-menu text-capitalize">
+                          {{'favorite' | translate}}
+                        </span>
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                  </mat-expansion-panel>
+
+                  <!--recent-->
+                  <mat-expansion-panel [hideToggle]="true" #expRecent (opened)="expRecent.close()">
+                    <mat-expansion-panel-header uiSref="Dashboard.Menu.recent" uiSrefActive="active">
+                      <mat-panel-title>
+                        <mat-icon class="middle">history</mat-icon>
+                        <span class="label-menu text-capitalize">
+                          {{'recent' | translate}}
+                        </span>
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                  </mat-expansion-panel>
+                  <!--categories-->
+                  <mat-expansion-panel [expanded]="isCurrentState('Dashboard.Menu.Category')"
+                      class="categories-expansion-panel">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <mat-icon class="middle">collections_bookmark</mat-icon>
+                      <span class="label-menu text-capitalize">
+                      {{'categories' | translate}}
+                      </span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                    <ng-template matExpansionPanelContent>
+                      <app-category [language_item]="language_item"></app-category>
+                    </ng-template>
+                </mat-expansion-panel>
+
+                </mat-accordion>
+
+              </ng-template>
+            </mat-expansion-panel>
+            <!--loyaltyModule-->
+            <mat-expansion-panel
+              class="expandable"
+              *ngIf="userRole === 'admin' && page?.business_sector.id === '2'"
+              [expanded]="isCurrentState('Dashboard.LoyaltyModule')"
+            >
+              <mat-expansion-panel-header *ngIf="isStampCardEnabled || isSocialEnabled">
+                <mat-panel-title>
+                  <mat-icon class="middle">insert_emoticon</mat-icon>
+                  <span class="label-menu middle text-capitalize">{{'loyaltyModule' | translate }}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <ng-template matExpansionPanelContent>
+                <ul class="list-unstyled">
+                  <li
+                    class="list-group-item list-group-item-wrapper text-left"
+                    *ngIf="isStampCardEnabled && (userRole !== 'cashdesk') && (page?.business_sector.id === '2')"
+                  >
+                    <a uiSref="Dashboard.LoyaltyModule.StampCard" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">dns</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'stampCard' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                  <li
+                    class="list-group-item list-group-item-wrapper text-left"
+                    *ngIf="isSocialEnabled && (userRole !== 'cashdesk')"
+                  >
+                    <a uiSref="Dashboard.LoyaltyModule.Socials" uiSrefActive="active">
+                      <div class="inline middle">
+                        <mat-icon class="mat-24">public</mat-icon>
+                      </div>
+                      <div class="inline">
+                        {{'socialCheckIn' | translate}}
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </ng-template>
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              #loylty (opened)="loylty.close()"
+              [hideToggle]="true"
+              *ngIf="userRole === 'admin' && page?.business_sector.id === '2' && !isStampCardEnabled &&  !isSocialEnabled"
+            >
+              <mat-expansion-panel-header
+                triggers="focus:blur outsideClick"
+                placement="bottom"
+                ngbPopover="{{'officeMsg' | translate}}"
+                popoverTitle="Information"
+              >
+                <mat-panel-title>
+                  <mat-icon class="middle">insert_emoticon</mat-icon>
+                  <span class="label-menu text-capitalize">{{'loyaltyModule' | translate}}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+            <!--webPortal-->
+            <mat-expansion-panel #expWebPortal (opened)="expWebPortal.close()" [hideToggle]="true" *ngIf="isWebPortalEnabled && userRole === 'admin'" >
+              <mat-expansion-panel-header uiSref="Dashboard.WebPortal" uiSrefActive="active">
+                <mat-panel-title>
+                  <mat-icon class="middle">web</mat-icon>
+                  <span class="label-menu middle text-capitalize">{{'webPortal' | translate}}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+            </mat-expansion-panel>
+
+          </mat-accordion>
+        </nav>
+      </mat-nav-list>
+    </mat-sidenav>
+    <div>
+      <section class="main-container" [class.fluid]="isSidebarCollapsed" *ngIf="page">
+        <ui-view></ui-view>
+      </section>
+    </div>
+    <mat-sidenav #end align="end" class="mat-sidenav-right mat-whiteframe-z2">
+      <div layout="column" class="mat-toolbar-tools-bottom inset">
+        <div class="inline pull-left">
+          <h2 class="mat-toolbar-tools p-l-0">{{'editProfle' | translate}}</h2>
+        </div>
+        <div class="inline inset close-sidebar" (click)="end.close()">
+          <mat-icon>cancel</mat-icon>
+        </div>
+      </div>
+      <div class="mat-padding">
+        <app-profile-form (close)="end.close()" [user]="user"></app-profile-form>
+      </div>
+    </mat-sidenav>
+  </mat-sidenav-container>
+</div>

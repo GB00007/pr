@@ -1,0 +1,25 @@
+@import '../shared/sass/mixins';
+@import '../shared/sass/variables';
+
+:host {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3em;
+  color: #fff;
+  overflow: auto;
+  position: absolute;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff9900+0,ff7300+30 */
+  background: #ff9900; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ff9900 0%, #ff7300 30%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #ff9900 0%,#ff7300 30%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #ff9900 0%,#ff7300 30%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9900', endColorstr='#ff7300',GradientType=0 ); /* IE6-9 */
+  .authentication-footer {
+    clear:both;
+    height: 50px;
+    position: relative;
+    margin-top: 100px;
+  }
+}

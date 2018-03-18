@@ -1,0 +1,10 @@
+.mat-checkbox-layout .mat-checkbox-inner-container-no-side-margin {
+  margin-right: 8px;
+}
+.mat-pseudo-checkbox.mat-pseudo-checkbox-checked,
+.mat-pseudo-checkbox.mat-pseudo-checkbox-indeterminate {
+  border: 2px solid #FF9800 !important;
+}
+.mat-pseudo-checkbox-checked {
+  background: #FF9800 !important;
+}

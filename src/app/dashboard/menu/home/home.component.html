@@ -1,0 +1,291 @@
+<div
+  fxLayoutWrap
+  fxLayout="column"
+  fxLayoutGap="1.25rem"
+  fxLayoutAlign="center stretch"
+>
+  <h3 class="text-left text-muted text-uppercase title-container">
+    {{'menuManager' | translate}}
+     <span *ngIf="categoryId"> > {{breadcrumb}}</span><span *ngIf="!categoryId"> > {{'All items'}}</span>
+  </h3>
+  <hr>
+  <app-loader
+    [diameter] ='150'
+    [strokeWidth]='15'
+    *ngIf="!isFoodListLoaded"
+    [pos]="{'margin-top': '20%', 'margin-left': '45%'}"
+  >
+  </app-loader>
+  <app-no-content [label]="'noItems'" *ngIf="isCategoryEmplty"></app-no-content>
+  <div *ngIf="!isFoodListLoaded || foodLists.length > '0'">
+    <div
+    fxLayoutWrap
+    fxLayout="column"
+    fxLayoutGap="1.25rem"
+    fxLayoutAlign="center stretch"
+    *ngFor="let list of foodLists; let j = index"
+    >
+        <div
+          class="label-category-wrapper"
+          [ngClass]="{
+            'no-border': categoryId,
+            'no-border-top': j === 0
+          }"
+        >
+          <a
+            uiSref="Dashboard.Menu.Category"
+            [uiParams]="{category: list?.id}"
+            class="label label-category-link"
+          >
+            <span class="inline middle"><mat-icon>label_outline</mat-icon></span>
+            <span class="inline label-name text-uppercase">{{list?.name}}</span>
+          </a>
+          <span class="inline has-no-pic" [class.category]="categoryId">
+            <span
+              class="inline middle"
+              tooltip-position="below"
+              (click)="togglePictures(list, j)"
+              matTooltip="{{ list?.hasPic ? ('disableImageOnMobile' | translate) : ('activateImageOnMobile' | translate)}}"
+            >
+              <img
+                width="30"
+                height="30"
+                class="img-fluid"
+                *ngIf="!list?.hasPic"
+                src="assets/images/no-camera-allowed-md.png"
+              />
+              <img
+                width="30"
+                height="30"
+                class="img-fluid"
+                *ngIf="list?.hasPic"
+                src="assets/images/camera-icon-md.png"
+              />
+            </span>
+          </span>
+          <span class="inline has-no-pic" [class.category]="categoryId">
+            <span
+              class="inline middle"
+              tooltip-position="below"
+              (click)="toggleDisplayOnPortal(list, j)"
+              [matTooltip]="(list?.onPortal ? 'disableCategoryOnPortal' : 'activateCategoryOnPortal') | translate"
+            >
+            <img
+              width="30"
+              height="30"
+              class="img-fluid"
+              *ngIf="!list?.onPortal"
+              src="assets/images/no-website-filled.png"
+            />
+            <img
+              width="30"
+              height="30"
+              class="img-fluid"
+              *ngIf="list?.onPortal"
+              src="assets/images/website-filled.png"
+            />
+            </span>
+          </span>
+        </div>
+        <!-- One -->
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          fxLayoutAlign="start stretch"
+          dnd-sortable-container
+          [sortableData]="list?.items"
+          *ngIf="list?.items && categoryId"
+        >
+          <div
+            fxFlex="33"
+            dnd-sortable
+            fxLayout="row"
+            [sortableIndex]="i"
+            fxLayoutAlign="center stretch"
+            (onDropSuccess)="transferDataSuccess(item, i)"
+            *ngFor="let item of list?.items; let i = index"
+          >
+            <mat-card
+              fxFlex="100"
+              fxLayout="column"
+              fxLayoutAlign="space-between stretch"
+              [ngClass]="'mat-card-border-bottom-' + ((page?.internal_category_isactif && item?.internal_category?.color) ? item?.internal_category?.color : item?.category?.color || 'grey')"
+            >
+              <mat-card-title
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+              >
+              <h4>
+                  <div *ngFor="let lang of language_item;  let j = index">
+                    <div *ngIf="lang.isDefault == true">
+                      <div *ngFor="let x of item?.translation ; let k = index">
+                        <div *ngIf= "item?.translation[k]?.language_code === lang.code">
+                          <h4>{{item?.translation[k]?.name}} </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </h4>
+
+                <span
+                  ngbDropdown
+                  placement="bottom-right"
+                  class="d-inline-block pl-0 pr-1"
+                >
+                  <button type="button" mat-button class="position mat-icon-button mat-text-primary" aria-label="More" ngbDropdownToggle>
+                    <mat-icon>settings</mat-icon>
+                  </button>
+                  <ul style="top:29px!important" ngbDropdownMenu [class.last]="(i + 1) % 3 === 0" aria-labelledby="settings">
+                    <li class="dropdown-item" (click)="openItemDetailsDialog(i, item)">
+                      <a class="mat-text-primary">
+                        <span class="inline"><mat-icon>details</mat-icon></span>
+                        <span class="inline up">{{'details' | translate}}</span>
+                      </a>
+                    </li>
+                    <li class="dropdown-item" (click)="openEditItemDialog(j,i, item)">
+                      <a class="mat-text-primary">
+                        <span class="inline"><mat-icon>mode_edit</mat-icon></span>
+                        <span class="inline up">{{'edit' | translate}}</span>
+                      </a>
+                    </li>
+                    <li class="dropdown-item" (click)="openDeleteItemDialog(j,i, item)">
+                      <a class="text-danger">
+                      <span class="inline"><mat-icon>delete_forever</mat-icon></span>
+                      <span class="inline up">{{'delete' | translate}}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </span>
+              </mat-card-title>
+              <mat-card-content>
+                <div
+                  fxLayout="row"
+                  fxLayoutGap="20px"
+                  fxLayoutAlign="start center"
+                  *ngIf="!item?.entries?.length"
+                >
+                  <div fxFlex="40" class="mat-card-title-media">
+                    <img [src]="getItemPicturePath(item?.picture)">
+                  </div>
+                  <div fxFlex="60" class="mat-card-title-text">
+                    <span class="block" *ngIf="item?.internal_reference">
+                      <p class="mat-headline-reference">
+                        {{'ref' | translate}}: {{item?.internal_reference | truncate : 22}}
+                      </p>
+                    </span>
+                    <span class="block" *ngIf="item?.internal_ref">
+                      <p class="mat-headline-reference">
+                        {{'ref' | translate}}: {{item?.internal_ref | truncate : 22}}
+                      </p>
+                    </span>
+                    <span class="block" *ngIf="!item?.internal_reference">
+                    <p class="mat-headline-reference">&nbsp;</p>
+                    </span>
+                    <span class="block" *ngIf="!item?.internal_ref">
+                    <p class="mat-headline-reference">&nbsp;</p>
+                    </span>
+                    <!-- <span class="block" *ngIf="item?.description">
+                    <p class="mat-subhead">{{item?.description | truncate : 100}}</p>
+                    </span> -->
+                      <h4>
+                          <div *ngFor="let lang of language_item;  let j = index">
+                              <div *ngIf="lang.isDefault == true">
+                                <div *ngFor="let x of item?.translation ; let k = index">
+                                  <div *ngIf= "item?.translation[k]?.language_code === lang.code">
+                                    <h4>{{item?.translation[k]?.description | slice:0:6 }}  </h4>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                      </h4>
+
+                    <span class="block" *ngIf="!item?.description">
+                      <p class="mat-subhead">&nbsp;</p>
+                    </span>
+                  </div>
+                </div>
+                <!-- Composed -->
+                <div
+                  fxLayout="column"
+                  fxLayoutGap="1rem"
+                  fxLayoutAlign="start stretch"
+                  *ngIf="item?.entries?.length"
+                >
+                  <div
+                    fxLayout="row"
+                    fxLayoutGap="0.5rem"
+                    fxLayoutAlign="start center"
+                    *ngFor="let composedItem of item.entries | slice:0:2"
+                  >
+                    <div fxFlex="35">
+                      <img
+                        [alt]="composedItem?.picture?.title"
+                        [title]="composedItem?.picture?.title"
+                        [src]="getComposedItemPicturePath(composedItem?.picture)"
+                      >
+                    </div>
+                    <div fxFlex="65" class="title">
+                      {{composedItem?.name | slice:0:6}}
+                    </div>
+                  </div>
+                </div>
+                <!-- Sup > 2 -->
+                <div
+                  *ngIf="item?.entries?.length > 2"
+                  class="block text-center show-more-items"
+                  (click)="openItemDetailsDialog(i, item)"
+                >
+                  <span class="inline top">{{"showMore" | translate}}</span>
+                  <span class="inline middle"><mat-icon>expand_more</mat-icon></span>
+                </div>
+                <div *ngIf="item?.out_of_stock" class="ribbon">
+                  <span>{{'notAvailable' | translate}}</span>
+                </div>
+              </mat-card-content>
+              <mat-card-footer>
+                <span class="price" fxLayoutAlign="end center">
+                  {{item?.price | snugCurrency: page?.official_currency:true}}
+                </span>
+                <span
+                  [ngPlural]="item?.item_type ? item?.item_type?.length : 0"
+                  class="badge badge-pill item-type text-capitalize"
+                  [ngClass]="'mat-' + 'grey'"
+                  >
+                  <ng-template ngPluralCase="=0">{{'noType' | translate}}</ng-template>
+                  <ng-template ngPluralCase="=1">{{item?.item_type[0].name}}</ng-template>
+                  <ng-template ngPluralCase="other">{{getItemTypes(item?.item_type)}}</ng-template>
+                </span>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+        </div>
+        <!-- Show more -->
+        <span *ngIf="!categoryId && !pageNumbers[list?.id]?.isLastPage">
+          <div class="text-center clearfix">
+            <a (click)="loadItemsByCategory(list?.id, pageNumbers[list?.id].pageNumber, j)">
+              <span class="show-more-category">
+                <span class="inline middle"><mat-icon>navigate_next</mat-icon></span>
+                <span class="inline isset">{{'showMoreOf' | translate}} {{list?.name}}</span>
+              </span>
+            </a>
+          </div>
+        </span>
+    </div>
+  </div>
+  <app-show-more
+    [label]="'showMoreItems'"
+    (getNextPage)="showMoreItems($event)"
+    *ngIf="categoryId && !pageNumbers[categoryId].isLastPage && containsItems"
+  >
+  </app-show-more>
+  <button
+    mat-fab
+    type="button"
+    tooltip-position="below"
+    (click)="openAddItemDialog()"
+    matTooltip="{{'addItem' | translate}}"
+    class="mat-btn mat-fab-top-right pos-fix accent"
+  >
+    <mat-icon class="mat-48">add</mat-icon>
+  </button>
+</div>

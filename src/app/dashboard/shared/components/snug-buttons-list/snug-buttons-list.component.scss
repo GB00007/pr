@@ -1,0 +1,197 @@
+@import '../../../../shared/sass/_mixins.scss';
+@import '../../../../shared/sass/_variables.scss';
+
+:host {
+  .load-items {
+    display: none;
+  }
+  fieldset {
+    margin: 0 0 1em 0 !important;
+    border: 1px solid #cac8c8 !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    @include box-shadow(0px 0px 0px 0px #000);
+    &.bg-grey {
+      background: #f5f5f5;
+    }
+    legend {
+      width: auto;
+      padding: 0 5px;
+      font-size: 18px;
+      border-bottom: none;
+      &::first-letter {
+        text-transform: capitalize;
+      }
+    }
+    button.mat-raised-button {
+      margin: 8px 4px;
+      &.disabled {
+        cursor: not-allowed;
+        color: rgba(0,0,0,.2);
+        background-color: #ccc;
+      }
+      &::first-letter {
+        text-transform: capitalize;
+      }
+      &.label-default {
+        color: #333;
+        background-color: #f8f8f8;
+        &:hover {
+          @include box-shadow(1px 1px 5px rgba(0,0,0,.5));
+        }
+      }
+    }
+    mat-progress-spinner.mat-progress-spinner {
+      margin: 0 auto;
+    }
+    
+  }
+  .square-button-wrapper{
+    min-height:70px;
+  }
+  .space-pad{
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right:5px
+  }
+  .space{
+    cursor: pointer;
+    text-align: -webkit-center;    
+  }
+  // 15 & 12 ''
+  .cat-fieldset-15p{
+    min-height: 440px;
+    max-height: 440px;
+  }
+  .cat-div-15p{
+    overflow: auto;
+    height: 403px;
+  }
+  .item-fieldset-15p{
+    height :388px
+  }
+  .item-div-15p{
+    overflow: auto;
+    height: 351px;
+  }
+  // 13''
+  .cat-fieldset-13p{
+    min-height: 472px;
+    max-height: 472px;
+  }
+  .cat-div-13p{
+    overflow: auto;
+    height: 435px;
+  }
+  .item-fieldset-13p{
+    height :420
+  }
+  .item-div-13p{
+    overflow: auto;
+    height: 383px;
+  }
+  
+  // 19
+  .cat-fieldset-19p{
+    min-height: 572px;
+    max-height: 572px;
+  }
+  .cat-div-19p{
+    overflow: auto;
+    height: 535px;
+  }
+  .item-fieldset-19p{
+    height :520px
+  }
+  .item-div-19p{
+    overflow: auto;
+    height: 483px;
+  }
+  // 22
+  .cat-fieldset-22p{
+    min-height: 722px;  
+    max-height: 722px;
+  }
+  .cat-div-22p{
+    overflow: auto;
+    height: 685px;
+  }
+  .item-fieldset-22p{
+    height :670px
+  }
+  .item-div-22p{
+    overflow: auto;
+    height: 633px;
+  }
+  
+  // 23''
+  .cat-fieldset-23p{
+    min-height: 752px;
+    max-height: 752px;
+  }
+  .cat-div-23p{
+    overflow: auto;
+    height: 715px;
+  }
+  .item-fieldset-23p{
+    height :700px
+  }
+  .item-div-23p{
+    overflow: auto;
+    height: 629px;
+  }
+  .f-15p{
+    height: 439px!important;
+    min-height: 439px!important; 
+    max-height: 439px!important;
+  }
+  .f-13p{
+    height: 471px!important;
+    min-height: 471px!important;
+    max-height: 471px!important;
+  }
+  .f-19p{
+    height: 571!important;
+    min-height: 571!important;;
+    max-height: 571!important;;
+  }
+  .f-22p{
+    height: 721px!important;
+    min-height: 721px!important;
+    max-height: 721px!important;
+  }
+  .f-23p{
+    height: 751px!important;
+    min-height: 751px!important;
+    max-height: 751px!important;
+  }
+  //
+  .d-15p{
+    height: 402px;
+    min-height: 402px;
+    max-height: 402px;  
+  }
+  .d-13p{
+    height: 434px;
+    min-height: 434px;
+    max-height: 434px;  
+  }
+  .d-19p{
+    height: 534px;
+    min-height: 534px;
+    max-height: 534px;  
+  }
+  .d-22p{
+    height: 684px;
+    min-height: 684px;
+    max-height: 684px;  
+  }
+  .d-23p{
+    height: 714px;
+    min-height: 714px;
+    max-height: 714px;  
+  }
+  .text-size{
+    font-size: 20px;font-weight: 600;
+  }
+
+}

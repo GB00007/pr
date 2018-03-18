@@ -1,0 +1,142 @@
+
+@import '../../../../../../../shared/sass/_mixins.scss';
+@import '../../../../../../../shared/sass/_variables.scss';
+
+mat-dialog-content {
+  padding-right: 0px
+}
+.mat-block{
+  padding: 0px;
+}
+.fieldset-category {
+  border: 1px solid #cac8c8 !important;
+  padding: 0px,16px,0px,0px;
+  margin-right:16px!important;
+  min-height: 450px;
+}
+.fieldset-items {
+  border: 1px solid #cac8c8 !important;
+  padding: 0px,16px,0px,0px;
+  margin-right:16px!important;
+  min-height: 450px;
+}
+.fieldset-selected {
+  border: 1px solid #cac8c8 !important;
+  margin-right:16px!important;
+  padding: 0px,0px,0px,0px;
+  min-height: 450px;
+}
+.div-cat {
+  overflow:auto;
+  max-height: 404px;
+  margin-right: 1px!important;
+}
+.div-item {
+  overflow:auto;
+  max-height: 404px;
+  margin-right: 1px!important;
+}
+.div-selected {
+  overflow:auto;
+  max-height:389px!important;
+  margin-left: 10px;
+}
+.div-clear {
+  margin-right:10px!important;
+}
+.mat-18 {
+  color:red;
+  cursor:pointer;
+}
+
+legend {
+  width: auto;
+  padding: 0 5px;
+  font-size: 18px;
+}
+.btnc {
+  background-color: red;
+}
+.btn-remove {
+  background-color: yellowgreen;
+}
+.btnClicked {
+  background-color: red;
+
+}
+.mat-raised-button {
+  border: -1rem!important;
+}
+.divFloatL {
+  float: left;
+}
+.divFloatR {
+  float: right;
+}
+.btnBorder {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  max-height: 50px;
+}
+.div-center {
+  padding-top: 50%;
+}
+.looader{
+  max-height: 360p!important;
+  min-height: 360px!important;
+}
+
+.cls {
+margin-top : 100px
+
+}
+
+:host {
+  .clear-button {
+    right: -20px;
+    top: -20px;
+    margin: 0;
+    padding: 0;
+    font-weight: 900;
+    font-size: 0.8rem;
+    line-height: 1.6rem;
+    text-transform: capitalize;
+  }
+
+  .load-items {
+    display: none;
+  }
+
+  .square-button-wrapper{
+    min-height:70px;
+
+  }
+  .space-pad{
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right:5px
+  }
+  .space{
+    cursor: pointer;
+    text-align: -webkit-center;
+  }
+
+  .text-size{
+    font-size: 20px;font-weight: 600;
+  }
+
+}
+
+.show-qte{
+  height: 150px!important;
+  max-height: 150px!important;
+  min-height: 150px!important;
+
+}
+.text-center{
+  height : 18px;
+  padding-top: 5px;
+}
+.somme-position{
+  height: 30px
+}

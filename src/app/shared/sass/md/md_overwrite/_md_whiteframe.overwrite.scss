@@ -1,0 +1,23 @@
+mat-whiteframe {
+  &.mat-whiteframe-p-10 {
+    padding: 10px;
+  }
+  &.mat-whiteframe-p-15 {
+    padding: 15px;
+  }
+  &.mat-whiteframe-p-20 {
+    padding: 20px;
+  }
+  &.mat-whiteframe-p-25 {
+    padding: 25px;
+  }
+  .mat-block .social_provider_label::first-letter {
+    text-transform: uppercase;
+  }
+}
+.mat-whiteframe-4dp,
+.mat-whiteframe-z2 {
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),
+              0 4px 5px 0 rgba(0,0,0,.14),
+              0 1px 10px 0 rgba(0,0,0,.12);
+}

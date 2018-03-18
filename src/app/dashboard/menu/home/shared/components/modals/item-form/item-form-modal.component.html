@@ -1,0 +1,557 @@
+<h4 mat-dialog-title>{{(data.item ? 'editItem' : 'addItem') | translate}}</h4>
+<button
+  type="button"
+  class="close"
+  aria-label="Close"
+  (click)="matDialogRef.close(false)"
+>
+  <mat-icon>cancel</mat-icon>
+</button>
+<form
+ novalidate
+ name="itemForm"
+ class="item-form"
+ [formGroup]="itemForm"
+>
+  <mat-horizontal-stepper formArrayName="formArray" >
+    <mat-step id="step0-form" formGroupName="0" [stepControl]="formArray?.get([0])">
+      <ng-template matStepLabel></ng-template>
+      <mat-dialog-content>
+        <div fxLayoutWrap fxLayout="row" fxLayoutAlign="center center">
+          <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+            <mat-form-field fxFlex="50">
+              <mat-select
+                required
+                formControlName="category"
+                class="field-full-width"
+                [placeholder]="'category' | translate"
+              >
+                <mat-option [value]="category.id" *ngFor="let category of categories">
+                  <div *ngFor="let lang of languages;  let j = index">
+                    <div *ngIf="lang.isDefault == true">
+                      <div *ngFor="let cat of category?.translation ; let k = index">
+                        <div *ngIf= "category?.translation[k]?.language_code === lang.code">
+                            {{cat.name | capitalize}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="nameForm.get('category').hasError('required')">
+                {{'form_error_required' | translate}}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="50">
+              <mat-select
+                class="field-full-width"
+                formControlName="internal_category"
+                [placeholder]="'internalCategories' | translate"
+              >
+                <mat-option [value]="internalCategory?.id" *ngFor="let internalCategory of internalCategories">
+                  <span
+                    [ngStyle]="{'width': '30px', 'height': '30px'}"
+                    class="inline middle mat-{{internalCategory.color}}"
+                  >
+                  </span>
+                  {{internalCategory?.name | capitalize}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <!-- Name -->
+          <!-- <mat-form-field fxFlex="100">
+            <input
+              matInput
+              required
+              formControlName="name"
+              [placeholder]="'yourItemName' | translate"
+            >
+            <mat-error *ngIf="nameForm.get('name').hasError('required')">
+              {{'form_error_required' | translate}}
+            </mat-error>
+          </mat-form-field> -->
+          <div fxFlex="100"  class="row" formGroupName="name_translation">
+            <div
+              *ngFor="let language of nameForm.get('name_translation').controls; index as i"
+              [ngClass]="(languages.length == '6' || languages.length == '9' || languages.length == '3' )?'col-sm-4':
+                          (languages.length == '4' || languages.length == '8')       ?'col-sm-3' :
+                          (languages.length == '1' || languages.length == '2')       ?'col-sm-6' :
+                          (languages.length == '5' || languages.length == '7')       ?'col-sm-4' :
+                          col-sm-3"
+              >
+              <mat-form-field
+                [formArrayName]="i"
+                [ngClass]=" (languages.length == '1')?'tran1':
+                (languages.length == '2')?'tran2' :
+                (languages.length == '3')?'tran3' :
+                (languages.length == '4')?'tran4' :
+                (languages.length == '5')?'tran5' :
+                (languages.length == '6')?'tran6' :
+                (languages.length == '7')?'tran7' :
+                (languages.length == '8')?'tran8' :
+                (languages.length == '9')?'tran9' :
+                'tran9' "
+              >
+                <input
+                  matInput
+                  formControlName="name"
+                  [placeholder]="'yourItemName' | translate"
+                >
+                <span matSuffix>{{language.value.language_code | translate}}</span>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-form-field fxFlex="100">
+            <input
+              matInput
+              formControlName="internal_reference"
+              [placeholder]="'internalReferenceItem' | translate"
+            >
+          </mat-form-field>
+          <mat-radio-group
+            fxFlex="100"
+            formControlName="simple_or_composed"
+            (change)="toggleSimpleComposedItem($event)"
+          >
+            <mat-radio-button #simpleItem value="simple">
+              <span class="inline inset text-capitalize">
+                {{'simpleItem' | translate}}
+              </span>
+            </mat-radio-button>
+            <mat-radio-button #composedItem value="composed">
+              <span class="inline inset text-capitalize">
+                {{'composedItem' | translate}}
+              </span>
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+        <button [disabled]="this.data.item ? nameForm.invalid : nameForm.invalid" mat-raised-button class="lc-btn-primary" matStepperNext type="button">{{'next' | translate}}</button>
+      </mat-dialog-actions>
+    </mat-step>
+    <mat-step id="step1-form" formGroupName="1" [stepControl]="formArray?.get([1])" *ngIf="(typeItem === 'simple')">
+      <ng-template matStepLabel></ng-template>
+      <mat-dialog-content>
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          fxLayoutAlign="center center"
+          *ngIf="(typeItem === 'simple')"
+        >
+          <!-- Price -->
+          <mat-form-field fxFlex="100" *ngIf="typeItem === 'simple'">
+            <input
+              min="0"
+              matInput
+              required
+              step="any"
+              type="number"
+              ngControl="price"
+              formControlName="price"
+              [placeholder]="'price' | translate"
+            >
+            <span matSuffix>{{currentCurrency}}</span>
+            <mat-error *ngIf="descriptionForm.get('price').hasError('required')">
+              {{'form_error_required' | translate}}
+            </mat-error>
+          </mat-form-field>
+          <div
+            fxFlex="100"
+            fxLayout="row"
+            class="mt-3 mb-5"
+            fxLayoutGap="1rem"
+            fxLayoutAlign="center center"
+          >
+            <!-- Tax -->
+            <mat-form-field [fxFlex]="(businessSectorId === '1') ? 100 : 50">
+              <mat-select
+                required
+                formControlName="tax"
+                *ngIf="typeItem === 'simple'"
+                class="field-full-width"
+                placeholder="{{'tax' | translate}} (%)"
+              >
+                <mat-option value="10">10%</mat-option>
+                <mat-option value="20">20%</mat-option>
+              </mat-select>
+              <mat-error *ngIf="descriptionForm.get('tax').hasError('required')">
+                {{'form_error_required' | translate}}
+              </mat-error>
+            </mat-form-field>
+            <!-- item_type -->
+            <mat-form-field *ngIf="businessSectorId === '2'" fxFlex="50">
+              <mat-select
+                multiple="true"
+                formControlName="item_type"
+                [placeholder]="'type' | translate"
+              >
+                <mat-option
+                  [value]="itemType.id"
+                  class="text-capitalize"
+                  *ngFor="let itemType of itemTypes"
+                >
+                  {{itemType.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <!-- activatePortal -->
+          <!-- <div class="mt-1 mb-1" fxFlex="100">
+              <mat-checkbox formControlName="activate_portal">
+                {{'activatePortal' | translate}}
+              </mat-checkbox>
+          </div> -->
+          <!-- description -->
+          <!-- <mat-form-field fxFlex="100">
+            <textarea
+              matInput
+              rows="5"
+              cols="100"
+              #description
+              minlength="7"
+              maxlength="500"
+              formControlName="description"
+              [placeholder]="'description' | translate"
+            >
+            </textarea>
+            <mat-hint align="end">{{description.value.length}} / 500</mat-hint>
+            <mat-error *ngIf="descriptionForm.get('description').hasError('minlength')">
+              {{'textareaMinLength' | translate}}
+            </mat-error>
+            <mat-error *ngIf="descriptionForm.get('description').hasError('maxlength')">
+              {{'textareaMaxLength' | translate}}
+            </mat-error>
+          </mat-form-field> -->
+
+          <div class="row" formGroupName="description_translation">
+            <div
+              *ngFor="let language of descriptionForm.get('description_translation').controls; index as i"
+              [ngClass]="(languages.length == '6' || languages.length == '9' || languages.length == '3' )?'col-sm-4':
+              (languages.length == '4' || languages.length == '8')       ?'col-sm-3' :
+              (languages.length == '1' || languages.length == '2')       ?'col-sm-6' :
+              (languages.length == '5' || languages.length == '7')       ?'col-sm-4' :
+              col-sm-3"
+            >
+              <mat-form-field
+                [formArrayName]="i"
+                [ngClass]=" (languages.length == '1')?'tran1':
+                (languages.length == '2')?'tran2' :
+                (languages.length == '3')?'tran3' :
+                (languages.length == '4')?'tran4' :
+                (languages.length == '5')?'tran5' :
+                (languages.length == '6')?'tran6' :
+                (languages.length == '7')?'tran7' :
+                (languages.length == '8')?'tran8' :
+                (languages.length == '9')?'tran9' :
+                'tran9' "
+              >
+                <!-- <input
+                  matInput
+                  formControlName="description"
+                  [placeholder]="'yourItemName' | translate"
+                > -->
+                <textarea
+                  matInput
+                  rows="5"
+                  cols="100"
+                  minlength="7"
+                  maxlength="500"
+                  formControlName="description"
+                  [placeholder]="'description' | translate"
+                >
+                </textarea>
+                <!-- <mat-hint align="end">{{description.value.length}} / 500</mat-hint> -->
+                <span matSuffix>{{language.value.language_code | translate}}</span>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+          <mat-checkbox style="margin-top:5px" formControlName="isFavorite">
+              {{'isFavorite' | translate}}
+            </mat-checkbox>
+        <mat-checkbox style="margin-top:5px" formControlName="activate_portal">
+          {{'activatePortal' | translate}}
+        </mat-checkbox>
+        <button [disabled]="descriptionForm.invalid" mat-raised-button class="lc-btn-primary" matStepperNext type="button" >{{'next' | translate}}</button>
+        <button mat-button matStepperPrevious type="button">{{'back' | translate}}</button>
+      </mat-dialog-actions>
+    </mat-step>
+    <mat-step id="step2-form" formGroupName="2" [stepControl]="formArray?.get([2])" *ngIf="(typeItem === 'simple' && businessSectorId === '2')">
+      <ng-template matStepLabel></ng-template>
+      <mat-dialog-content>
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          fxLayoutAlign="center center"
+          *ngIf="(typeItem === 'simple')"
+        >
+          <!-- itemRestrictions -->
+          <div fxFlex="100" class="fieldset-multiple-choices" *ngIf="businessSectorId === '2'">
+            <fieldset class="form-group text-capitalize">
+              <legend>{{"itemRestrictions" | translate}}</legend>
+              <div class="input-lg">
+                <mat-checkbox
+                  [(ngModel)]="selectedItemRestrictions[itemRestriction.id]"
+                  *ngFor="let itemRestriction of itemRestrictions; let idx = index"
+                  [ngModelOptions]="{standalone: true}"
+                >
+                  {{itemRestriction.restriction.split('_').join(' ')}}
+                </mat-checkbox>
+              </div>
+            </fieldset>
+          </div>
+          <!-- allergies -->
+          <div fxFlex="100" class="fieldset-multiple-choices" *ngIf="businessSectorId === '2'">
+            <fieldset>
+              <legend>Allergies</legend>
+              <div class="input-lg">
+                <mat-checkbox
+                [(ngModel)]="selectedAllergies[allergy.id]"
+                *ngFor="let allergy of allergies; let idx = index"
+                [ngModelOptions]="{standalone: true}"
+                >
+                  {{allergy.title}}
+                </mat-checkbox>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+          <button mat-button matStepperPrevious type="button">{{'back' | translate}}</button>
+          <button [disabled]="restrictionsAlergiesForm.invalid" mat-raised-button class="lc-btn-primary" matStepperNext type="button" >{{'next' | translate}}</button>
+      </mat-dialog-actions>
+    </mat-step>
+    <mat-step id="step3-form" formGroupName="3" [stepControl]="formArray?.get([3])" *ngIf="(typeItem === 'simple')">
+      <ng-template matStepLabel></ng-template>
+      <mat-dialog-content>
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          fxLayoutAlign="center center"
+          *ngIf="(typeItem === 'simple')"
+        >
+          <!-- extraConfig -->
+          <div fxFlex="100" class="fieldset-multiple-choices" *ngIf="loadedConfigs.length">
+            <fieldset>
+              <legend>{{"extraConfig" | translate}}</legend>
+              <div class="input-lg">
+                <mat-checkbox
+                  [(ngModel)]="selectedConfigs[ext.id]"
+                  *ngFor="let ext of loadedConfigs; let idx = index"
+                  [ngModelOptions]="{standalone: true}"
+                >
+                  {{ext.name}}
+                </mat-checkbox>
+              </div>
+            </fieldset>
+          </div>
+          <!-- sizes / varieties -->
+          <div fxFlex="100" class="fieldset-multiple-choices">
+            <fieldset class="text-capitalize">
+              <span
+                class="erro-message text-danger pull-right"
+                [hidden]="(sizesOrVarsToDisplay.length > 0) && defaultExisted"
+              >
+                <small>{{'addDefaultValue' | translate}}</small>
+              </span>
+              <legend >sizes / varieties</legend>
+              <div class="input-lg">
+                <mat-radio-group formControlName="size_variety" (change)="updateSelectedOptions($event)">
+                    <!-- (click)="sizeOrVarValue='sizes'" -->
+                  <mat-radio-button #Size value="sizes" [checked]="sizeValue">
+                    <span class="inline inset text-capitalize">{{'sizes' | translate}}</span>
+                  </mat-radio-button>
+                  <!-- (click)="sizeOrVarValue='varieties'" -->
+                  <mat-radio-button #Variety value="varieties" [checked]="varietyValue">
+                    <span class="inline inset text-capitalize">{{'varieties' | translate}}</span>
+                  </mat-radio-button>
+                  <!-- (click)="sizesOrVarsToDisplay=[]; selected.sizesOrVarsToAdd=[]; sizeOrVarValue='>none'; sizesOrVarsToDelete=loadedSizesOrVars" -->
+                  <mat-radio-button value="none" [checked]="!Size.checked && !Variety.checked">
+                    <span class="inline inset text-capitalize">{{'none' | translate}}</span>
+                  </mat-radio-button>
+                </mat-radio-group><br>
+                <mat-checkbox
+                  #Default
+                  formControlName="default"
+                  (change)="checkDefault($event)"
+                >
+                  <span>{{'default' | translate}}</span>
+                </mat-checkbox>
+                <div
+                  fxLayoutWrap
+                  fxLayout="row"
+                  fxLayoutAlign="space-around center"
+                  class="form-group sizes-varieties mt-1"
+                >
+                  <mat-form-field fxFlex="33">
+                    <input
+                      matInput
+                      #SVName
+                      (input)="null"
+                      formControlName="nameSizeVar"
+                      placeholder="{{'typeTheNameHere' | translate}}"
+                    >
+                  </mat-form-field>
+                  <mat-form-field fxFlex="33">
+                    <input
+                      matInput
+                      #SVPrice
+                      type="number"
+                      (input)="null"
+                      formControlName="additionalPrice"
+                      placeholder="{{'additionalPrice' | translate}}"
+                    >
+                    <span matSuffix>{{ currentCurrency }}</span>
+                  </mat-form-field>
+                  <div fxFlex="33">
+                    <button
+                      [disabled]="sizeVarExtraForm.controls['additionalPrice'].value === ''
+                              || sizeVarExtraForm.controls['additionalPrice'].value === null
+                              || sizeVarExtraForm.controls['nameSizeVar'].value === ''
+                              || sizeVarExtraForm.controls['nameSizeVar'].value === null
+                              || sizeVarExtraForm.controls['size_variety'].value ===''
+                              || sizeVarExtraForm.controls['size_variety'].value ==='none'"
+                      type="button"
+                      class="btn lc-btn-success btn-sm mt-2"
+                      (click)="addSizeOrVariety({name: SVName.value, additional_price: SVPrice.value, is_default: Default.checked ? true : false})"
+                    >
+                      {{'add' | translate}}
+                    </button>
+                  </div>
+                </div>
+                <!--sizes & varieties selected-->
+                <div class="ml-2 c-filters-wrapper">
+                  <span *ngFor="let sizeOrVariety of sizesOrVarsToDisplay; let i = index;">
+                    <span
+                      class="label label-pill filter label-primary c-filter"
+                      [ngClass]="{
+                        'checked': !sizeOrVariety?.is_default,
+                        '': sizeOrVariety?.is_default
+                      }"
+                      >
+                      <span (click)="updateSizeOrVariety(sizeOrVariety)">{{sizeOrVariety?.name}}</span>
+                      <mat-icon (click)="deleteSizeOrVariety(sizeOrVariety);">close</mat-icon>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <mat-checkbox fxFlex="100" formControlName="out_of_stock" *ngIf="item">
+              {{'outOfStock' | translate}}
+            </mat-checkbox>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+          <button mat-button matStepperPrevious type="button">{{'back' | translate}}</button>
+          <button [disabled]="sizeVarExtraForm.invalid" mat-raised-button  type="button" class="lc-btn-primary" (click)="data.item ? updateItem() : addItem()">{{'confirm' | translate}}</button>
+          <button [disabled]="sizeVarExtraForm.invalid" mat-raised-button class="lc-btn-primary" matStepperNext type="button" >{{'next' | translate}}</button>
+      </mat-dialog-actions>
+    </mat-step>
+    <mat-step id="step4-form" formGroupName="4" [stepControl]="formArray?.get([4])">
+      <ng-template matStepLabel></ng-template>
+      <mat-dialog-content>
+        <div
+            *ngIf="typeItem === 'simple'"
+            fxFlex="100"
+            fxLayout="row"
+            fxLayoutGap="1rem"
+            fxLayoutAlign="space-between center"
+            style="padding-bottom: 0px!important"
+          >
+            <div fxFlex="50">
+              <div
+                fxLayout="column"
+                *ngIf="typeItem === 'simple'"
+                fxLayoutAlign="space-around center"
+                class="mat-block sizes-varieties mt-3"
+              >
+                <button
+                  mat-raised-button
+                  (click)="file.click()"
+                  class="mat-raised lc-btn-success"
+                >
+                  {{'upload' | translate}} {{'picture' | translate}}
+                </button>
+                <input
+                  style="display: none"
+                  #file
+                  type="file"
+                  (change)="fileChangeListener($event)"
+                >
+                <img-cropper #cropper [image]="pictureData"
+                             [settings]="cropperRkLogo"
+                [(cropPosition)]="cropPosition">
+                </img-cropper>
+
+
+            </div>
+          </div>
+          <div  fxFlex="50" *ngIf="typeItem === 'simple'">
+            <div  *ngIf="(data.item && data.item.picture.base_url) || pictureData " style="margin-top:100px">
+                <div class="preview-picture">
+                  <button
+                    type="button"
+                    aria-label="Close"
+                    class="close remove-pic"
+                    tooltip-position="right"
+                    (click)="resetItemPicture()"
+                    [matTooltip]="'resetPicture' | translate"
+                    *ngIf="data.item && data.item?.picture?.path !== 'pictures/defaults/menu_item_default'"
+                  >
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                  <img
+                    class="pictureStyle"
+                    *ngIf="pictureData && pictureData.image"
+                    [src]="pictureData.image"
+                  >
+                </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="typeItem === 'composed'" fxFlex="100">
+          <app-snug-order-selector
+            [items]="items"
+            [isNotOrder]="true"
+            [isLastPage]="isLastPage"
+            [(priceField)]="priceInput"
+            (loadItems)="loadItems($event)"
+            [(selectedItems)]="selectedComposedItem"
+            (updateButtonStatus)="updateButtonStatus($event)"
+            [isInernalCategoriesActive]="isInernalCategoriesActive"
+            [internalCategories]="isInernalCategoriesActive ? internalCategories : categories"
+          >
+          </app-snug-order-selector>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+        <label class="error" *ngIf="!isValidDimentions()">{{'the final image cannot be larger than 200*400' | translate}}</label>
+        <button mat-button matStepperPrevious type="button">{{'back' | translate}}</button>
+        <button
+          [disabled]="fileForm.invalid"
+          mat-raised-button
+          class="lc-btn-primary"
+          type="button"
+          (click)="data.item ? updateItem() : addItem()"
+        >
+          {{'confirm' | translate}}
+        </button>
+        <mat-spinner *ngIf="pictureUploading"></mat-spinner>
+        <button
+          *ngIf="!pictureUploading && (typeItem === 'simple') &&(!data.item?.picture?.is_default || pictureUploaded)"
+          mat-raised-button
+          class="lc-btn-success"
+          [disabled]="!isValidDimentions()"
+          (click)="confirmCropp()">
+          {{'update picture' | translate}}
+        </button>
+      </mat-dialog-actions>
+    </mat-step>
+  </mat-horizontal-stepper>
+</form>

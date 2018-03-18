@@ -1,0 +1,68 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="!title.args">{{title | translate}}</h4>
+  <h4 class="modal-title" *ngIf="title.args">{{title.value | translate: title.args}}</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    *ngIf="!withoutCancel"
+    (click)="activeModal.dismiss(false)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>
+<div class="modal-body clearfix text-center">
+  <div class="col-lg-12" *ngIf="notificationMessage">
+    <span class="col-lg-12 inline alert alert-warning">
+      <mat-icon class="inline">warning</mat-icon> <span class="inline center">{{notificationMessage | translate}}</span>
+    </span>
+  </div>
+  <div>
+    <span *ngIf="!message.args">{{message | translate}}</span>
+    <span *ngIf="message.args">{{message.value | translate: message.args}}</span>
+  </div>
+  <mat-form-field class="pin-code-input mt-2" *ngIf="withPin">
+    <mat-hint>{{'pinCodeRequiredMessage' | translate}}</mat-hint>
+    <input
+      matInput
+      type="text"
+      pattern="[0,9]*"
+      [(ngModel)]="pinCode"
+      [placeholder]="'pinCode' | translate"
+      [type]="showPin ? 'text' : 'password'"
+    >
+    <span matSuffix>
+      <button
+        type="button"
+        tabindex="-1"
+        mat-raised-button
+        (click)="showPin = !showPin"
+        class="btn btn-sm lc-btn-primary show-pin text-capitalize"
+      >
+        <span [hidden]="!showPin"> <i class="fa fa-eye-slash fa-2x"></i></span>
+        <span [hidden]="showPin"> <i class="fa fa-eye fa-2x"></i></span>
+      </button>
+    </span>
+  </mat-form-field>
+</div>
+<div class="modal-footer">
+  <button
+    type="submit"
+    mat-raised-button
+    [color]="confirmColor || 'primary'"
+    [disabled]="withPin ? !pinCode : false"
+    [class.lc-btn-primary]="confirmColor === 'primary'"
+    (click)="activeModal.close(withPin ? {pinCode: pinCode, response: true} : true)"
+  >
+    {{(confirmLabel || 'confirm') | translate}}
+  </button>
+  <button
+    type="button"
+    mat-raised-button
+    *ngIf="!withoutCancel"
+    (click)="activeModal.dismiss(false)"
+  >
+    <!--[color]="cancelColor || 'warn'"-->
+    {{'cancel' | translate}}
+  </button>
+</div>

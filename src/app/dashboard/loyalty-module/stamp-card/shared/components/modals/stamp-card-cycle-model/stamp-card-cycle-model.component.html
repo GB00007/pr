@@ -1,0 +1,37 @@
+<div>
+  <h2 mat-dialog-title>{{'stampCardCycle' | translate}}</h2>
+  <mat-dialog-content>
+    <mat-form-field fxLayoutAlign="center center">
+      <mat-select
+          [placeholder]="'selectStampCardCycle' | translate"
+          [(ngModel)]="defaultValue"
+        >
+        <mat-option
+          [value]="stamp.value"
+          *ngFor="let stamp of stampMaxNumber"
+          (click)="getvalue(defaultValue)"
+        >
+            {{stamp.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field >
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayoutAlign="end end">
+    <button
+      (click)="matDialogRef.close()"
+      color="warn"
+      mat-raised-button
+      mat-dialog-close fx
+    >
+      {{'cancel' | translate}}
+    </button>
+    <button
+      color="primary"
+      mat-raised-button
+      (click)="updatePage()"
+      [disabled]="isButtonDisabled"
+    >
+        {{'submit' | translate}}
+    </button>
+  </mat-dialog-actions>
+</div>

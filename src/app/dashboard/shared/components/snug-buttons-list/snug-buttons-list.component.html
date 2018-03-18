@@ -1,0 +1,116 @@
+<fieldset
+  [class.cat-fieldset-15p]="label === 'categories' && height === '768'"
+  [class.cat-fieldset-13p]="label === 'categories' && height === '800'"
+  [class.cat-fieldset-19p]="label === 'categories' && height === '900'"
+  [class.cat-fieldset-22p]="label === 'categories' && height === '1050'"
+  [class.cat-fieldset-23p]="label === 'categories' && height === '1080'"
+  [class.item-fieldset-15p]="label === 'items' && height === '768'"
+  [class.item-fieldset-13p]="label === 'items' && height === '800'"
+  [class.item-fieldset-19p]="label === 'items' && height === '900'"
+  [class.item-fieldset-22p]="label === 'items' && height === '1050'"
+  [class.item-fieldset-23p]="label === 'items' && height === '1080'"
+  [class.f-15p]="label === 'items'  && items?.length < max && currentPage < 1 && height === '768'"
+  [class.f-13p]="label === 'items'  && items?.length < max && currentPage < 1&& height === '800'"
+  [class.f-19p]="label === 'items'  && items?.length < max  && currentPage < 1&& height === '900'"
+  [class.f-22p]="label === 'items'  && items?.length < max  && currentPage < 1&& height === '1050'"
+  [class.f-23p]="label === 'items'  && items?.length < max  && currentPage < 1 && height === '1080'"
+>
+  <legend class="text-left">{{label | translate}}</legend>
+  <div
+    [class.cat-div-15p]="label === 'categories' && height === '768'"
+    [class.cat-div-13p]="label === 'categories' && height === '800'"
+    [class.cat-div-19p]="label === 'categories' && height === '900'"
+    [class.cat-div-22p]="label === 'categories' && height === '1050'"
+    [class.cat-div-23p]="label === 'categories' && height === '1080'"
+    [class.item-div-15p]="label === 'items' && height === '768'"
+    [class.item-div-13p]="label === 'items' && height === '800'"
+    [class.item-div-19p]="label === 'items' && height === '900'"
+    [class.item-div-22p]="label === 'items' && height === '1050'"
+    [class.item-div-23p]="label === 'items' && height === '1080'"
+    [class.d-15p]="label === 'items'  && items?.length < max && currentPage < 1 && height === '768'"
+    [class.d-13p]="label === 'items'  && items?.length < max && currentPage < 1 &&  height === '800'"
+    [class.d-19p]="label === 'items'  && items?.length < max  && currentPage < 1 && height === '900'"
+    [class.d-22p]="label === 'items'  && items?.length < max && currentPage < 1 && height === '1050'"
+    [class.d-23p]="label === 'items'  && items?.length < max && currentPage < 1  &&  height === '1080'"
+  >
+    <!-- <app-no-content
+      [hidden]="items?.length"
+      label="{{noContent | translate}}"
+      *ngIf="(items?.length && items?.length === 0) || isLoadItems"
+    >
+    </app-no-content> -->
+    <!-- <mat-progress-spinner
+
+      color="accent"
+      mode="indeterminate"
+      [class.load-items]="isLoadItems"
+      *ngIf="!items?.length && !isLoadItems && !isRecentEmptyy"
+    >
+    </mat-progress-spinner> -->
+    <div *ngIf="isRecentEmptyy"> NO CONTENT</div>
+    <div class="space-pad" fxLayoutAlign="left" fxLayoutWrap>
+      <div
+        fxFlex="33"
+        class="square-button-wrapper"
+        *ngFor="let item of composedItems"
+        fxLayoutAlign="space-around stretch"
+      >
+        <div
+          fxFlexFill
+          class="space"
+          fxLayoutAlign="space-around center"
+          fxLayoutWrap
+          (click)="onButtonClick.emit(item)"
+          [ngClass]="'square-button square-button-' + (item?.color?.name || ((isInernalCategoriesActive && item?.internal_category?.color?.name) ? item?.internal_category?.color?.name : item?.category?.color?.name) || 'indigo')"
+          [class.checked]="selectedId === item?.id"
+          [class.disabled]="item?.role === 'cook' || item?.role === 'barman' || item?.out_of_stock"
+          >
+          <span *ngIf="item?.name" class="text-size">{{item?.name === 'all' ? (item?.name | translate) : item?.name}}</span>
+          <span *ngIf="item?.number">{{item.number}}</span>
+          <span *ngIf="item?.firstname">{{item?.firstname?.split('_').join(' ')}} {{item?.lastname?.split('_').join(' ')}}</span>
+        </div>
+      </div>
+      <div
+        [fxFlex]="item?.firstname ? 20 : item?.number ? 10 : 33"
+        class="square-button-wrapper"
+        *ngFor="let item of items"
+        fxLayoutAlign="space-around stretch"
+      >
+      <div
+        fxFlexFill
+        class="space"
+        fxLayoutAlign="space-around center"
+        fxLayoutWrap
+        (click)="onButtonClick.emit(item)"
+        [ngClass]="'square-button square-button-' + (item?.color?.name || ((isInernalCategoriesActive && item?.internal_category?.color?.name) ? item?.internal_category?.color?.name : item?.category?.color?.name) || 'indigo')"
+        [class.checked]="selectedId === item?.id"
+        [class.disabled]="item?.role === 'cook' || item?.role === 'barman' || item?.out_of_stock"
+      >
+        <span *ngIf="item?.translation" class="text-size">
+            <div *ngFor="let lang of languages;  let j = index">
+                <div *ngIf="lang.isDefault == true && !item?.translation?.name">
+                  <div *ngFor="let x of item?.translation ; let k = index">
+                    <div *ngIf= "item?.translation[k]?.language_code === lang.code">
+                      <h4>{{item?.translation[k]?.name}} </h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4></h4>
+              </div>
+
+        </span>
+        <span *ngIf="item?.name === 'Favorite'">
+            <h4>{{item?.name}} </h4>
+        </span>
+        <span *ngIf="item?.name === 'Recent'">
+            <h4>{{item?.name}} </h4>
+        </span>
+        <span *ngIf="item?.number">{{item.number}}</span>
+        <span *ngIf="item?.firstname">{{item?.firstname?.split('_').join(' ')}} {{item?.lastname?.split('_').join(' ')}}</span>
+      </div>
+    </div>
+    </div>
+  </div>
+</fieldset>

@@ -1,0 +1,258 @@
+@mixin size($value) {
+  width: $value;
+  height: $value;
+}
+@mixin user-select($value) {
+  -webkit-user-select: $value;
+     -moz-user-select: $value;
+      -ms-user-select: $value;
+          user-select: $value;
+}
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+@mixin transition($value...) {
+  -webkit-transition: ($value);
+     -moz-transition: ($value);
+      -ms-transition: ($value);
+       -o-transition: ($value);
+          transition: ($value);
+}
+@mixin transition-property($property...) {
+    -webkit-transition-property: $property;
+       -moz-transition-property: $property;
+         -o-transition-property: $property;
+            transition-property: $property;
+}
+@mixin transition-duration($duration...) {
+    -webkit-transition-property: $duration;
+       -moz-transition-property: $duration;
+         -o-transition-property: $duration;
+            transition-property: $duration;
+}
+@mixin transition-timing-function($timing...) {
+  -webkit-transition-timing-function: $timing;
+     -moz-transition-timing-function: $timing;
+       -o-transition-timing-function: $timing;
+          transition-timing-function: $timing;
+}
+@mixin transition-delay($delay...) {
+  -webkit-transition-delay: $delay;
+     -moz-transition-delay: $delay;
+       -o-transition-delay: $delay;
+          transition-delay: $delay;
+}
+@mixin animation($value) {
+  -webkit-animation: ($value);
+          animation: ($value);
+}
+@mixin animation-delay($timing...) {
+  -webkit-animation-delay: $timing;
+          animation-delay: $timing;
+}
+@mixin animation-duration($timing...) {
+  -webkit-animation-duration: $timing;
+          animation-duration: $timing;
+}
+@mixin animation-iteration-count($value...) {
+  -webkit-animation-iteration-count: $value;
+          animation-iteration-count: $value;
+}
+@mixin column-count($value) {
+  -webkit-column-count: ($value);
+     -moz-column-count: ($value);
+      -ms-column-count: ($value);
+          column-count: ($value);
+}
+@mixin transform($value) {
+  -webkit-transform: ($value);
+     -moz-transform: ($value);
+      -ms-transform: ($value);
+          transform: ($value);
+}
+@mixin transform-translate($values...) {
+  -webkit-transform: translate($values);
+      -ms-transform: translate($values);
+          transform: translate($values);
+}
+@mixin transform-translateY($value) {
+  -webkit-transform: translateY($value);
+      -ms-transform: translateY($value);
+          transform: translateY($value);
+}
+@mixin transform-translateX($value) {
+  -webkit-transform: translateX($value);
+      -ms-transform: translateX($value);
+          transform: translateX($value);
+}
+@mixin transform-translateZ($value) {
+  -webkit-transform: translateZ($value);
+      -ms-transform: translateZ($value);
+          transform: translateZ($value);
+}
+@mixin transform-origin($value) {
+  -webkit-transform-origin: $value;
+          transform-origin: $value;
+}
+@mixin transform-animation($value) {
+  -webkit-animation: $value;
+          animation: load2 $value;
+}
+@mixin transform-rotate($value) {
+  -webkit-transform: rotate($value);
+          transform: rotate($value);
+}
+@mixin transform-scale($value) {
+  -webkit-transform: scale($value);
+          transform: scale($value);
+}
+@mixin center-x($value) {
+  left:     $value;
+  position: absolute;
+  @include transform-translateX(-$value);
+}
+@mixin center-y($value) {
+  top:      $value;
+  position: absolute;
+  @include transform-translateY(-$value);
+}
+@mixin center($values...) {
+  top:      50%;
+  left:     50%;
+  position: absolute;
+  @include transform-translate(-50%, -50%);
+}
+@mixin box-shadow($value...) {
+  -webkit-box-shadow: $value;
+     -moz-box-shadow: $value;
+          box-shadow: $value;
+}
+@mixin text-shadow($value...) {
+  -webkit-text-shadow: $value;
+     -moz-text-shadow: $value;
+          text-shadow: $value;
+}
+@mixin user-select($value) {
+  -webkit-user-select: $value;
+     -moz-user-select: $value;
+          user-select: $value;
+}
+@mixin lc-button($defaultBgColor, $defaultBorderColor, $hoverBgColor) {
+  border: none;
+  background-color: $defaultBgColor;
+  @include box-shadow(0 3px 0 $defaultBorderColor);
+  @include border-radius(2px);
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: $hoverBgColor;
+    color: #fff;
+    @include box-shadow(0 3px 0 $defaultBorderColor);
+  }
+  &.disabled,
+  &:disabled {
+    @include box-shadow(0 3px 0 $defaultBorderColor);
+  }
+}
+@mixin background-image($from, $to) {
+  background-image: -webkit-gradient(linear, left top, left bottom, from($from), to($to));
+  background-image: -webkit-linear-gradient(top, $from, $to);
+  background-image:    -moz-linear-gradient(top, $from, $to);
+  background-image:     -ms-linear-gradient(top, $from, $to);
+  background-image:      -o-linear-gradient(top, $from, $to);
+}
+@mixin gradient-horizontal-three-colors($start-color: #00b3ee, $mid-color: #7a43b6, $color-stop: 50%, $end-color: #c3325f) {
+  background-repeat: no-repeat;
+  background-image: -webkit-linear-gradient(left, $start-color, $mid-color, $end-color);
+  background-image:      -o-linear-gradient(left, $start-color, $mid-color, $end-color);
+  background-image:         linear-gradient(to right, $start-color, $mid-color, $end-color);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=1); // IE9 and down, gets no color-stop at all for proper fallback
+}
+@mixin gradient-vertical-three-colors($start-color: #00b3ee, $mid-color: #7a43b6, $color-stop: 50%, $end-color: #c3325f) {
+  background-repeat: no-repeat;
+  background-image: -webkit-linear-gradient($start-color, $mid-color $color-stop, $end-color);
+  background-image:      -o-linear-gradient($start-color, $mid-color $color-stop, $end-color);
+  background-image:         linear-gradient($start-color, $mid-color $color-stop, $end-color);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=0); // IE9 and down, gets no color-stop at all for proper fallback
+}
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+@mixin word-wrap() {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+@mixin ellipsis() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+@mixin fieldset() {
+  margin:  0 0 1.5rem 0;
+  padding: 0 1.4rem 1.4rem 1.4rem;
+  border:  0.0625rem solid #cac8c8; // 1px
+  @include box-shadow(0 0 0 0 #000);
+  legend {
+    width:         auto;
+    font-size:     1.125rem; // 18px
+    border-bottom: none;
+    padding:       0 0.3125rem; // 0 5px
+  }
+}
+@mixin border-top-radius($radius) {
+  -webkit-border-top-left-radius: $radius;
+     -moz-border-top-left-radius: $radius;
+      -ms-border-top-left-radius: $radius;
+          border-top-left-radius: $radius;
+  -webkit-border-top-right-radius: $radius;
+     -moz-border-top-right-radius: $radius;
+      -ms-border-top-right-radius: $radius;
+          border-top-right-radius: $radius;
+  -webkit-border-bottom-left-radius: $radius;
+     -moz-border-bottom-left-radius: $radius;
+      -ms-border-bottom-left-radius: $radius;
+          border-bottom-left-radius: $radius;
+  -webkit-border-bottom-right-radius: $radius;
+     -moz-border-bottom-right-radius: $radius;
+      -ms-border-bottom-right-radius: $radius;
+          border-bottom-right-radius: $radius;
+}
+/*
+* Dotted Border - A SASS mixin to help you increase spacing between the dots of border-style:dotted.
+* By @florbraz
+* Documentation and examples - github.com/florbraz/Dotted-Border-w-custom-spacing-SCSS-Mixin
+* V1.0
+*/
+@mixin dottedBorder($color: #8f8f8f, $orientation: horizontal, $position: top, $spacing: 5px, $size: 1px, $percentage: 71%) {
+  background-position: $position;
+  @if $orientation == horizontal {
+    background-image: linear-gradient(to right, $color $percentage, rgba(255,255,255,0) 0%);
+    background-size: $spacing $size;
+    background-repeat: repeat-x;
+  }
+  @else {
+    background-image: linear-gradient($color $percentage, rgba(255,255,255,0) 0%);
+    background-size: $size $spacing;
+    background-repeat: repeat-y;
+  }
+  .ie9 & {
+    border-#{$position}:1px dotted $color;
+  }
+}
+@mixin dotted-border() {
+  background-size:     55px 2px;
+  background-position: bottom;
+  background-repeat:   repeat-x;
+  background-image:    linear-gradient(to right, #dddddd 71%, rgba(255, 255, 255, 0) 0%);
+}

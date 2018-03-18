@@ -1,0 +1,27 @@
+:host {
+  mat-select {
+    display: block;
+  }
+  .width-pinCode {
+    width: 50%;
+    margin: 0 auto;
+  }
+  .error-pinCode {
+    margin-top: 3px;
+  }
+  .show-pin {
+    margin: 0;
+    padding: 0 4px;
+    min-width: 25px;
+    font-size: 0.5rem;
+    line-height: 18px;
+    box-shadow: none;
+    color: #000 !important;
+    background-color: transparent !important;
+  }
+  .mat-block-alert {
+    padding: 25px;
+    color: #F44336;
+    text-align: center;
+  }
+}

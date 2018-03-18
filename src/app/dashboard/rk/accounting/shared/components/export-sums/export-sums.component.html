@@ -1,0 +1,90 @@
+<div class="lc-accounting">
+  <form
+    name="exportAccountingForm"
+    [formGroup]="exportSumsForm"
+    class="export-accounting-form"
+  >
+    <div class="text-center c-filters-wrapper">
+      <fieldset>
+        <legend class="text-left">
+          <span>{{"date" | translate}}</span>
+        </legend>
+        <mat-radio-group formControlName="incomeDate">
+          <mat-radio-button value="lastMonth" checked="true">
+            {{'lastMonth' | translate}} ({{lastMonthName}})
+          </mat-radio-button>
+          <mat-radio-button value="currentMonth">
+            {{'currentMonth' | translate}} ({{currentMonthName}})
+          </mat-radio-button>
+          <mat-radio-button value="period">{{'period' | translate}}</mat-radio-button>
+        </mat-radio-group>
+        <div class="row mt-5 justify-content-center" *ngIf="showDatePickers">
+          <div class="col-lg-4">
+            <mat-form-field>
+              <input
+                matInput
+                [min]="minDate"
+                [matDatepicker]="from"
+                (mouseup)="from.open()"
+                formControlName="from_date"
+                (dateInput)="dateSelected()"
+                [placeholder]="'chooseDate' | translate"
+                [max]="exportSumsForm.get('to_date').value || today"
+              >
+              <mat-datepicker-toggle matSuffix class="suffix" [for]="from"></mat-datepicker-toggle>
+              <mat-datepicker #from></mat-datepicker>
+              <mat-error *ngIf="exportSumsForm.get('from_date').hasError('required')">
+                {{'form_error_required' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4">
+            <mat-form-field>
+              <input
+                matInput
+                [max]="today"
+                [matDatepicker]="to"
+                (mouseup)="to.open()"
+                formControlName="to_date"
+                (dateInput)="dateSelected()"
+                [placeholder]="'chooseDate' | translate"
+                [min]="exportSumsForm.get('from_date').value"
+              >
+              <mat-datepicker-toggle matSuffix class="suffix" [for]="to"></mat-datepicker-toggle>
+              <mat-datepicker #to></mat-datepicker>
+              <mat-error *ngIf="exportSumsForm.get('to_date').hasError('required')">
+                {{'form_error_required' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend class="text-left">
+          <span>{{"groupBy" | translate}}</span>
+        </legend>
+        <mat-radio-group formControlName="by_category">
+          <mat-radio-button checked="true" [value]="false">{{'internalCategories' | translate}}</mat-radio-button>
+          <mat-radio-button [value]="true">{{'categories' | translate}}</mat-radio-button>
+        </mat-radio-group>
+      </fieldset>
+    </div>
+    <div class="text-right">
+      <button
+        type="button"
+        mat-raised-button
+        [disabled]="isButtonDisabled"
+        (click)="exportDetailedOrders()"
+        class="btn btn-sm lc-btn-success lc-btn-export"
+      >
+        <span class="inline svg-icon-wrapper">
+          <svg viewBox="0 0 24 24">
+            <path fill="#ffffff" d="M 14 2 L 2 4 L 2 20 L 14 22 L 14 2 z M 15 4 L 15 7 L 17 7 L 17 8 L 15 8 L 15 10 L 17 10 L 17 11 L 15 11 L 15 13 L 17 13 L 17 14 L 15 14 L 15 16 L 17 16 L 17 17 L 15 17 L 15 20 L 20 20 C 21.105 20 22 19.105 22 18 L 22 6 C 22 4.895 21.105 4 20 4 L 15 4 z M 18 7 L 20 7 L 20 8 L 18 8 L 18 7 z M 4.21875 8 L 6.28125 8 L 7.34375 10.40625 C 7.43075 10.60125 7.4945 10.8055 7.5625 11.0625 L 7.59375 11.0625 C 7.63275 10.9085 7.72675 10.683 7.84375 10.375 L 9.03125 8 L 10.9375 8 L 8.6875 11.96875 L 11 16 L 8.96875 16 L 7.6875 13.40625 C 7.6385 13.31425 7.57925 13.10075 7.53125 12.84375 L 7.5 12.84375 C 7.471 12.96675 7.43175 13.15925 7.34375 13.40625 L 6.03125 16 L 4 16 L 6.40625 12 L 4.21875 8 z M 18 10 L 20 10 L 20 11 L 18 11 L 18 10 z M 18 13 L 20 13 L 20 14 L 18 14 L 18 13 z M 18 16 L 20 16 L 20 17 L 18 17 L 18 16 z"></path>
+          </svg>
+        </span>
+        <span class="inline">{{'export' | translate}}</span>&nbsp;
+        <span class="inline fa fa-spinner fa-spin" *ngIf="loading"></span>
+      </button>
+    </div>
+  </form>
+</div>

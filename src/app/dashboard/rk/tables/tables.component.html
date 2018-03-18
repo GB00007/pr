@@ -1,0 +1,46 @@
+<div class="container-fluid">
+  <h3 class="text-left text-muted text-uppercase title-container">
+    {{'tables' | translate}}
+  </h3>
+  <hr>
+  <app-loader *ngIf="!isTablesLoaded" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+  <!-- <app-no-content [label]="'noTables'" *ngIf="isTablesEmpty"></app-no-content> -->
+    <div *ngIf="isTablesLoaded && !isTablesEmpty" class="row mat-padding">
+      <div class="col-xl-3 col-lg-4 col-mat-6 lc-reset-padding-r" *ngFor="let table of tables; let idx = index">
+        <mat-card class="-blue lc-widget mat-card-flat">
+          <mat-card-title-group>
+            <div class="col-lg-12">
+              <mat-card-title>
+                <span
+                  class="inline shiny"
+                  [ngClass]="{
+                    'paid': table?.is_paid,
+                    'unpaid': !table?.is_paid
+                  }"
+                >
+                </span>
+                <span class="inline">{{'tableNbr' | translate}}: {{table?.number}}</span>
+              </mat-card-title>
+              <mat-card-subtitle class="title-max" [class.no-waiter]="!table.total_waiters">
+                <span *ngIf="!table.total_waiters" [title]="'noWaiterAssigned' | translate">
+                  <mat-icon class="inline">warning</mat-icon>
+                  <span class="inline top">{{'noWaiterAssigned' | translate}}</span>
+                </span>
+                <span *ngIf="!!table.total_waiters" >
+                  {{table.total_waiters && table.total_waiters > 1 ? (table.total_waiters + ' ' + ('waitersManageTable' | translate)) : ('waiterManageTable' | translate) }}
+                </span>
+
+              </mat-card-subtitle>
+            </div>
+          </mat-card-title-group>
+          <mat-card-actions>
+          </mat-card-actions>
+          <div   fxLayoutAlign="center stretch"
+          >
+            <button (click)="openManageWaitersDialog(idx, table)" mat-raised-button style="color: orange"><mat-icon>room_service</mat-icon>{{'showWaiters' | translate}}</button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+    <!-- <app-no-content class="no-table" [label]="'noTables'" *ngIf="tables && !tables.length"></app-no-content> -->
+</div>

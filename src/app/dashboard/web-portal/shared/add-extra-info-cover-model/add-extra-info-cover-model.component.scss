@@ -1,0 +1,16 @@
+@import '../../../../shared/sass/_colors.scss';
+
+:host {
+
+  .full-width{
+    width: 100% !important;
+  }
+  .modal-body{
+    max-height: 500px;
+    overflow-y: visible;
+  }
+  .error{
+    color: red;
+    font-size: large;
+  }
+}

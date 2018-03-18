@@ -1,0 +1,20 @@
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+.p-v-mat {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+.w-xxl {
+  width: 320px;
+}
+@media (max-width: 767px) {
+  .w-auto-xs {
+    width: auto;
+  }
+  .w-full-xs {
+    width: 100%;
+  }
+}

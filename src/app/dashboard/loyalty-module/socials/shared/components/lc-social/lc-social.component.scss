@@ -1,0 +1,83 @@
+@import '../../../../../../shared/sass/_mixins.scss';
+@import '../../../../../../shared/sass/_variables.scss';
+
+:host {
+  margin: 1rem 0;
+  align-self: stretch;
+  .social-provider-row {
+    padding: 0 3rem;
+  }
+  .near-result {
+    left: 0px;
+    width: 100%;
+    max-height: 213px;
+    display: block;
+    overflow-x: hidden;
+  }
+  .social-result {
+    cursor: pointer;
+  }
+}
+// .text-social-link {
+//   line-height: 37px;
+//   @media screen and (max-width: 1024px) {
+//     display: none;
+//   }
+//   .account-social-link {
+//     @media screen and (max-width: 1440px) {
+//       display: block;
+//       margin-top: -10px;
+//       position: relative;
+//     }
+//   }
+// }
+// [mat-raised-button] {
+//   margin: 0;
+// }
+// mat-slide-toggle{
+//   margin: 8px 0;
+// }
+// .venue-input {
+//   width: 80%;
+//   @media screen and (max-width: 1024px) {
+//     width: 100%;
+//     margin-bottom: 15px;
+//   }
+// }
+// .input-group-btn .btn {
+//   padding: 0;
+//   margin: 0 5px 0;
+//   min-width: 55px;
+//   font-size: 12px;
+//   line-height: 48px;
+//   border-radius: 0px;
+//   position: relative;
+//   height: 36px !important;
+// }
+// #foursquare-addon.active {
+//   color: #fff;
+//   background-color: $foursquare-color;
+//   &,
+//   ~ input {
+//     border-color: $foursquare-color;
+//   }
+// }
+// #facebook-addon.active {
+//   color: #fff;
+//   font-size: 21px;
+//   background-color: $facebook-color;
+//   ~ input {
+//     border-color: $facebook-color;
+//   }
+// }
+// #twitter-addon.active {
+//   color: #fff;
+//   background-color: $twitter-color;
+//   ~ input {
+//     border-color: $twitter-color;
+//   }
+// }
+// .toggle-type {
+//   @include transform(rotate(180deg));
+//   @include transition(transform .175s cubic-bazier(.175,.67,.83,.67));
+// }

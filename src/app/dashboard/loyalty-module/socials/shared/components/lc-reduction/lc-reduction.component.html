@@ -1,0 +1,56 @@
+<form
+  novalidate
+  fxLayout="column"
+  fxLayoutGap="1rem"
+  *ngIf="reductionsForm"
+  [formGroup]="reductionsForm"
+  fxLayoutAlign="center stretch"
+>
+  <div
+    fxLayout="raw"
+    fxLayoutGap="1rem"
+    formArrayName="reductions"
+    fxLayoutAlign="start center"
+    *ngFor="let reduction of reductionsForm.get('reductions').controls; index as i"
+  >
+    <div fxFlex="50">{{'providerDiscount' | translate:{provider: reduction.value.social_provider} }}</div>
+    <mat-form-field fxFlex="40" [formGroupName]="i">
+      <span matPrefix><i class="fa fa-percent" aria-hidden="true"></i></span>
+      <!-- <input matInput formControlName="amount"> -->
+      <mat-select
+        formControlName="amount"
+        [placeholder]="'reductionPlaceholder' | translate:{provider: reduction.value.social_provider}"
+      >
+        <mat-option [value]="option" *ngFor="let option of reductionsRange; index as i">
+          {{option}}
+        </mat-option>
+      </mat-select>
+      <span matSuffix>
+        <i class="fa" [ngClass]="'fa-' + reduction.value.social_provider"></i>
+      </span>
+    </mat-form-field>
+    <div fxFlex="10" [formGroupName]="i">
+      <mat-slide-toggle
+        color="primary"
+        formControlName="isEnabled"
+        [name]="reduction.value.social_provider"
+        (change)="updateStatus($event, reduction.value.social_provider)"
+        [title]="(reduction.value.isEnabled ? 'clickToDisable' : 'clickToEnable') | translate"
+      >
+      </mat-slide-toggle>
+    </div>
+  </div>
+  <div fxLayout="raw" fxLayoutAlign="end center">
+    <button
+      fxFlex="33"
+      type="submit"
+      color="primary"
+      fxFlexOffset="66"
+      mat-raised-button
+      (click)="updateReductions()"
+      [disabled]="isButtonDisabled"
+    >
+      {{'updateReductions' | translate}}
+    </button>
+  </div>
+</form>

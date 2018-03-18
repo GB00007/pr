@@ -1,0 +1,44 @@
+:host {
+  mat-radio-group {
+    display: block;
+    text-align: center;
+    mat-radio-button {
+      padding-right: 15px;
+    }
+  }
+  mat-form-field .suffix {
+    top: 20px;
+    right: -65px;
+    position: absolute;
+  }
+  .error-pinCode {
+    margin-top: 3px;
+  }
+  .show-pin {
+    margin: 0;
+    padding: 0 4px;
+    min-width: 25px;
+    font-size: 0.5rem;
+    line-height: 18px;
+    box-shadow: none;
+    color: #000 !important;
+    background-color: transparent !important;
+  }
+  .mat-block-alert {
+    padding: 25px;
+    color: #F44336;
+    text-align: center;
+  }
+  .total-price-wrapper {
+    .total-text {
+      line-height: 45px;
+      font-size: 1.4rem;
+    }
+    .total-value {
+      font-size: 2em;
+      color: #607D8B;
+      position: relative;
+      display: inline-block;
+    }
+  }
+}

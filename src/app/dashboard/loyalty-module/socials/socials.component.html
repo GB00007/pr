@@ -1,0 +1,57 @@
+<div>
+  <h3 class="text-sm-left text-muted text-uppercase title-container">
+    {{'settings' | translate}} > {{'socials' | translate}}
+  </h3>
+  <hr>
+  <div
+    fxLayout="column"
+    fxLayoutGap="1rem"
+    fxLayoutAlign="center center"
+    *ngFor="let section of pageSections; last as isLast;"
+  >
+    <h2>{{section.title | translate}}</h2>
+    <div>{{section.subTitle | translate}}</div>
+    <!-- <app-loader
+      diameter='100'
+      strokeWidth='10'
+      [pos]="{'margin-top': '3rem', 'margin-left': '4rem'}"
+      *ngIf="!page && (section.target === 'linkAccount')"
+    >
+    </app-loader> -->
+    <app-lc-sign-in-social
+      [accounts]="providerAccounts"
+      (updateSibilings)="updateSibilings($event)"
+      *ngIf="page && (section.target === 'linkAccount')"
+    >
+    </app-lc-sign-in-social>
+    <!-- <app-loader
+      diameter='100'
+      strokeWidth='10'
+      [pos]="{'margin-top': '7.5rem', 'margin-left': '9.375rem'}"
+      *ngIf="!page && (section.target === 'socialNetworkSettings')"
+    >
+    </app-loader> -->
+    <app-lc-social
+      [page]="page"
+      [reductions]="reductions"
+      [accounts]="providerAccounts"
+      (updateSibilings)="updateSibilings($event)"
+      *ngIf="page && (section.target === 'socialNetworkSettings')"
+    >
+    </app-lc-social>
+    <!-- <app-loader
+      diameter='294'
+      strokeWidth='10'
+      [pos]="{'margin-top' : '7.5rem', 'margin-left' : '9.375rem'}"
+      *ngIf="!page && (section.target === 'reductionsConfiguration')"
+    >
+    </app-loader> -->
+    <app-lc-reduction-form
+      [page]="page"
+      [reductions]="reductions"
+      *ngIf="page && (section.target === 'reductionsConfiguration')"
+    >
+    </app-lc-reduction-form>
+    <hr *ngIf="!isLast">
+  </div>
+</div>

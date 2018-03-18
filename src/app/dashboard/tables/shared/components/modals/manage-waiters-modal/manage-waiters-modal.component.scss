@@ -1,0 +1,56 @@
+@import '../../../../../../shared/sass/_mixins.scss';
+@import '../../../../../../shared/sass/_variables.scss';
+
+.no-content-modal {
+  display: block;
+  text-align: center;
+  .panel-body {
+    min-height: auto;
+  }
+  &.panel.panel-danger {
+    padding: 0;
+    top: 0;
+    left: 50%;
+    @include transform(translate(-50%, 100%));
+  }
+  .loading-bar {
+    margin-top: 2px;
+  }
+}
+.profile-waiter {
+  width: 70%;
+  margin-bottom: 8px;
+  border: 1px solid #ddd;
+  @include box-shadow(0 3px 5px -5px);
+  .profile-waiter-left {
+    overflow: hidden;
+    display: table-cell;
+    vertical-align: top;
+    padding-right: 10px;
+    .profile-waiter-photo {
+      border-radius: 8px;
+      display: inline-block;
+      background-color: #fff;
+      @include size(40px);
+      img {
+        width: 100%;
+      }
+    }
+  }
+  .profile-waiter-body {
+    line-height: 40px;
+    font-size: 0.920em;
+    white-space: nowrap;
+    display: table-cell;
+    .profile-waiter-heading {
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+  }
+}
+.panel-default>.panel-heading {
+  min-height: 114px;
+}
+.panel-body {
+  min-height: 180px;
+}

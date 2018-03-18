@@ -1,0 +1,179 @@
+  <form [formGroup]="newUser" class="lc-profile-form" novalidate>
+    <div class="mat-block">
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          id="username"
+          disabled="true"
+          [ngModel]="user?.username"
+          [ngModelOptions]="{standalone: true}"
+          placeholder="{{'username' | translate}}"
+        >
+      </mat-form-field>
+    </div>
+    <div class="mat-block">
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          id="firstname"
+          formControlName="firstname"
+          [ngModel]="user?.firstname"
+          placeholder="{{'firstname' | translate}}"
+        >
+      </mat-form-field>
+      <span
+        class="text-danger error-message"
+        [hidden]="newUser.controls.firstname.valid || newUser.controls.firstname.pristine"
+      >
+        <small>{{'form_error_required' | translate}}</small>
+      </span>
+    </div>
+    <div class="mat-block">
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          id="lastname"
+          [ngModel]="user?.lastname"
+          formControlName="lastname"
+          placeholder="{{'lastname' | translate}}"
+        >
+      </mat-form-field>
+      <span
+        class="text-danger error-message"
+        [hidden]="newUser.controls.lastname.valid || newUser.controls.lastname.pristine"
+      >
+        <small>{{'form_error_required' | translate}}</small>
+      </span>
+    </div>
+    <div class="mat-block">
+      <mat-form-field>
+        <input
+          matInput
+          id="email"
+          type="email"
+          formControlName="email"
+          [ngModel]="user?.email.email"
+          placeholder="{{'yourEmail' | translate}}"
+        >
+        <span matSuffix *ngIf="!user?.email?.isValid">
+          <mat-icon class="text-warning">warning</mat-icon>
+        </span>
+      </mat-form-field>
+      <span
+        class="error-message text-danger"
+        [hidden]="newUser.controls.email.valid || newUser.controls.email.pristine"
+      >
+        <small *ngIf="newUser.controls.email.errors && newUser.controls.email.errors.invalidEmailAddress">
+          {{'form_error_email' | translate}}
+        </small>
+        <small *ngIf="newUser.controls.email.errors && newUser.controls.email.errors.required">
+          {{'form_error_required' | translate}}
+        </small>
+      </span>
+      <a
+        class="resend-email"
+        *ngIf="!user?.email?.isValid"
+        (click)="resendVerificationEmail()"
+      >
+        {{'resendEmail' | translate}}
+      </a>
+    </div>
+    <div class="mat-block clearfix">
+      <div class="pull-right">
+        <button
+          type="submit"
+          [disabled]="isButtonDisabled"
+          mat-raised-button
+          (click)="updateUser()"
+          class="mat-raised lc-btn-primary"
+        >
+          {{'updateInfo' | translate}}
+        </button>
+      </div>
+    </div>
+  </form>
+  <!--Password form-->
+  <form [formGroup]="passwordForm" class="password-form" novalidate>
+    <div class="mat-block">
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          id="oldPassword"
+          name="oldPassword"
+          formControlName="oldPassword"
+          placeholder="{{'oldPassword' | translate}}"
+        >
+      </mat-form-field>
+      <span
+        class="text-danger error-message"
+        [hidden]="passwordForm.controls.oldPassword.valid || passwordForm.controls.oldPassword.pristine"
+      >
+        <small>{{'form_error_required' | translate}}</small>
+      </span>
+    </div>
+    <div class="mat-block">
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          id="newPassword"
+          name="newPassword"
+          formControlName="newPassword"
+          placeholder="{{'newPassword' | translate}}"
+        >
+      </mat-form-field>
+      <span
+        class="text-danger"
+        [hidden]="passwordForm.controls.newPassword.valid || passwordForm.controls.newPassword.pristine"
+      >
+        <small
+          *ngIf="passwordForm.controls.newPassword.errors && passwordForm.controls.newPassword.errors.invalidPassword"
+        >
+          {{'invalidPassword' | translate}}
+        </small>
+      </span>
+    </div>
+    <div class="mat-block">
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          (blur)="checkEqualPassword()"
+          formControlName="confirmPassword"
+          placeholder="{{'confirmNew' | translate}}"
+        >
+      </mat-form-field>
+      <span
+        class="text-danger"
+        [hidden]="passwordForm.controls.confirmPassword.valid || passwordForm.controls.confirmPassword.pristine"
+      >
+        <small
+          *ngIf="passwordForm.controls.confirmPassword.errors && passwordForm.controls.confirmPassword.errors.invalidPassword"
+        >
+          {{'invalidPassword' | translate}}
+        </small>
+      </span>
+      <small [hidden]="!checkedPassword" class="text-danger">
+        {{'passwordMismatch' | translate}}
+      </small>
+    </div>
+    <div class="mat-block row">
+      <div class="pull-right">
+        <button
+          type="submit"
+          mat-raised-button
+          (click)="changePassword()"
+          class="mat-raised lc-btn-primary"
+          [disabled]="!passwordForm.valid"
+        >
+          {{'changePassword' | translate}}
+        </button>
+      </div>
+    </div>
+  </form>

@@ -1,0 +1,123 @@
+:host {
+  .list-group-item {
+    text-transform: capitalize;
+    &.item-restriction-wrapper {
+      margin-top: 15px;
+      padding-bottom: 0;
+      .item-restriction {
+        margin-left: 2px;
+        li {
+          padding-left: 2px;
+          padding-right: 2px;
+        }
+      }
+    }
+  }
+  .details-composed-item {
+    .menu-items {
+      z-index: 1;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      padding-top: 15px;
+      h3 {
+        margin: 5px 0;
+        font-size: 1rem;
+        background: #fff;
+        padding-left: 10px;
+        padding-right: 10px;
+        display: inline-block;
+      }
+      .price {
+        float: right;
+        margin: 15px 0;
+        color: #607D8B;
+        font-weight: 500;
+        font-size: 1.2rem;
+        background: #fff;
+        padding-left: 10px;
+      }
+      .dotted-lines {
+        left: 0;
+        top: 45px;
+        width: 100%;
+        z-index: -1;
+        position: absolute;
+        border-top: 2px dotted #ccc;
+      }
+    }
+  }
+  h3 span:first-letter {
+    text-transform: capitalize;
+  }
+  .description {
+    width: 100%;
+    min-height: 155px;
+  }
+  .ribbon {
+    top: -3px;
+    z-index: 1;
+    right: -5px;
+    width: 155px;
+    height: 155px;
+    overflow: hidden;
+    text-align: right;
+    position: absolute;
+  }
+  .ribbon span {
+    top: 37px;
+    right: -30px;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: bold;
+    position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 20px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    width: 165px;
+    display: block;
+    background: #79A70A;
+    background: linear-gradient(#F70505 0%, #8F0808 100%);
+    box-shadow: 0 3px 10px -5px black;
+  }
+  .ribbon span::before {
+    content: "";
+    position: absolute; left: 0px; top: 100%;
+    z-index: -1;
+    border-left: 3px solid #8F0808;
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid #8F0808;
+  }
+  .ribbon span::after {
+    content: "";
+    position: absolute; right: 0px; top: 100%;
+    z-index: -1;
+    border-left: 3px solid transparent;
+    border-right: 3px solid #8F0808;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid #8F0808;
+  }
+  .modal-footer > span {
+    line-height: 38px;
+  }
+  .more-details {
+    top: -13px;
+    padding: 0 5px;
+    background: #fff;
+    position: absolute;
+  }
+  .allergies {
+    padding-top: 10px;
+    li > a {
+      cursor: pointer;
+    }
+  }
+  .category-detail {
+    left: 20px;
+    bottom: 20px;
+    position: absolute;
+  }
+}

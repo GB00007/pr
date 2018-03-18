@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  padding: 0 1rem;
+  margin-bottom: 75px;
+  .mat-block mat-input {
+    overflow: visible;
+  }
+  label{
+    color: #6e6e6e;
+    font-weight: 500;
+    font-size: .8rem;
+  }
+  .resend-email {
+    color:#FF8C00;
+    cursor: pointer;
+    &:hover {
+      color:#FF8C00;
+      text-decoration: none;
+    }
+  }
+}

@@ -1,0 +1,97 @@
+<div class="modal-header">
+  <h3 class="modal-title">{{'addOptions' | translate}}</h3>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss(false)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>
+<div class="modal-body clearfix">
+  <p>{{"introTextOptions" | translate}}</p>
+  <div class="col-lg-12 c-filters-wrapper" *ngIf="item.sizes.length > 0 || item.varieties.length > 0 ">
+    <fieldset>
+      <legend *ngIf="item.sizes.length > 0">
+        <strong>{{"sizes" | translate}}</strong>
+      </legend>
+      <legend *ngIf="item.varieties.length > 0">
+        <strong>{{"varieties" | translate}}</strong>
+      </legend>
+      <div class="input-lg">
+        <!--[(ngModel)]="item.size.id"-->
+        <mat-radio-group
+        class="block item-restrict"
+        *ngIf="item.sizes.length > 0"
+          >
+          <span *ngFor="let size of item.sizes; let i = index;">
+            <mat-radio-button [value]="size.id" (click)="toggleSizeVariety(size.id)">
+              <span class="inline inset text-capitalize" >{{size.name}} <span *ngIf="size.additionnal_price !== 0" >( + {{size.additionnal_price}} {{currentCurrency}})</span></span>
+            </mat-radio-button>
+          </span>
+        </mat-radio-group>
+          <!--[(ngModel)]="item.variety.id"-->
+        <mat-radio-group
+          class="block item-restrict"
+          *ngIf="item.varieties.length > 0"
+        >
+          <span *ngFor="let variety of item.varieties; let i = index;" >
+            <mat-radio-button [value]="variety.id" (click)="toggleSizeVariety(variety.id)">
+              <span class="inline inset text-capitalize">{{variety.name}} <span *ngIf="variety.additionnal_price !== 0" >( + {{variety.additionnal_price}} {{currentCurrency}})</span></span>
+            </mat-radio-button>
+          </span>
+        </mat-radio-group>
+      </div>
+    </fieldset>
+  </div>
+  <div class="col-lg-12 c-filters-wrapper" *ngIf="item.extra_configs.length > 0">
+    <span *ngFor="let extrConf of item.extra_configs; let k = index" >
+      <span *ngIf="!extrConf.multiple_choice">
+        <fieldset>
+          <legend><strong>{{extrConf.name}}</strong></legend>
+          <div class="input-lg">
+            <mat-radio-group
+              class="block item-restrict"
+              [(ngModel)]="extrConf.id"
+            >
+              <span *ngFor="let extIng of extrConf.extra_ingredients;">
+                <mat-radio-button [value]="extIng" (click)="toggleNotMultipExtraConfig(extIng)">
+                  <span class="inline inset text-capitalize" >{{extIng.name}} <span *ngIf="extIng.additionnal_price !== 0" >( + {{extIng.additionnal_price}} {{currentCurrency}})</span></span>
+                </mat-radio-button>
+              </span>
+            </mat-radio-group>
+          </div>
+        </fieldset>
+      </span>
+      <span *ngIf="extrConf.multiple_choice">
+        <fieldset>
+          <legend><strong>{{extrConf.name}}</strong></legend>
+            <span *ngFor="let extIng of extrConf.extra_ingredients; let i = index">
+              <mat-checkbox (change)="toggleMultipleExtraConfig(extIng, $event)">
+                <span class="inline inset text-capitalize" >{{extIng.name}} <span *ngIf="extIng.additionnal_price !== 0" >( + {{extIng.additionnal_price}} {{currentCurrency}})</span></span>
+              </mat-checkbox>
+            </span>
+        </fieldset>
+      </span>
+    </span>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      mat-raised-button
+      class="mat-raised lc-btn-primary"
+      (click)="submitToppings()"
+    >
+      <!--[disabled]=" defaultCheckedSizeOrVar === null && (item.varieties.length || item.sizes.length)"-->
+      {{'submit' | translate}}
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</div>

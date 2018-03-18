@@ -1,0 +1,188 @@
+<div class="container-fluid">
+  <div>
+    <h3 class="text-left text-muted text-uppercase title-container">
+      {{'rk' | translate}} > {{'printers' | translate}}
+    </h3>
+    <hr>
+    <app-loader  *ngIf="!isSnugPrinterLoaded" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+    <!-- <app-loader *ngIf="!isSnugPrinterLoaded"></app-loader> -->
+    <!-- <app-no-content [label]="'noSnugPrinter'" *ngIf="isSnugPrinterEmpty"></app-no-content> -->
+    <div *ngIf="isSnugPrinterLoaded && snugPrinters.length" class="smart-cards-wrapper text-center">
+      <div class="smart-cards-container text-left">
+        <h2 class="text-center margin">{{'printers' | translate}}</h2>
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          class="lc-printers-settings"
+          fxLayoutAlign="start center"
+        >
+          <div
+            fxFlex="33"
+            *ngFor="let printer of snugPrinters; let i = index;"
+          >
+            <mat-card class="mat-elevation-z10">
+              <mat-card-title class="mb-2">
+                <div
+                  fxLayoutWrap
+                  fxLayout="row"
+                  fxLayoutAlign="start center"
+                >
+                  <div fxFlex="80">
+                    <span class="name-printer">{{printer?.name}}</span>
+                  </div>
+                  <div fxFlex="20" class="text-right">
+                    <span
+                      ngbDropdown
+                      *ngIf="inDesktop()"
+                      class="d-inline-block"
+                      placement="bottom-right"
+                    >
+                      <button
+                        mat-button
+                        type="button"
+                        aria-label="More"
+                        ngbDropdownToggle
+                        class="mat-icon-button mat-text-primary"
+                      >
+                        <mat-icon>settings</mat-icon>
+                      </button>
+                      <ul
+                        ngbDropdownMenu
+                        aria-labelledby="settings"
+                        class="dropdown-menu-right"
+                      >
+                        <li (click)="openEditPrinterDialog(i, printer)">
+                          <a class="dropdown-item" class="mat-text-primary">
+                            <span class="inline"><mat-icon>mode_edit</mat-icon></span>
+                            <span class="inline up">{{'edit' | translate}}</span>
+                          </a>
+                        </li>
+                        <li class="dropdown-item" (click)="openDeletePrinterDialog(i, printer)">
+                          <a class="text-danger">
+                          <span class="inline"><mat-icon>delete_forever</mat-icon></span>
+                          <span class="inline up">{{'delete' | translate}}</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </span>
+                    <button
+                      color="accent"
+                      mat-icon-button
+                      *ngIf="!inDesktop()"
+                      class="mr-2 mat-delete"
+                      [matTooltip]="'delete' | translate"
+                      (click)="openDeletePrinterDialog(i, printer)"
+                    >
+                      <mat-icon>delete_forever</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-card-title>
+              <mat-card-content class="p-0">
+                <div
+                  fxLayoutWrap
+                  fxLayout="row"
+                  fxLayoutAlign="start end"
+                >
+                  <div fxFlex="75" fxLayout="column">
+                    <div fxFlex>{{'format' | translate}}:</div>
+                    <div fxFlex>{{'language' | translate}}:</div>
+                    <div fxFlex>{{'headerCharacter' | translate}}:</div>
+                    <div fxFlex>{{'fontFamily' | translate}}:</div>
+                    <div fxFlex>{{'fontSize' | translate}}:</div>
+                    <div fxFlex>{{'fontWeight' | translate}}:</div>
+                    <div fxFlex>{{'lineLength' | translate}}:</div>
+                    <div fxFlex>{{'lineSpacing' | translate}}:</div>
+                    <div fxFlex>{{'separator' | translate}}:</div>
+                    <div fxFlex>{{'margin' | translate}}:</div>
+                  </div>
+                  <div fxFlex="25" fxLayout="column">
+                    <div fxFlex>"{{printer?.format}}"</div>
+                    <div fxFlex>"{{getLanguages(printer?.language)}}"</div>
+                    <div fxFlex>"{{printer?.header_character}}"</div>
+                    <div fxFlex>"{{printer?.font_family}}"</div>
+                    <div fxFlex>"{{printer?.font_size}}"</div>
+                    <div fxFlex>"{{printer?.font_weight}}"</div>
+                    <div fxFlex>"{{printer?.line_length}}"</div>
+                    <div fxFlex>"{{printer?.line_spacing}}"</div>
+                    <div fxFlex>"{{printer?.separator}}"</div>
+                    <div fxFlex>"{{printer?.margin}}px"</div>
+                  </div>
+                </div>
+              </mat-card-content>
+              <mat-card-footer
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+              >
+                <button
+                  type="button"
+                  mat-raised-button
+                  (click)="openPrintPreview(printer)"
+                  class="lc-btn-default lc-btn-xs ml-0 mr-0 mt-0 mb-0"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="inline middle"
+                    style="width: 21px;height: 21px;padding-right: 2px;margin-top: -1px;"
+                  >
+                    <path
+                      fill="#ffffff"
+                      d="M 6 2 L 6 6 L 18 6 L 18 2 L 6 2 z M 6 7 C 3.8 7 2 8.8 2 11 L 2 17 L 6 17 L 6 22 L 18 22 L 18 17 L 22 17 L 22 11 C 22 8.8 20.2 7 18 7 L 6 7 z M 19 9 C 19.6 9 20 9.4 20 10 C 20 10.6 19.6 11 19 11 C 18.4 11 18 10.6 18 10 C 18 9.4 18.4 9 19 9 z M 8 15 L 16 15 L 16 20 L 8 20 L 8 15 z">
+                    </path>
+                  </svg>
+                  <span class="inline middle">{{'print' | translate}}</span>
+                </button>
+                <mat-chip-list>
+                  <mat-chip
+                    fxLayout="row"
+                    fxLayoutGap=".3rem"
+                    class="mat-elevation-z3 mt-3"
+                    fxLayoutAlign="space-between center"
+                    [color]="printer?.enabled ? 'text-green' : 'text-red'"
+                  >
+                    <mat-slide-toggle
+                      class="pt-0"
+                      color="primary"
+                      *ngIf="inDesktop()"
+                      [checked]="printer?.enabled"
+                      (change)="updatePrinters({id: printer?.id, enabled: $event.checked})"
+                      title="{{(printer?.enabled ? 'clickToDisable' : 'clickToEnable') | translate}}"
+                    >
+                    </mat-slide-toggle>
+                    <span *ngIf="!inDesktop()">
+                      <mat-icon
+                        [ngClass]="{
+                          'text-success': printer?.enabled,
+                          'text-danger': !printer?.enabled
+                        }"
+                      >
+                        {{printer?.enabled ? 'check' : 'close'}}
+                      </mat-icon>
+                    </span>
+                    <span [class.in-desktop]="inDesktop()">
+                      <strong>({{(printer?.enabled ? 'enabled' : 'disabled') | translate}})</strong>
+                    </span>
+                  </mat-chip>
+                </mat-chip-list>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="group-btns-rk">
+    <button
+      mat-fab
+      type="button"
+      color="accent"
+      class="mat-btn"
+      *ngIf="inDesktop()"
+      tooltip-position="below"
+      (click)="openAddPrinterDialog()"
+      [matTooltip]="'addPrinter' | translate"
+    >
+      <mat-icon class="mat-48">add</mat-icon>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<form
+  novalidate
+  name="itemTypeForm"
+  class="itemType-form"
+  [formGroup]="itemTypeForm"
+>
+  <div class="modal-header">
+    <h4>{{(itemType ? 'editItemType' : 'addItemType') | translate}}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+       (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <mat-form-field class="field-full-width">
+      <input
+        matInput
+        required
+        formControlName="name"
+        [placeholder]="'name' | translate"
+      >
+      <mat-error *ngIf="itemTypeForm.get('name').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width">
+      <mat-select
+        class="pb-0"
+        multiple="true"
+        formControlName="printers"
+        [placeholder]="'printers' | translate"
+      >
+        <mat-option [value]="printer.id" *ngFor="let printer of printers">
+          {{printer.name | translate}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="modal-footer">
+    <mat-checkbox class="margin-l mr-1 pt-2" formControlName="isInDigitalMode">
+      {{'isInDigitalMode' | translate}}
+    </mat-checkbox>
+    <mat-checkbox class="margin-l mr-1 pt-2" formControlName="isPrintEnabled">
+      {{'isPrintEnabled' | translate}}
+    </mat-checkbox>
+    <button
+      type="submit"
+      mat-raised-button
+      class="lc-btn-primary"
+      (click)="itemType ? updateItemType() : addItemType()"
+      [disabled]="itemType ? valuesNotChanged() : itemTypeForm.invalid"
+    >
+      {{'confirm' | translate}}
+    </button>
+    <button
+      class="ml-1"
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+       {{'cancel' | translate}}
+    </button>
+  </div>
+</form>

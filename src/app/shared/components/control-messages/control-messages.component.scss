@@ -1,0 +1,47 @@
+.lc-alert {
+  top: -63px;
+  left: 25px;
+  position: absolute;
+  font-size: 0.95rem;
+  &.specials {
+    top: -10px;
+    font-size: 13px;
+    line-height: 13px;
+  }
+}
+:host-context(.item-form) .lc-alert,
+:host-context(.lc-edit-page) .lc-alert,
+:host-context(.category-form) .lc-alert,
+:host-context(.edit-table-form) .lc-alert,
+:host-context(.add-table-form) .lc-alert,
+:host-context(.add-modal-user) .lc-alert,
+:host-context(.lc-profile-form) .lc-alert {
+  right: 2px;
+  left: inherit;
+}
+:host-context(.price) .lc-alert {
+  right: 105px;
+}
+:host-context(.lc-password-message) .lc-alert {
+  top: 0;
+  left: 0;
+  position: relative;
+  &.required {
+    right: 0;
+    top: -63px;
+    left: inherit;
+    position: absolute;
+  }
+}
+:host-context(.lc-textarea-message) .lc-alert {
+  right: 0;
+  top: -112px;
+  left: inherit;
+  position: absolute;
+}
+:host-context(.page-description) .lc-alert {
+  top: -175px;
+}
+:host-context(.edit-page-description) .lc-alert {
+  top: -85px;
+}

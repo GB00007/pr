@@ -1,0 +1,220 @@
+@import '../../../../shared/sass/_mixins.scss';
+@import '../../../../shared/sass/_variables.scss';
+
+:host {
+  #file {
+    display: none;
+  }
+  .group-btns-rk {
+    top: 0px;
+    right: 0px;
+    position: absolute;
+    button {
+      margin-left: 6px;
+    }
+  }
+  .edit-rk-page .lc-alert {
+    top: -135px;
+  }
+  .mat-tab-header .mat-ink-bar {
+    background-color: #00b1ff;
+  }
+  .smart-cards-wrapper,
+  .cash-register-wrapper {
+    padding-top: 3rem;
+  }
+  .smart-cards-wrapper {
+    .smart-cards-container {
+      padding: 0 1rem;
+    }
+    .owner-card,
+    .description {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .is-default {
+      bottom: 0;
+      right: 15px;
+      position: absolute;
+    }
+    .settings-button {
+      position: static;
+      .dropup {
+        top: 2%;
+        right: 0;
+        position: absolute;
+        .dropdown-menu.dropdown-menu-right {
+          bottom: -70%
+        }
+      }
+      .dropdown {
+        top: 5px;
+        right: 0;
+        position: absolute;
+      }
+    }
+  }
+  .signature-certificate svg {
+    display: block;
+    margin-left: 0px;
+    margin-top: -3px;
+    @include size(25px);
+    @media screen and (max-width: 1440px) {
+      margin-left: -2px;
+    }
+    @media screen and (max-width: 1366px) {
+      @include size(22px);
+    }
+  }
+  .remove-pic {
+    top: 17px;
+    position: absolute;
+    .mat-icon {
+      border-radius: 50%;
+      box-shadow: 1px 1px 1px rgba(0,0,0,.5);
+    }
+    &:hover {
+      color: #c9302c;
+    }
+  }
+  .lc-receipt-settings {
+    .toggle-print-status {
+      margin-top: -70px;
+      @media screen and (max-width: 1024px) {
+        margin-top: 0;
+      }
+    }
+    mat-card {
+      width: 60%;
+      padding-bottom: 12px;
+      &.disabled-status {
+        outline: 1px solid $danger-color;
+      }
+      .status-printer {
+        border-radius: 50%;
+        display: inline-block;
+        background-color: #EDF4F9;
+        vertical-align: text-bottom;
+        /*@include box-shadow(inset 0px 1px 4px rgba(0, 0, 0, 0.6));*/
+        @include size(20px);
+        @include box-shadow(inset 0 2px 5px 0 rgba(0,0,0,.16), inset 0 2px 10px 0 rgba(0,0,0,.12));
+        &.disabled {
+          /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#E57373+0,E53935+46 */
+          background: #E57373; /* Old browsers */
+          background: -moz-linear-gradient(left,  #E57373 0%, #E53935 46%); /* FF3.6-15 */
+          background: -webkit-linear-gradient(left,  #E57373 0%,#E53935 46%); /* Chrome10-25,Safari5.1-6 */
+          background: linear-gradient(to right,  #E57373 0%,#E53935 46%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E57373', endColorstr='#E53935',GradientType=1 ); /* IE6-9 */
+
+        }
+        &.enabled {
+          /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#8fc400+0,8fc400+100;Green+Flat+%236 */
+          background: #8fc400; /* Old browsers */
+          background: -moz-linear-gradient(left,  #8fc400 0%, #8fc400 100%); /* FF3.6-15 */
+          background: -webkit-linear-gradient(left,  #8fc400 0%,#8fc400 100%); /* Chrome10-25,Safari5.1-6 */
+          background: linear-gradient(to right,  #8fc400 0%,#8fc400 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8fc400', endColorstr='#8fc400',GradientType=1 ); /* IE6-9 */
+        }
+      }
+      .lc-btn-default.lc-btn-xs {
+        line-height: 29px;
+        padding: 0px 12px;
+        font-size: 0.850rem;
+      }
+      .using-printer-default {
+        font-size: 1rem;
+        color: #4b4848;
+        margin-top: 37px;
+      }
+      .status-settings {
+        line-height: 30px;
+      }
+      .default-footer-settings {
+        margin-top: 15px;
+      }
+      mat-card-subtitle .smart-card-type {
+        text-align: right;
+        font-size: .75rem;
+      }
+    }
+  }
+  .lc-printers-settings {
+    .mat-chip .mat-slide-toggle {
+      padding-top: 5px;
+    }
+    .status {
+      margin-top: -3px;
+      &.in-desktop {
+        margin-top: -8px;
+      }
+    }
+    .mat-delete {
+      top:      5px;
+      right:    -5px;
+      position: absolute;
+      color:    $btn-danger-color;
+    }
+  }
+  .mat-chip {
+    line-height: 1;
+    padding: 2px 6px;
+    svg {
+      display: block;
+      margin-left: 0px;
+      margin-top: 0px;
+      @include size(26px);
+      @media screen and (max-width: 1440px) {
+        margin-left: -2px;
+      }
+      @media screen and (max-width: 1366px) {
+        @include size(22px);
+      }
+    }
+  }
+}
+.mat-block {
+  margin: 15px 0;
+}
+.img-dimension{
+  max-width: 160px;
+  max-height: 160px;
+  min-width: 160px;
+  min-height: 160px;
+}
+textarea {
+  resize: none;
+}
+.lc-profile-form {
+  padding: 0 5rem;
+  .btn-company-status,
+  .btn-company-changes {
+    min-width: 25px;
+    font-size: 0.5rem;
+    line-height: 18px;
+    @include box-shadow(none);
+  }
+  .btn-company-changes {
+    padding: 4px 6px;
+  }
+  .btn-company-status {
+    padding: 0 4px;
+    color: #000 !important;
+    background-color: transparent !important;
+  }
+}
+.name-printer {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  &:first-letter {
+    text-transform: capitalize;
+  }
+  .close{
+    left:110px
+  }
+  .mat-tab-body-content {
+    overflow: unset;
+  }
+}

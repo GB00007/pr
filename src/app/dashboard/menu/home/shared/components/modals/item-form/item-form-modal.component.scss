@@ -1,0 +1,212 @@
+@import '../../../../../../../shared/sass/_mixins.scss';
+@import '../../../../../../../shared/sass/_variables.scss';
+
+:host {
+  .mb-5, .my-5 {
+    margin-bottom: 1rem!important;
+    }
+
+  mat-dialog-actions{
+      margin-bottom: 0px!important
+  }
+  mat-horizontal-stepper{
+    mat-step {
+
+    }
+  }
+  // padding-left:  10px;
+  // padding-right: 10px;
+  // padding-top: 10px;
+  // padding-bottom: 10px;
+
+
+  // width:         100%;
+  // margin-left:   auto;
+  // margin-right:  auto;
+  .description-item {
+    position: relative;
+    textarea {
+      resize: none;
+      height: 105px;
+    }
+    .lc-textarea-message .lc-alert {
+      right: 8px;
+      top: -127px;
+    }
+    mat-spinner,
+    mat-progress-spinner {
+      display: inline-block;
+    }
+  }
+  mat-checkbox {
+    padding-right: 15px;
+  }
+  .sizes-varieties {
+    margin-bottom: 0;
+    .input-group-addon,
+    input.form-control {
+      height: 34px;
+      font-size: 0.825rem;
+    }
+    .btn {
+      margin-top: 2px;
+    }
+  }
+  .c-filters-wrapper {
+    padding: 15px;
+    display: block;
+    text-align: center;
+    position: relative;
+    .c-filter {
+      color: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1;
+      padding: 2px 10px 0;
+      position: relative;
+      margin: 0 0 .3em .4em;
+      display: inline-block;
+      background-color: #3d5afe;
+      @include border-radius(100px);
+      @include box-shadow(1px 1px 1px rgba(0,0,0,.2));
+      @media screen and (max-width: 1366px) {
+        font-size: 12px;
+      }
+      &::first-letter {
+        text-transform: capitalize;
+      }
+      &.checked {
+        top: -1px;
+        background-color: #5cb85c !important;
+        .c-indicator-legend {
+          background-color: #5cb85c !important;
+          &:before {
+            height: 1em;
+            content: '';
+            width: 0.5em;
+            font-size: 15px;
+            position: absolute;
+            border-style: solid;
+            border-color: #fff;
+            transform: rotate(45deg);
+            border-width: 0 0.25em 0.25em 0;
+          }
+        }
+      }
+    }
+    .material-icons {
+      clear: both;
+      font-size: 17px;
+      line-height: 22px;
+      vertical-align: middle;
+    }
+  }
+  .total-text {
+    text-align: right;
+    line-height: 80px;
+    font-size: 1.3rem;
+  }
+  .total-composed {
+    margin-top: 10px;
+    padding-top: 10px;
+    .total-text {
+      text-align: right;
+      line-height: 80px;
+      font-size: 1.3rem;
+    }
+    .old-total {
+      color: #607D8B;
+      line-height: 80px;
+      font-size: 1.6em;
+      position: relative;
+      display: inline-block;
+      &.new-total {
+        color: #ccc;
+        font-size: 1.3em;
+          line-height: 1;
+        text-decoration: line-through;
+      }
+    }
+    .reduction {
+      color: #607D8B;
+      font-size: 1.6em;
+      &.new-total {
+        font-size: 2em;
+        line-height: 1; /* 76px;*/
+        display: block;
+      }
+    }
+  }
+  .preview-picture {
+    margin-left:145px;
+    position: relative;
+    .remove-pic {
+      left: 14%;
+      top: -15px;
+      position: absolute;
+      .mat-icon {
+        border-radius: 50%;
+        box-shadow: 1px 1px 1px rgba(0,0,0,.5);
+      }
+      &:hover {
+        color: #c9302c;
+      }
+    }
+    .field-full-width{
+      padding-bottom:0px!important;
+    }
+    .close{
+      padding-left: 150px;
+      padding-top: 60px;
+
+    }
+  }
+  .close{
+    margin-top: -55px;
+    margin-right: -24px;
+  }
+  .img-cropper {
+    .input{
+      display: none;
+    }
+  .pictureStyle{
+    width: 220px;
+    height:168px;
+  }
+}
+.mat-raised{
+  margin-bottom: 10px;
+  margin-right: 100px;
+}
+.tran1 {
+  width: 960px !important;
+}
+.tran2 {
+  width: 440px !important;
+}
+.tran3 {
+  width: 290px !important;
+}
+.tran4 {
+  width: 215px !important;
+}
+.tran5 {
+  width: 290px !important;
+}
+.tran6 {
+  width: 290px !important;
+}
+.tran7 {
+  width: 290px !important;
+}
+.tran8 {
+  width: 215px !important;
+}
+.tran9   {
+  width: 290px !important;
+}
+  .error{
+    font-size: large;
+    color: red;
+  }
+}

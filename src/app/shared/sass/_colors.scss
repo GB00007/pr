@@ -1,0 +1,262 @@
+// Import all the tools needed to customize the theme and extract parts of it
+@import '~@angular/material/theming';
+@include mat-core();
+@import './_mixins.scss';
+
+$blue: #2196f3;
+$green: #6DAB3C;
+$green-hover: #59a226;
+$black-color: #212121;
+$blue-color: #4899B1;
+$link-color: #439F43;
+$orange-color: #FF5722;
+$orange-text-color: #FF9800;
+$orange-text-hover: darken(#FF9800, 10%);
+$bg-orange-color: #ff7300;
+$blue-mat-color: #3F51B5;
+$success-color: #5cb85c;
+$danger-color: #d9534f;
+$btn-success-color: #5cb85c;
+$btn-success-hover: #439F43;
+$btn-success-border: #298529;
+$btn-danger-color: #F44336;
+$btn-danger-hover: #DB2A1D;
+$btn-danger-border: #C11003;
+$topnav-background-color: #4899B1;
+$sidebar-background-color: #4899B1;
+$btn-danger-disabled: rgba(252, 71, 58, 0.8);
+$btn-success-disabled: rgba(76, 181, 76, 0.8);
+
+/** Palette Material design **/
+$primary-color-dark:   #0288D1;
+$primary-color:        #03A9F4;
+$primary-color-light:  #B3E5FC;
+$primary-color-text:   #FFFFFF;
+$accent-color:         #536DFE;
+$accent-color-border:  #304ffe;
+$accent-color-hover:   #3d5afe;
+$accent-color-icon:    #3B57F7;
+$default-color:        #FF9800;
+$default-color-hover:  #F57C00;
+$default-color-border: #EF6C00;
+$default-color-icon:   #FB8C00;
+$primary-text-color:   #212121;
+$secondary-text-color: #727272;
+$divider-color:        #B6B6B6;
+
+/** Social newtork Color **/
+$facebook-color:         #3b5998;
+$twitter-color:          #55acee;
+$foursquare-color:       #f94877;
+$instagram-purple-color: #400080;
+$instagram-pink-color:   #d047d1;
+$instagram-yellow-color: #ffff00;
+$instagram-red-color:    #ff0000;
+
+/** Primary button **/
+$primary: #03a9f4;
+$primaryBorder: #03a9f4;
+$primaryHover: darken($primary, 3%);
+
+/** Secondary button **/
+$secondary: #e1e1e1;
+$secondaryBorder: #e1e1e1;
+$secondaryHover: darken($secondary, 3%);
+
+/** Success button **/
+$success: #8bc34a;
+$successBorder: #8bc34a;
+$successHover: darken($success, 3%);
+
+/** Info button **/
+$info: #00bcd4;
+$infoBorder: #00bcd4;
+$infoHover: darken($info, 3%);
+
+/** Warning button **/
+$warning: #ffc107;
+$warningBorder: #ffc107;
+$warningHover: darken($warning, 3%);
+
+/** danger button **/
+$danger: #e51c23;
+$dangerBorder: #e51c23;
+$dangerHover: darken($danger, 3%);
+
+// reputationsColors
+$reputationsColorsList: (
+  neutral:     #eec317,
+  appreciated: #9162aa,
+  exalted:     #e5572c,
+  friendly:    #78c2af,
+  royal:       #2c3e52
+);
+
+@each $keyName, $color in $reputationsColorsList {
+  .#{$keyName} {
+    outline-color: $color;
+  }
+}
+
+// socialColors
+$reputationsColorsList: (
+  twitter:    $twitter-color,
+  facebook:   $facebook-color,
+  foursquare: $foursquare-color,
+  instagram:  (
+    $instagram-purple-color,
+    $instagram-pink-color,
+    $instagram-red-color,
+    $instagram-yellow-color
+  )
+);
+
+@each $keyName, $color in $reputationsColorsList {
+  .mat-#{$keyName} {
+    color: #FFFFFF;
+    border-color: rgba(0, 0, 0, 0.2);
+    @if $keyName == 'instagram' {
+      background:
+        linear-gradient(nth($color, 1), transparent),
+        linear-gradient( 200deg, nth($color, 2), nth($color, 3), nth($color, 4));
+    } @else {
+      background-color: $color;
+    }
+  }
+}
+
+$colorsList: (
+  red400       : (white, $mat-red, 400, 200),
+  red       : (white, $mat-red, 500, 800),
+  red700       : (white, $mat-red, 700, 900),
+  redA700       : (white, $mat-red, A700, A400),
+  pink400      : (white, $mat-pink, 400, 200),
+  pink      : (white, $mat-pink, 500, 800),
+  pink700      : (white, $mat-pink, 700, 900),
+  pinkA700      : (white, $mat-pink, A700, A400),
+  purple400    : (white, $mat-purple, 400, 200),
+  purple    : (white, $mat-purple, 500, 800),
+  purple700    : (white, $mat-purple, 700, 900),
+  purpleA700    : (white, $mat-purple, A700, A400),
+  deep-purple400 : (white, $mat-deep-purple, 400, 200),
+  deep-purple : (white, $mat-deep-purple, 500, 800),
+  deep-purple700 : (white, $mat-deep-purple, 700, 900),
+  deep-purpleA700 : (white, $mat-deep-purple, A700, A400),
+  indigo400    : (white, $mat-indigo, 400, 200),
+  indigo    : (white, $mat-indigo, 500, 800),
+  indigo700    : (white, $mat-indigo, 700, 900),
+  indigoA700    : (white, $mat-indigo, A700, A400),
+  blue400      : (white, $mat-blue, 400, 200),
+  blue      : (white, $mat-blue, 500, 800),
+  blue700      : (white, $mat-blue, 700, 900),
+  blueA700      : (white, $mat-blue, A700, A400),
+  light-blue400  : (white, $mat-light-blue, 400, 200),
+  light-blue  : (white, $mat-light-blue, 500, 800),
+  light-blue700  : (white, $mat-light-blue, 700, 900),
+  light-blueA700  : (white, $mat-light-blue, A700, A400),
+  cyan400      : (white, $mat-cyan, 400, 200),
+  cyan      : (white, $mat-cyan, 500, 800),
+  cyan700      : (white, $mat-cyan, 700, 900),
+  cyanA700      : (white, $mat-cyan, A700, A400),
+  teal400      : (white, $mat-teal, 400, 200),
+  teal      : (white, $mat-teal, 500, 800),
+  teal700      : (white, $mat-teal, 700, 900),
+  tealA700      : (white, $mat-teal, A700, A400),
+  green400     : (white, $mat-green, 400, 200),
+  green     : (white, $mat-green, 500, 800),
+  green700     : (white, $mat-green, 700, 900),
+  greenA700     : (white, $mat-green, A700, A400),
+  light-green400 : (black, $mat-light-green, 400, 200),
+  light-green : (black, $mat-light-green, 500, 800),
+  light-green700 : (black, $mat-light-green, 700, 900),
+  light-greenA700 : (black, $mat-light-green, A700, A400),
+  lime400      : (black, $mat-lime, 400, 200),
+  lime      : (black, $mat-lime, 500, 800),
+  lime700      : (black, $mat-lime, 700, 900),
+  limeA700      : (black, $mat-lime, A700, A400),
+  yellow400    : (black, $mat-yellow, 400, 200),
+  yellow    : (black, $mat-yellow, 500, 800),
+  yellow700    : (black, $mat-yellow, 700, 900),
+  yellowA700    : (black, $mat-yellow, A700, A400),
+  amber400       : (black, $mat-amber, 400, 200),
+  amber       : (black, $mat-amber, 500, 800),
+  amber700       : (black, $mat-amber, 700, 900),
+  amberA700       : (black, $mat-amber, A700, A400),
+  orange400    : (black, $mat-orange, 400, 200),
+  orange    : (black, $mat-orange, 500, 800),
+  orange700    : (black, $mat-orange, 700, 900),
+  orangeA700    : (black, $mat-orange, A700, A400),
+  deep-orange400 : (white, $mat-deep-orange, 400, 200),
+  deep-orange : (white, $mat-deep-orange, 500, 800),
+  deep-orange700 : (white, $mat-deep-orange, 700, 900),
+  deep-orangeA700 : (white, $mat-deep-orange, A700, A400),
+  brown400     : (white, $mat-brown, 400, 200),
+  brown     : (white, $mat-brown, 500, 800),
+  brown700     : (white, $mat-brown, 700, 900),
+  brown800     : (white, $mat-brown, 800, 600),
+  grey400      : (black, $mat-grey, 400, 200),
+  grey      : (black, $mat-grey, 500, 800),
+  grey700      : (black, $mat-grey, 700, 900),
+  grey800      : (black, $mat-grey, 800, 600),
+  blue-grey400   : (white, $mat-blue-grey, 400, 200),
+  blue-grey   : (white, $mat-blue-grey, 500, 800),
+  blue-grey700   : (white, $mat-blue-grey, 700, 900),
+  blue-grey800   : (white, $mat-blue-grey, 800, 600)
+);
+
+@each $colorList, $keyName in $colorsList {
+  $color: nth($keyName, 1);
+  $background: nth($keyName, 2);
+  .#{$colorList},
+  .mat-#{$colorList},
+  .mat-raised-button.mat-#{$colorList} {
+    color: $color;
+    background-color: mat-color($background, nth($keyName, 3));
+    &[disabled] {
+      background-color: rgba(0, 0, 0, .12);
+    }
+  }
+  .text-#{$colorList},
+  .mat-text-#{$colorList} {
+    background-color: $color;
+    color: mat-color($background, nth($keyName, 3));
+    border: 1px solid  mat-color($background, nth($keyName, 3));
+  }
+  .mat-card-border-bottom-#{$colorList} {
+    border-bottom: 4px solid  mat-color($background, nth($keyName, 3));
+  }
+  .checked.#{$colorList},
+  .selected.#{$colorList},
+  .checked.mat-#{$colorList},
+  .checked.square-button-#{$colorList},
+
+  .mat-button-toggle-checked.#{$colorList} {
+    z-index: 9999;
+    outline: 5px solid mat-color($background, nth($keyName, 4));
+  }
+  .square-button-#{$colorList},
+  .square-button-#{$colorList}:hover {
+    background-color: mat-color($background, nth($keyName, 3));
+    color: $color;
+  }
+  .square-button-#{$colorList}:active {
+    background-color: mat-color($background, nth($keyName, 4));
+  }
+  .square-button-wrapper{
+    padding: 1px;
+  }
+}
+.mat-black {
+  color: $primary-color-text;
+  background-color: #000000;
+  &[disabled] {
+    background-color: rgba(0, 0, 0, .12);
+  }
+}
+.checked.mat-primary,
+.selected.mat-primary,
+.checked.mat-primary,
+.mat-button-toggle-checked.mat-primary {
+  z-index: 9999;
+  outline: 5px solid mat-color($mat-indigo, 800);
+}

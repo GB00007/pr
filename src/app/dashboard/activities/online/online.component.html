@@ -1,0 +1,158 @@
+<div class="container-fluid">
+  <div>
+    <h3 class="text-left text-muted text-uppercase title-container">
+      {{'activities' | translate}} > {{'online' | translate}}
+    </h3>
+    <hr>
+    <!-- <app-loader *ngIf="!isActivitiesLoaded"></app-loader> -->
+    <!-- <app-no-content [label]="'noOnlineActivity'" *ngIf="activities && activities.length == '0'"></app-no-content> -->
+
+    <div *ngIf="isActivitiesLoaded && activities.length != '0'" class="smart-cards-wrapper text-center">
+      <div class="smart-cards-container text-left">
+        <h2 class="text-center margin">{{'online' | translate}} ({{totalActivities}})</h2>
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          fxLayoutAlign="start stretch"
+        >
+          <div
+            fxFlex="25"
+            fxLayout="row"
+            fxLayoutAlign="center stretch"
+            *ngFor="let activity of activities; let i = index;"
+          >
+            <mat-card fxFlex="100" class="mat-elevation-z10">
+              <mat-card-title class="mb-2">
+                <div
+                  fxLayoutWrap
+                  fxLayout="row"
+                  fxLayoutAlign="start center"
+                >
+                  <div fxFlex="80">
+                    <span class="name-smart-card">{{activity.name}}</span>
+                  </div>
+                  <div fxFlex="20" class="text-right">
+                    <span
+                      ngbDropdown
+                      class="d-inline-block"
+                      placement="bottom-right"
+                    >
+                      <button
+                        mat-button
+                        type="button"
+                        aria-label="More"
+                        ngbDropdownToggle
+                        class="mat-icon-button mat-text-primary"
+                      >
+                        <mat-icon>settings</mat-icon>
+                      </button>
+                      <ul ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="settings">
+                        <li class="dropdown-item" (click)="openEditActivityDialog(i, activity)">
+                          <a class=" mat-text-primary">
+                            <span class="inline"><mat-icon>mode_edit</mat-icon></span>
+                            <span class="inline up">{{'edit' | translate}}</span>
+                          </a>
+                        </li>
+                        <li class="dropdown-item" (click)="openDeleteActivityConfirmationDialog(i, activity)"                            >
+                          <a class=" text-danger">
+                            <span class="inline"><mat-icon>delete_forever</mat-icon></span>
+                            <span class="inline up">{{'delete' | translate}}</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </span>
+                  </div>
+                </div>
+              </mat-card-title>
+              <mat-card-content
+                class="p-0"
+                fxLayoutWrap
+                fxLayout="column"
+                fxLayoutAlign="start stretch"
+              >
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                  <div>{{'activityIdentifier' | translate}}: {{activity.name | kebabCase}}</div>
+                  <mat-icon
+                    ngxClipboard
+                    color="primary"
+                    (click)="openSnackBar()"
+                    [cbContent]="activity.name | kebabCase"
+                  >
+                    content_copy
+                  </mat-icon>
+                </div>
+                <div class="description">
+                  {{'description' | translate}}: {{activity.description}}
+                </div>
+                <div class="description">
+                  {{'reputationPoints' | translate}}: {{activity.reputationPoints}}
+                </div>
+                <div class="description" [class.disabled]="activity.isNoRecurring">
+                  {{'activityRepetition' | translate}}:
+                  <div class="renumeration" *ngIf="activity.isNoRecurring">
+                    {{'noRepeat' | translate}}
+                  </div>
+                  <!-- <div class="renumeration" *ngIf="!activity.isNoRecurring">
+                    {{'this activity can be repeated' | translate}}
+                  </div> -->
+                  <div class="renumeration" *ngIf="activity.activityPerHour">
+                    {{'activityPerHour' | translate}}: {{activity.activityPerHour}}
+                  </div>
+                  <div class="renumeration" *ngIf="activity.activityPerDay">
+                    {{'activityPerDay' | translate}}: {{activity.activityPerDay}}
+                  </div>
+                  <div class="renumeration" *ngIf="activity.activityPerWeek">
+                    {{'activityPerWeek' | translate}}: {{activity.activityPerWeek}}
+                  </div>
+                </div>
+                <mat-slide-toggle
+                  class="mt-3"
+                  color="primary"
+                  [checked]="activity.isNoRecurring"
+                  (change)="updateActivity(i, activity, $event)"
+                  [title]="(activity.isNoRecurring ? 'disable' : 'enable') | translate"
+                >
+                  {{'notRecurring' | translate}}
+                </mat-slide-toggle>
+              </mat-card-content>
+              <mat-card-footer
+                fxLayout="row"
+                fxLayoutAlign="end center"
+              >
+                <div
+                  fxLayout="row"
+                  fxLayoutAlign="space-around center"
+                  [hidden]="activity.remuneration[coin].isHidden"
+                  *ngFor="let coin of keys(activity.remuneration)"
+                >
+                  <span>{{activity.remuneration[coin].amount}}</span>
+                  <img class="coin mx-1" [src]="currenciesCoins[coin]">
+                </div>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+        </div>
+        <app-show-more
+          *ngIf="!activities && !isLastPage"
+          [label]="'showMoreActivities'"
+          (getNextPage)="showMoreActivities($event)"
+        >
+        </app-show-more>
+      </div>
+    </div>
+
+  </div>
+  <div class="group-btns-rk">
+    <button
+      mat-fab
+      type="button"
+      color="accent"
+      class="mat-btn"
+      tooltip-position="below"
+      (click)="openAddActivityDialog()"
+      [matTooltip]="'addOnlineActivity' | translate"
+    >
+      <mat-icon class="mat-48">add</mat-icon>
+    </button>
+  </div>
+</div>

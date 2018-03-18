@@ -1,0 +1,170 @@
+
+mat-card {
+  /*box-sizing: border-box;
+  display: flex;
+  flex-direction: column;*/
+  margin: 8px;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+  mat-card-header {
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    &:first-child mat-card-avatar {
+      margin-right: 12px;
+    }
+    &:last-child mat-card-avatar {
+      margin-left: 12px;
+    }
+    mat-card-avatar {
+      width: 40px;
+      height: 40px;
+      .mat-user-avatar,
+      [mat-icon] {
+         border-radius: 50%;
+      }
+      [mat-icon] {
+        padding: 8px;
+      }
+      & + mat-card-header {
+          max-height: 40px;
+         .mat-title {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  mat-card-title {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .mat-subhead {
+      padding-top: 0;
+      font-size: 14px;
+    }
+    &:only-child .mat-subhead {
+      /*padding-top: 12px*/
+    }
+  }
+}
+
+mat-card mat-card-title .mat-card-title-media {
+    margin-top: -8px
+}
+
+mat-card mat-card-title .mat-card-title-media .mat-media-sm {
+    height: 80px;
+    width: 80px
+}
+
+mat-card mat-card-title .mat-card-title-media .mat-media-mat {
+    height: 112px;
+    width: 112px
+}
+
+mat-card mat-card-title .mat-card-title-media .mat-media-lg {
+    height: 152px;
+    width: 152px
+}
+
+mat-card mat-card-content {
+    display: block;
+    padding: 16px
+}
+
+mat-card .mat-card-content > p {
+    margin: 0
+}
+
+mat-card mat-card-content .mat-media-xl {
+    height: 240px;
+    width: 240px
+}
+
+mat-card .mat-actions,mat-card mat-card-actions {
+    margin: 8px
+}
+
+mat-card .mat-actions[layout=column] [mat-button]:not(.mat-icon-button),mat-card mat-card-actions[layout=column] [mat-button]:not(.mat-icon-button) {
+    margin: 2px 0
+}
+
+mat-card .mat-actions[layout=column] [mat-button]:not(.mat-icon-button):first-of-type,mat-card mat-card-actions[layout=column] [mat-button]:not(.mat-icon-button):first-of-type {
+    margin-top: 0
+}
+
+mat-card .mat-actions[layout=column] [mat-button]:not(.mat-icon-button):last-of-type,mat-card mat-card-actions[layout=column] [mat-button]:not(.mat-icon-button):last-of-type {
+    margin-bottom: 0
+}
+
+mat-card .mat-actions[layout=column] [mat-button].mat-icon-button,mat-card mat-card-actions[layout=column] [mat-button].mat-icon-button {
+    margin-top: 6px;
+    margin-bottom: 6px
+}
+
+mat-card .mat-actions mat-card-icon-actions,mat-card mat-card-actions mat-card-icon-actions {
+    flex: 1;
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: row
+}
+
+mat-card .mat-actions:not([layout=column]) [mat-button]:not(.mat-icon-button),mat-card mat-card-actions:not([layout=column]) [mat-button]:not(.mat-icon-button) {
+    margin: 0 4px
+}
+
+mat-card .mat-actions:not([layout=column]) [mat-button]:not(.mat-icon-button):first-of-type,mat-card mat-card-actions:not([layout=column]) [mat-button]:not(.mat-icon-button):first-of-type {
+    margin-left: 0
+}
+
+mat-card .mat-actions:not([layout=column]) [mat-button]:not(.mat-icon-button):last-of-type,mat-card mat-card-actions:not([layout=column]) [mat-button]:not(.mat-icon-button):last-of-type {
+    margin-right: 0
+}
+
+mat-card .mat-actions:not([layout=column]) [mat-button].mat-icon-button,mat-card mat-card-actions:not([layout=column]) [mat-button].mat-icon-button {
+    margin-left: 6px;
+    margin-right: 6px
+}
+
+mat-card .mat-actions:not([layout=column]) [mat-button].mat-icon-button:first-of-type,mat-card mat-card-actions:not([layout=column]) [mat-button].mat-icon-button:first-of-type {
+    margin-left: 12px
+}
+
+mat-card .mat-actions:not([layout=column]) [mat-button].mat-icon-button:last-of-type,mat-card mat-card-actions:not([layout=column]) [mat-button].mat-icon-button:last-of-type {
+    margin-right: 12px
+}
+
+mat-card .mat-actions:not([layout=column]) [mat-button]+mat-card-icon-actions,mat-card mat-card-actions:not([layout=column]) [mat-button]+mat-card-icon-actions {
+    flex: 1;
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: row
+}
+
+mat-card mat-card-footer {
+    margin-top: auto;
+    padding: 16px
+}
+
+@media screen and (-ms-high-contrast:active) {
+    mat-card {
+        border: 1px solid #fff
+    }
+}
+
+mat-card {
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+mat-card .mat-card-image {
+    border-radius: 2px 2px 0 0
+}
+
+mat-card mat-card-header mat-card-avatar [mat-icon] {
+    color: #fff;
+    background-color: rgba(0,0,0,.26)
+}
+
+mat-card mat-card-header mat-card-header-text .mat-subhead,mat-card mat-card-title mat-card-title-text:not(:only-child) .mat-subhead {
+    color: rgba(0,0,0,.54)
+}

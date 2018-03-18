@@ -1,0 +1,19 @@
+:host() {
+  display: block;
+  position: relative;
+  mat-icon.close {
+    top: -1rem;
+    right: -1rem;
+    cursor: pointer;
+    position: absolute;
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+      outline: none;
+    }
+  }
+  mat-dialog-actions {
+    padding: 0;
+  }
+}

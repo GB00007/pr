@@ -1,0 +1,224 @@
+<form
+  novalidate
+  name="printerForm"
+  class="printer-form"
+  [formGroup]="printerForm"
+>
+  <div class="modal-header">
+    <h4>{{(printer ? 'editPrinter' : 'addPrinter') | translate}}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.close(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div
+      fxLayoutWrap
+      fxLayout="row"
+      fxLayoutAlign="space-around center"
+    >
+      <div fxFlex="100" class="mr-4 ml-4">
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          fxLayoutAlign="center center"
+        >
+          <div fxFlex="50">
+            <mat-select
+              formControlName="name"
+              class="field-full-width mt-4 mb-4"
+              [placeholder]="'name' | translate"
+            >
+              <mat-option [value]="printer" *ngFor="let printer of printers">
+                {{printer | translate}}
+              </mat-option>
+            </mat-select>
+          </div>
+          <div fxFlex="46" class="ml-3">
+            <mat-select
+              formControlName="language"
+              class="field-full-width mt-4 mb-4"
+              [placeholder]="'printLanguage' | translate"
+            >
+              <mat-option [value]="language.code" *ngFor="let language of languages">
+                {{language.name | translate}}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
+      <div fxFlex="100" class="mr-2 ml-2">
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          fxLayoutAlign="center center"
+        >
+          <div fxFlex="30">
+            <mat-select
+              formControlName="format"
+              class="field-full-width mt-4 mb-4"
+              [placeholder]="'printFormat' | translate"
+            >
+              <mat-option [value]="format" *ngFor="let format of printFormats">
+                {{format}}
+              </mat-option>
+            </mat-select>
+          </div>
+          <div fxFlex="30" class="ml-3">
+            <mat-form-field class="field-full-width">
+              <input
+                matInput
+                min="25"
+                type="number"
+                formControlName="line_length"
+                [placeholder]="'lineLength' | translate"
+              >
+              <mat-error *ngIf="printerForm.get('line_length').hasError('maxLength')">
+                {{'textareaMaxLength' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="30" class="ml-3">
+            <mat-select
+              formControlName="line_spacing"
+              class="field-full-width mt-4 mb-4"
+              [placeholder]="'lineSpacing' | translate"
+            >
+              <mat-option [value]="spacing" *ngFor="let spacing of lineSpacing">{{spacing}}</mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
+      <div fxFlex="100" class="mr-2 ml-2">
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          fxLayoutAlign="center center"
+        >
+          <div fxFlex="30">
+            <mat-form-field class="field-full-width">
+              <input
+                matInput
+                maxlength="1"
+                formControlName="header_character"
+                [placeholder]="'headerCharacter' | translate"
+              >
+              <mat-error *ngIf="printerForm.get('header_character').hasError('maxLength')">
+                {{'textareaMaxLength' | translate}}
+              </mat-error>
+              <mat-error *ngIf="printerForm.get('header_character').hasError('minLength')">
+                {{'textareaMinLength' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="30" class="ml-3">
+            <mat-form-field class="field-full-width">
+              <input
+                matInput
+                maxlength="1"
+                formControlName="separator"
+                [placeholder]="'separator' | translate"
+              >
+              <mat-error *ngIf="printerForm.get('separator').hasError('maxLength')">
+                {{'textareaMaxLength' | translate}}
+              </mat-error>
+              <mat-error *ngIf="printerForm.get('separator').hasError('minLength')">
+                {{'textareaMinLength' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="30" class="ml-3">
+            <mat-form-field class="field-full-width">
+              <input
+                matInput
+                min="0"
+                max="20"
+                type="number"
+                formControlName="margin"
+                [placeholder]="'margin' | translate"
+              >
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div fxFlex="100" class="mr-2 ml-2">
+        <div
+          fxLayoutWrap
+          fxLayout="row"
+          fxLayoutAlign="center center"
+        >
+          <div fxFlex="30">
+            <mat-select
+              formControlName="font_family"
+              class="field-full-width mt-4 mb-4"
+              [placeholder]="'fontFamily' | translate"
+            >
+              <mat-option [value]="fontFamily" *ngFor="let fontFamily of fontsFamily">
+                {{fontFamily}}
+              </mat-option>
+            </mat-select>
+          </div>
+          <div fxFlex="30" class="ml-3">
+            <mat-select
+              formControlName="font_size"
+              class="field-full-width mt-4 mb-4"
+              [placeholder]="'fontSize' | translate"
+            >
+              <mat-option [value]="fontSize" *ngFor="let fontSize of fontSize;">
+                {{fontSize}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="printerForm.get('font_size').hasError('maxLength')">
+              {{'textareaMaxLength' | translate}}
+            </mat-error>
+            <mat-error *ngIf="printerForm.get('font_size').hasError('minLength')">
+              {{'textareaMinLength' | translate}}
+            </mat-error>
+          </div>
+          <div fxFlex="30" class="ml-3">
+            <mat-select
+              formControlName="font_weight"
+              class="field-full-width mt-4 mb-4"
+              [placeholder]="'fontWeight' | translate"
+            >
+              <mat-option [value]="i" *ngFor="let fontWeight of fontsWeight; let i = index;">
+                {{fontWeight}}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer pull-right">
+    <mat-checkbox
+      class="mr-1"
+      formControlName="enabled"
+    >
+      {{'enabled' | translate}}
+    </mat-checkbox>
+    <button
+      type="submit"
+      mat-raised-button
+      matDialogClose
+      class="lc-btn-primary"
+      (click)="printer ? updatePrinter() : addPrinter()"
+      [disabled]="printer ? valuesNotChanged() : printerForm.invalid"
+    >
+      {{'confirm' | translate}}
+    </button>
+    <button
+      class="ml-2"
+      type="button"
+      matDialogClose
+      mat-raised-button
+      (click)="activeModal.close(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>

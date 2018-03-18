@@ -1,0 +1,26 @@
+<div class="container-fluid">
+  <div>
+    <h3 class="text-left text-muted text-uppercase title-container">
+      {{'rk' | translate}} > {{'accounting' | translate}}
+    </h3>
+    <hr>
+    <mat-tab-group (selectChange)="tabChanged($event)">
+      <mat-tab label="{{'exportSums' | translate}}">
+        <div class="page-settings-wrapper text-center">
+          <div class="page-settings-container text-left">
+            <h2 class="text-center margin mb-4">{{'exportSums' | translate}}</h2>
+              <app-export-sums></app-export-sums>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="{{'exportOrders' | translate}}">
+        <div class="page-settings-wrapper text-center">
+          <div class="page-settings-container text-left">
+            <h2 class="text-center margin">{{'exportOrders' | translate}}</h2>
+            <app-export-orders></app-export-orders>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

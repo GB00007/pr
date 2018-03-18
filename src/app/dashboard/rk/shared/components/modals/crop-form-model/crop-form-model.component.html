@@ -1,0 +1,61 @@
+<form [formGroup]="rkSettingsForm" >
+  <div class="modal-header">
+    
+    <h4 class="modal-title">{{'uploadLogo' | translate}} {{'picture' | translate}}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <div class="mat-block text-left">
+      <img-cropper
+        [image]="pictureData"
+        class="form-control-file"
+        (onCrop)="cropped($event)"
+        [settings]="cropperRkLogo"
+        (change)="fileChangeListener($event)"
+      >
+      </img-cropper>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+    (click)="updateRkSettings()"      
+      type="submit"
+      color="primary"
+      mat-raised-button
+      class="lc-btn-primary"
+      [disabled]="!pictureUploaded"      
+      >
+      {{( 'update Logo') | translate}}
+    </button>
+    <button type="button" mat-raised-button (click)="activeModal.close(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>
+
+      <!-- <div fxFlex="30">
+          <div class="mat-block text-left" *ngIf="pictureData || rkSettings?.logo?.path">
+              <label for="logo">{{'currentPicture' | translate}}</label>
+              <button
+                type="button"
+                aria-label="Close"
+                *ngIf="rkSettings?.logo"
+                class="close remove-pic"
+                (click)="removePicture()"
+              >
+                <mat-icon>cancel</mat-icon>
+              </button>
+              <div >
+                <img [src]="logoUrl" class="img-dimension" *ngIf="!pictureData && logoUrl">
+                <img *ngIf="pictureData" src="{{pictureData.image}}" class="img-dimension" class="img-preview desaturate">
+              </div>
+            </div>
+      </div> -->

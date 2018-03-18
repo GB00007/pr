@@ -1,0 +1,37 @@
+<form role="form" [formGroup]="loginForm" class="lc-profile-form" novalidate>
+  <mat-form-field class="field-full-width">
+    <input
+      matInput
+      id="email"
+      type="email"
+      mat-autofocus
+      formControlName="email"
+      placeholder="{{'email' | translate}}"
+    >
+    <mat-error *ngIf="loginForm.get('email').hasError('required')">
+      {{'form_error_required' | translate}}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="field-full-width">
+    <input
+      matInput
+      id="password"
+      type="password"
+      formControlName="password"
+      placeholder="{{'password' | translate}}"
+    >
+    <mat-error *ngIf="loginForm.get('password').hasError('required')">
+      {{'form_error_required' | translate}}
+    </mat-error>
+  </mat-form-field>
+  <button
+    type="submit"
+    color="success"
+    mat-raised-button
+    (click)="login()"
+    [disabled]="!loginForm.valid"
+    class="btn-block mat-success p-h-mat"
+  >
+    {{'signin' | translate}}
+  </button>
+</form>

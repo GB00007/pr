@@ -1,0 +1,57 @@
+<div class="pull-right lang">
+  <app-language-selector class="auth"></app-language-selector>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div
+      class="wide-auto-xs padding-v-mat auth-panel clearfix"
+      [ngClass]="{
+        'col-xl-5 col-lg-6': stateService.is('Authentication.Login'),
+        'col-xl-8 col-lg-10': stateService.is('Authentication.Register'),
+        'col-xl-6 col-lg-8': stateService.is('Authentication.ForgetPassword')
+      }"
+    >
+      <div
+        class="panel mat-whiteframe-8dp text-color m-t-v"
+        [ngClass]="{
+          'col-xl-12 pull-left': stateService.is('Authentication.Register')
+        }"
+      >
+        <div class="p-b-lg text-center">
+          <img src="assets/images/logo.png" class="img-fluid user-avatar"/>
+          <hr>
+        </div>
+        <ui-view></ui-view>
+      </div>
+      <div class="pull-right auth-link-right" *ngIf="stateService.is('Authentication.Login')">
+        <a uiSref="Authentication.Register" uiSrefActive="active">{{'registerHere' | translate}}</a>
+      </div>
+      <div class="pull-right auth-link-right" *ngIf="stateService.is('Authentication.Register')">
+        {{'loginMessage' | translate}}
+        <a uiSref="Authentication.Login" uiSrefActive="active">{{'loginHere' | translate}}</a>
+      </div>
+      <div class="pull-left auth-link-left" *ngIf="!stateService.is('Authentication.ForgetPassword')">
+        <a uiSref="Authentication.ForgetPassword" uiSrefActive="active">{{'forgotpassword' | translate}}</a>
+      </div>
+      <div class="auth-link-left text-center" *ngIf="stateService.is('Authentication.ForgetPassword')">
+        <a uiSref="Authentication.Login" uiSrefActive="active">{{'gobacktologin' | translate}}</a>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <footer
+      class="authentication-footer text-center"
+      [ngClass]="{
+        'col-xl-4 col-lg-6':  stateService.is('Authentication.Login'),
+        'col-xl-8 col-lg-10': stateService.is('Authentication.Register'),
+        'col-xl-6 col-lg-8':  stateService.is('Authentication.ForgetPassword')
+      }"
+    >
+      <a mat-button class="lc-download-app text-uppercase" href="https://www.snugstaff.com/" target="_blank">
+        <mat-icon class="mat-24">devices</mat-icon>
+        <span class="middle">{{'downloadApp' | translate }}</span>
+      </a>
+    </footer>
+  </div>
+</div>
+

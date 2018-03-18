@@ -1,0 +1,57 @@
+mat-toolbar {
+  padding: 0 !important;
+  .mat-toolbar-tools {
+    color:#fff;
+    font-size: 20px;
+    letter-spacing: .005em;
+    box-sizing: border-box;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: 64px;
+    max-height: 64px;
+    padding: 0 16px;
+    margin: 0;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.12),
+                0 4px 5px 0 rgba(0,0,0,.12),
+                0 1px 10px 0 rgba(0,0,0,.12);
+    button:first-child {
+      margin-left: -8px;
+    }
+    h3 > span.username {
+    color:#fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: inline-block;
+    &::first-letter {
+      text-transform: capitalize;
+    }
+    @media screen and (max-width: 1366px) {
+      font-size: 16px;
+    }
+      &:hover {
+        text-shadow: 1px 1px 1px rgba(255, 255,255, 0.4);
+      }
+    }
+    .icon-username:hover i {
+      text-shadow: 1px 1px 1px rgba(255, 255,255, 0.4);
+    }
+  }
+ /* .mat-toolbar-tools {
+    font-size: 20px;
+    letter-spacing: .005em;
+    box-sizing: border-box;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: 64px;
+    max-height: 64px;
+    padding: 0 16px;
+    margin: 0;
+  }*/
+}
+

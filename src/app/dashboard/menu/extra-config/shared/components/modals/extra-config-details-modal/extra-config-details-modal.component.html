@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <h4>{{'extraIngridientDetails' | translate}}</h4>
+</div>
+<div class="modal-body clearfix">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="card-title text-capitalize">{{extraConfig.name}}</h4>
+    </div>
+    <div class="card-body center">
+      <table class="mat-data-table" layout-fill>
+        <thead>
+          <tr>
+            <th class="mat-text-cell" width="10%">{{'default' | translate}}</th>
+            <th class="mat-text-cell text-center" width="70%">{{'name' | translate}}</th>
+            <th class="mat-text-cell" width="20%">{{'price' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-template ngFor let-extraIngredient [ngForOf]="extraConfig.extra_ingredients" let-i="index">
+            <tr>
+              <td class="mat-text-cell">
+                <mat-icon class="text-success" *ngIf="extraIngredient.default">radio_button_checked</mat-icon>
+                <mat-icon class="text-warning" *ngIf="!extraIngredient.default">radio_button_unchecked</mat-icon>
+              </td>
+              <td class="mat-text-cell text-center">
+                {{extraIngredient?.name}}
+              </td>
+              <td class="mat-text-cell">
+                <span class="badge badge-success">
+                    {{extraIngredient.additional_price | snugCurrency:currentCurrency:true}}
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="btn-group pull-right mt-3">
+    <button
+      type="button"
+      color="primary"
+      mat-raised-button
+     class="mat-raised"
+     (click)="activeModal.dismiss(false)"
+    >
+      {{'close' | translate}}
+    </button>
+  </div>
+</div>

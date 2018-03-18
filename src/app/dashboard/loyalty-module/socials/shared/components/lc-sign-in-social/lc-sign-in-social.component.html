@@ -1,0 +1,26 @@
+<div
+  fxFlex="40"
+  fxLayout="row"
+  fxLayoutAlign="center center"
+  *ngFor="let social of socials;let idx = index"
+>
+  <button
+    fxFlex="100"
+    type="button"
+    [color]="social"
+    *ngIf="accounts"
+    mat-raised-button
+    tooltip-position="above"
+    (click)="accounts[social] ? openUnlinkProviderDialog(social) : onSocialLoginClick(social)"
+    [matTooltip]="accounts[social] ? ('unlink' | translate:{provider: social}) : ('link' + social | translate)"
+  >
+    <!-- [tooltip-position]="(idx === 0 || idx === 1) ? 'above' : 'below'" -->
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <!-- <mat-icon fxFlex="10" [svgIcon]="social"></mat-icon>
+      <mat-icon fxFlex="10" [svgIcon]="accounts[social] ? 'clear' : 'done'"></mat-icon> -->
+      <i fxFlex="10"  class="icon-font fa fa-{{social}}"></i>
+      <mat-icon class="icon-font" fxFlex="10">{{accounts[social] ? 'clear' : 'done'}}</mat-icon>
+      <p fxFlex>{{accounts[social] ? ('unlink' | translate:{provider: social}) : ('link' + social | translate)}}</p>
+    </div>
+  </button>
+</div>

@@ -1,0 +1,171 @@
+<form
+  novalidate
+  name="setPinCode"
+  class="set-pin-code"
+  [formGroup]="deletePinCodeForm"
+>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{page?.delete_pin ? ('changeAdminPinCode' | translate) : ('addAdminPinCode' | translate)}}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <div class="mat-block text-center">
+      <mat-form-field
+        class="field-full-width"
+        *ngIf="page?.delete_pin"
+        dividerColor="{{getDividerColor(deletePinCodeForm.controls['pinCode'])}}"
+      >
+        <input
+          matInput
+          #oldPinCode
+          autofocus
+          tabindex="0"
+          autocomplete="off"
+          formControlName="oldPinCode"
+          [type]="showOldPin ? 'text' : 'password'"
+          placeholder="{{('oldPinCode') | translate}}"
+        >
+        <span matSuffix>
+          <button
+            type="button"
+            tabindex="-1"
+            mat-raised-button
+            class="btn btn-sm show-pin"
+            (click)="showOldPin = !showOldPin"
+          >
+            <span [hidden]="!showOldPin"> <i class="fa fa-eye-slash fa-2x"></i></span>
+            <span [hidden]="showOldPin"> <i class="fa fa-eye fa-2x"></i></span>
+          </button>
+        </span>
+        <mat-hint align="start">
+          <span
+            class="text-danger error-pinCode"
+            [hidden]="deletePinCodeForm.controls['oldPinCode'].valid || deletePinCodeForm.controls['oldPinCode'].pristine"
+          >
+            <small *ngIf="deletePinCodeForm.controls['oldPinCode'].errors && deletePinCodeForm.controls['oldPinCode'].errors.required">
+              {{'form_error_required' | translate}}
+            </small>
+            <small *ngIf="deletePinCodeForm.controls['oldPinCode'].errors && deletePinCodeForm.controls['oldPinCode'].errors.pattern">
+              {{'postiveonly' | translate}}
+            </small>
+            <small *ngIf="deletePinCodeForm.controls['oldPinCode'].errors && deletePinCodeForm.controls['oldPinCode'].errors.wrongPinCode && page?.delete_pin">
+              {{'wrongPinCode' | translate}}
+            </small>
+          </span>
+        </mat-hint>
+      </mat-form-field>
+      <mat-form-field
+        class="field-full-width"
+        dividerColor="{{getDividerColor(deletePinCodeForm.controls['pinCode'])}}"
+      >
+        <input
+          matInput
+          #pinCode
+          tabindex="0"
+          reverse="true"
+          autocomplete="off"
+          formControlName="pinCode"
+          validateEqual="confirmPinCode"
+          [type]="showPin ? 'text' : 'password'"
+          placeholder="{{(page?.delete_pin ? 'newPinCode' : 'pinCode') | translate}}"
+        >
+        <span matSuffix>
+          <button
+            tabindex="-1"
+            mat-raised-button
+            class="btn btn-sm show-pin"
+            (click)="showPin = !showPin"
+          >
+            <span [hidden]="!showPin"> <i class="fa fa-eye-slash fa-2x"></i></span>
+            <span [hidden]="showPin"> <i class="fa fa-eye fa-2x"></i></span>
+          </button>
+        </span>
+        <mat-hint align="start">
+          <span
+            class="text-danger error-pinCode"
+            [hidden]="deletePinCodeForm.controls['pinCode'].valid || deletePinCodeForm.controls['pinCode'].pristine"
+          >
+            <small *ngIf="deletePinCodeForm.controls['pinCode'].errors && deletePinCodeForm.controls['pinCode'].errors.required">
+              {{'form_error_required' | translate}}
+            </small>
+            <small *ngIf="deletePinCodeForm.controls['pinCode'].errors && deletePinCodeForm.controls['pinCode'].errors.pattern">
+              {{'postiveonly' | translate}}
+            </small>
+          </span>
+        </mat-hint>
+      </mat-form-field>
+      <mat-form-field
+        class="field-full-width"
+        dividerColor="{{getDividerColor(deletePinCodeForm.controls['confirmPinCode'])}}"
+      >
+        <input
+          matInput
+          tabindex="0"
+          maxlength="8"
+          #confirmPinCode
+          reverse="false"
+          autocomplete="off"
+          validateEqual="pinCode"
+          formControlName="confirmPinCode"
+          [type]="showConfirm ? 'text' : 'password'"
+          placeholder="{{(page?.delete_pin ? 'confirmNewPinCode' : 'confirmPinCode') | translate}}"
+        >
+        <span matSuffix>
+          <button
+            tabindex="-1"
+            mat-raised-button
+            class="btn btn-sm show-pin"
+            (click)="showConfirm = !showConfirm"
+          >
+            <span [hidden]="!showConfirm"> <i class="fa fa-eye-slash fa-2x"></i></span>
+            <span [hidden]="showConfirm"> <i class="fa fa-eye fa-2x"></i></span>
+          </button>
+        </span>
+        <mat-hint align="start">
+          <span
+            class="text-danger"
+            [hidden]="deletePinCodeForm.controls['confirmPinCode'].valid || deletePinCodeForm.controls['confirmPinCode'].pristine"
+          >
+            <small *ngIf="deletePinCodeForm.controls['confirmPinCode'].errors && deletePinCodeForm.controls['confirmPinCode'].errors.required && (deletePinCodeForm.errors && !deletePinCodeForm.errors.pinCodeMismatch)">
+              {{'form_error_required' | translate}}
+            </small>
+          </span>
+          <small
+            class="text-danger"
+            *ngIf="deletePinCodeForm.controls['confirmPinCode'].valid && deletePinCodeForm.controls['pinCode'].valid && deletePinCodeForm.errors && deletePinCodeForm.errors['fieldsMismatch']"
+          >
+            {{'pinCodeMismatch' | translate}}
+          </small>
+        </mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      mat-raised-button
+      (click)="setPinCode()"
+      class="lc-btn-primary"
+      [disabled]="!deletePinCodeForm.valid"
+    >
+      {{'submit' | translate}}
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>
+

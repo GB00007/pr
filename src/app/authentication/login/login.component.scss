@@ -1,0 +1,9 @@
+@import '../../shared/sass/mixins';
+@import '../../shared/sass/variables';
+
+:host {
+  form mat-form-field {
+    padding: 2px;
+    margin: 0 0 30px;
+  }
+}

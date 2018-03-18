@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <div>
+    <h3 class="text-left text-muted text-uppercase title-container">
+      {{'page' | translate}}
+    </h3>
+    <hr>
+    <app-loader [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}" *ngIf="!page"></app-loader>
+    <app-lc-page-form [page]="page" *ngIf="page"></app-lc-page-form>
+  </div>
+</div>

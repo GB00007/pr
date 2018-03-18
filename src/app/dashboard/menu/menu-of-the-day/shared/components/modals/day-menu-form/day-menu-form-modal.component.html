@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+      {{(dayMenu  ? 'editDayMenu' : 'addDayMenu') | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <app-snug-order-selector
+      [items]="items"
+      [isDayMenu]="true"
+      [isNotOrder]="true"
+      [(nameField)]="name"
+      [(priceField)]="price"
+      [isLastPage]="isLastPage"
+      (loadItems)="loadItems($event)"
+      [(selectedItems)]="selectedItems"
+      [internalCategories]="internalCategories"
+      (updateButtonStatus)="updateButtonStatus($event)"
+      [isInernalCategoriesActive]="isInernalCategoriesActive"
+    >
+    </app-snug-order-selector>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      mat-raised-button
+      matDialogClose
+      class="mat-raised lc-btn-primary"
+      (click)="dayMenu ? updateDayMenu() : addDayMenu()"
+      [disabled]="dayMenu ? valuesNotChanged() : selectedItems.length && name && (price && price <= 0)"
+    >
+      {{(dayMenu ? 'update' : 'confirm') | translate}}
+    </button>
+      <button mat-raised-button (click)="activeModal.dismiss(false)" type="button">
+        {{'cancel' | translate}}
+      </button>
+    </div>
+

@@ -1,0 +1,189 @@
+@import '../../../shared/sass/_mixins.scss';
+@import '../../../shared/sass/_variables.scss';
+
+:host {
+  hr{
+    margin-bottom: 0px!important;
+  }
+  mat-card {
+    padding: 0;
+    h4 {
+      width: 90%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      @media screen and (max-width: 1280px) {
+        font-size: 1.2rem;
+        padding-top: 4px;
+      }
+    }
+    mat-card-header {
+      height: 100%;
+      display: block;
+      position: relative;
+      padding-top: 0;
+      padding-bottom: 0;
+      background-color: #f7f7f9;
+      border-bottom: 1px solid rgba(0,0,0,.125);
+      .dropdown .dropdown-menu {
+        top: 20px;
+        @media screen and (max-width: 1280px) {
+          right: 0;
+          left: initial;
+        }
+        &.last {
+          left: -119px;
+        }
+      }
+      mat-card-subtitle {
+        .price-day-menu {
+          color: #607D8B;
+          font-size: 1.5rem;
+        }
+        .status-settings {
+          line-height: 30px;
+        }
+      }
+    }
+    mat-card-content {
+      min-height: 254px !important;
+      .details-entries {
+        margin: 10px 0;
+        background: #fff;
+        padding-right: 10px;
+        display: inline-block;
+        img {
+          margin-right: 20px;
+          display: inline-block;
+          outline: 1px dotted #607d8b;
+        }
+        h3 {
+          width: 90%;
+          overflow: hidden;
+          font-size: 1.3rem;
+          line-height: 67px;
+          white-space: nowrap;
+          display: inline-block;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+    .menus {
+    line-height: 0;
+    /*-webkit-column-gap: 0px;
+        -moz-column-gap: 0px;
+            column-gap: 0px;*/
+    // @include column-count(2);
+    /*@media screen and (max-width: 1920px) {
+          @include column-count(1);
+        }
+        @media screen and (max-width: 1600px) {
+          @include column-count(3);
+        }
+        @media screen and (max-width: 1366px) {
+          @include column-count(2);
+        }
+        @media screen and (max-width: 1024px) {
+          @include column-count(1);
+        }*/
+      img {
+        float: left;
+        width: 100% !important;
+        height: auto !important;
+      }
+    }
+    /*.snug-switch-wrapper {
+      overflow: hidden;
+      position: relative;
+      .snug-switch {
+        top: 0;
+        position: absolute;
+        &:first-of-type {
+          left: 0;
+        }
+        &:last-of-type {
+          left: 100%;
+        }
+      }
+    }*/
+    .snug-switch-wrapper {
+      overflow: hidden;
+      .snug-switch {
+        white-space: nowrap;
+        will-change: transform;
+        &:hover {
+          animation-play-state: running;
+          animation: snug-switch-wrapper 5s linear infinite;
+        }
+      }
+    }
+    @keyframes snug-switch-wrapper {
+      0% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+    /*.menu-items {
+      z-index: 1;
+      overflow: hidden;
+      position: relative;
+      h3 {
+        float: left;
+        margin: 5px 0;
+        font-size: 1rem;
+        background: #fff;
+        padding-right: 10px;
+        display: inline-block;
+      }
+      .price {
+        float: right;
+        margin: 3px 0;
+        color: #607D8B;
+        font-weight: 500;
+        background: #fff;
+        font-size: 1.2rem;
+        padding-left: 10px;
+      }
+      .dotted-lines {
+        border-top: 2px dotted #ccc;
+        left: 0;
+        position: absolute;
+        top: 18px;
+        width: 100%;
+        z-index: -1;
+      }
+    }*/
+    .mat-card-content {
+      min-height: 168px;
+      .show-more-items {
+        cursor: pointer;
+      }
+    }
+  }
+}
+:host {
+  .name-item-type {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    &:first-letter {
+      text-transform: capitalize;
+    }
+  }
+  mat-chip-list {
+    position: relative;
+    .mat-chip {
+      line-height: 1;
+      padding: 2px 6px;
+      .mat-slide-toggle {
+        padding-top: 5px;
+      }
+    }
+  }
+}

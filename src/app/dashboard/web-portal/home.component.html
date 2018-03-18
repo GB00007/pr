@@ -1,0 +1,14 @@
+<div class="container-fluid">
+  <div>
+    <h3 class="text-left text-muted text-uppercase title-container">
+      {{'webPortal' | translate}}
+    </h3>
+    <hr>
+    <app-loader *ngIf="!page" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+    <div *ngIf="page" class="page-settings-wrapper text-center">
+      <div class="page-settings-container text-left">
+        <app-web-portal-info [page]="page" ></app-web-portal-info>
+      </div>
+    </div>
+  </div>
+</div>

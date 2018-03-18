@@ -1,0 +1,167 @@
+<form
+  name="set-reduction-form"
+  [formGroup]="editReductionForm"
+>
+  <div class="modal-header">
+    <h4 class="modal-title">{{'editReduction' | translate}}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <div class="row justify-content-center">
+      <div class="select-options text-center">
+        <!-- <span class="snug-reduction-label">{{"overallReduction" | translate}}:</span> -->
+        <mat-button-toggle-group formControlName="discount" #group="matButtonToggleGroup">
+          <mat-button-toggle
+            #none
+            value="none"
+            tooltip-position="below"
+            (change)="updateAmount('none')"
+            matTooltip="{{'none' | translate}}"
+          >
+            <mat-icon>not_interested</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle
+            value="10"
+            matTooltip="10%"
+            class="without-icon"
+            tooltip-position="below"
+            (change)="updateAmount('adhoc', 10)"
+          >
+            10%
+          </mat-button-toggle>
+          <mat-button-toggle
+            value="20"
+            matTooltip="20%"
+            class="without-icon"
+            tooltip-position="below"
+            (change)="updateAmount('adhoc', 20)"
+          >
+            20%
+          </mat-button-toggle>
+          <mat-button-toggle
+            value="30"
+            matTooltip="30%"
+            class="without-icon"
+            tooltip-position="below"
+            (change)="updateAmount('adhoc', 30)"
+          >
+            30%
+          </mat-button-toggle>
+          <mat-button-toggle
+            value="50"
+            matTooltip="50%"
+            class="without-icon"
+            tooltip-position="below"
+            (change)="updateAmount('adhoc', 50)"
+          >
+            50%
+          </mat-button-toggle>
+          <mat-button-toggle
+            value="free"
+            class="without-icon"
+            tooltip-position="below"
+            matTooltip="{{'free' | translate}}"
+            (change)="updateAmount('adhoc', 100)"
+          >
+            {{'free' | translate}}
+          </mat-button-toggle>
+          <mat-button-toggle
+            value="owner"
+            tooltip-position="below"
+            (change)="updateAmount('owner')"
+            matTooltip="{{'owner' | translate}}"
+          >
+            <mat-icon>person</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle
+            value="staff"
+            tooltip-position="below"
+            (change)="updateAmount('staff')"
+            matTooltip="{{'staff' | translate}}"
+          >
+            <mat-icon>people</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle
+            value="custom"
+            tooltip-position="below"
+            (change)="updateAmount('custom')"
+            matTooltip="{{'custom' | translate}}"
+          >
+            <mat-icon>mode_edit</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="dispalyPinCode">
+      <mat-form-field class="pin-code-input mt-2">
+        <mat-hint [hidden]="pinCodeInput.value.length > 1">{{'pinCodeRequiredMessage' | translate}}</mat-hint>
+        <input
+          matInput
+          #pinCodeInput
+          type="number"
+          [(ngModel)]="pinCode"
+          [ngModelOptions]="{standalone: true}"
+          [placeholder]="'pinCode' | translate"
+          [type]="showPin ? 'text' : 'password'"
+        >
+        <span matSuffix>
+          <button
+            type="button"
+            tabindex="-1"
+            mat-raised-button
+            (click)="showPin = !showPin"
+            class="btn btn-sm lc-btn-primary show-pin text-capitalize"
+          >
+            <span [hidden]="!showPin"> <i class="fa fa-eye-slash fa-2x"></i></span>
+            <span [hidden]="showPin"> <i class="fa fa-eye fa-2x"></i></span>
+          </button>
+        </span>
+      </mat-form-field>
+      <small
+        class="text-danger wrong-message"
+        *ngIf="(pinCodeInput.value >= deletePin.length) && (pinCodeInput.value !== deletePin)"
+      >
+        {{'wrongPinCode' | translate}}
+      </small>
+    </div>
+    <div class="row justify-content-center mt-3" *ngIf="group.value === 'staff'"></div>
+    <div class="row justify-content-center mt-3" [hidden]="dispalyPinCode || group.value === 'staff'">
+      <mat-form-field
+        class="amount-input"
+      >
+        <input
+          matInput
+          max="90"
+          type="number"
+          placeholder="%"
+          formControlName="amount"
+        >
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      mat-raised-button
+      (click)="updateReduction()"
+      [disabled]="valueNotChanged()"
+      class="mat-raised lc-btn-primary"
+    >
+      {{'submit' | translate}}
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,93 @@
+<div>
+ <h3 class="text-left text-muted text-uppercase title-container">
+    {{'loyaltyModule' | translate}} > {{'stampCard' | translate}}
+</h3>
+<hr>
+<app-loader *ngIf="!simpleItems" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+<div fxLayoutAlign="center center" style="margin-top: 10%">
+    <app-no-content [label]="'nostampcardItem'" *ngIf="isSimpleItemsEmpty"></app-no-content>
+  </div>
+<!-- Stamp card Item List -->
+<div *ngIf="simpleItems" fxLayout="row" fxLayoutAlign="start center" fxLayoutWrap fxLayoutGap="20px">
+  <mat-card style="padding-top: 0px;padding-right: 0px;padding-left: 0px;"
+  *ngFor="let simpleItem of simpleItems; let i = index" fxFlex="27">
+    <mat-card-header style="padding-right: 0px;padding-top: 0px;" *ngIf="language_item" fxLayout="row" fxLayoutAlign="start center" class="mat-card-header">
+      <div fxFlex="85" style="margin-top:10px">
+        <h4 >
+          <div *ngFor="let lang of language_item;  let j = index">
+            <div *ngIf="lang.isDefault == true">
+              <div *ngFor="let x of simpleItem?.translation ; let k = index">
+                <div *ngIf= "simpleItem?.translation[k]?.language_code === lang.code">
+                    <h4>{{simpleItem?.translation[k]?.name |slice:0:6}} </h4>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </h4>
+      </div>
+      <div fxFlex="15" >
+          <mat-icon
+            style="cursor: pointer"
+            color="warn"
+            (click)="openDeleteDialog(simpleItem, i)"
+            [matTooltip]="'removeFromStampCard' | translate"
+          >
+            delete_forver
+          </mat-icon>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div
+        fxLayout="row"
+        fxLayoutGap="20px"
+        fxLayoutAlign="start center"
+      >
+        <div fxFlex="40" class="mat-card-title-media">
+          <img src="https://res.cloudinary.com/loyalcraft/image/upload/w_125,h_95,c_lfill/pictures/defaults/menu_item_default">
+        </div>
+        <div fxFlex="60" class="mat-card-title-text">
+          <span class="block" *ngIf="simpleItem?.internal_reference">
+              <p class="mat-headline-reference">
+                {{'ref' | translate}}: {{simpleItem?.internal_reference}}
+              </p>
+          </span>
+          <h4>
+            <div *ngFor="let lang of language_item;  let j = index">
+              <div *ngIf="lang.isDefault == true">
+                <div *ngFor="let x of simpleItem?.translation ; let k = index">
+                  <div *ngIf= "simpleItem?.translation[k]?.language_code === lang.code">
+                    <h4>{{simpleItem?.translation[k]?.description | slice:0:6 }}  </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </h4>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<button
+  type="button"
+  mat-fab
+  tooltip-position="below"
+  (click)="openAddStampItemDialog()"
+  title="{{'addTable' | translate}}"
+  matTooltip="{{'addItemToStampCard' | translate}}"
+  class="mat-btn mat-fab-top-right pos-fix accent"
+>
+  <mat-icon class="mat-48">add</mat-icon>
+</button>
+<button
+  type="button"
+  mat-fab
+  matTooltip="{{'editStampCardCycle' | translate}}"
+  tooltip-position="below"
+  (click)="openEditStampCardCycle()"
+  class="mat-btn mat-fab-top-right pos-fix accent print-btn"
+  >
+  <mat-icon class="mat-48">mode_edit</mat-icon>
+</button>
+</div>

@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    {{'manageTables' | translate: {waiter: user.firstname + ' ' + user.lastname} }}
+  </h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss(false)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>
+<div class="tables-message-header">
+  <span class="inline"></span>{{'tablesMessageHeader' | translate}}
+</div>
+<div class="modal-body clearfix">
+  <div class="row">
+    <div class="col-lg-12 col-mat-12">
+      <mat-checkbox *ngIf="tables" (click)="selectAll()">select All</mat-checkbox>
+      <hr>
+      <div class="row no-content-modal" *ngIf="!tables">
+        <div class="alert alert-warning">
+          <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+          <span class="inline up">{{'loadingTables' | translate}}</span>
+        </div>
+      </div>
+
+      <div
+        *ngIf="tables && !tables?.length"
+        class="row no-content-modal"
+      >
+        <span class="alert alert-warning">
+          {{'noTables' | translate}}
+        </span>
+      </div>
+      <div class="row tables" *ngIf="tables && tables?.length">
+        <div class="col-lg-4 col-mat-3 lc-reset-padding-v" *ngFor="let table of tables; let idx = index">
+          <mat-card class="-blue lc-widget mat-card-flat mat-card-table clearfix">
+            <mat-card-title-group class="mat-card-table-group">
+              <mat-card-title>
+                <mat-checkbox
+                  [(ngModel)]="selectedTables[table.id]"
+                  aria-label="table number {{table.number}}"
+                >
+                  &nbsp;N°: {{table?.number}}
+                </mat-checkbox>
+              </mat-card-title>
+            </mat-card-title-group>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="tables-message-footer">{{'tableMessageFooter' | translate}}</div>
+<div class="modal-footer">
+  <button
+    type="submit"
+    mat-raised-button
+    (click)="savechanges()"
+    class="lc-btn-primary pull-left"
+    [disabled]="!tablesListHasChanged()"
+  >
+    {{'confirm' | translate}}
+  </button>
+  <button
+    type="button"
+    mat-raised-button
+    (click)="activeModal.dismiss(false)"
+  >
+    {{'cancel' | translate}}
+  </button>
+</div>
+

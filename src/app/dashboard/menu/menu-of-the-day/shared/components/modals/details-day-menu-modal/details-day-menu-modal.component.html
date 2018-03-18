@@ -1,0 +1,94 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    {{dayMenu.name.split('_').join(' ') | capitalize}}
+  </h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss(false)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+</div>
+<div class="modal-body clearfix">
+  <div
+    fxLayoutWrap
+    fxLayout="row"
+    class="details-entries mt-4"
+    fxLayoutAlign="space-around stretch"
+  >
+    <div fxFlex="100">
+        <div class="details">
+          <div class="product-description">
+            <div class="menu-items mb-3" *ngFor="let entry of dayMenu.composed_item.entries">
+              <div
+              fxLayoutWrap
+              fxLayout="row"
+              class="details-entries"
+              fxLayoutAlign="space-around stretch"
+            >
+              <div fxFlex="20">
+                <img
+                  class="inline img-fluid ml-1 mr-3"
+                  [alt]="entry?.picture?.title"
+                  [title]="entry?.picture?.title"
+                  [src]="entry?.picture?.base_url + img_daymenu_url + entry?.picture?.path"
+                >
+              </div>
+               <div fxFlex="80">
+                <h3 [class.without-options]="!entry.extra_configs.length && !entry.sizes.length && !entry.varieties.length">
+                  {{entry.name}}
+                </h3>
+                <mat-chip-list fxLayoutAlign="start center">
+                  <mat-chip color="pink" class="mb-2" *ngFor="let extra of entry.extra_configs | slice:0:3">
+                    <span class="text-uppercase">{{extra.name}}</span>
+                  </mat-chip>
+                  <mat-chip color="indigo" class="mb-2" *ngFor="let size of entry.sizes">
+                    <span class="text-uppercase">{{size.name}}</span>
+                  </mat-chip>
+                  <mat-chip color="orange" class="mb-2" *ngFor="let variety of entry.varieties">
+                    <span class="text-uppercase">{{variety.name}}</span>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+          </div>
+          <div
+            fxLayoutWrap
+            fxLayout="row"
+            class="details-entries"
+            fxLayoutAlign="space-around stretch"
+          >
+            <div fxFlex class="total-day-menu">
+              <div
+                fxLayoutWrap
+                fxLayout="row"
+                class="text-center"
+                fxLayoutAlign="space-around stretch"
+              >
+                <div fxFlex="50" class="total">
+                  {{'price' | translate}}
+                </div>
+                <div fxFlex="50" class="total price text-left pl-3">
+                  <span class="reduction">{{dayMenu.price | snugCurrency:currentCurrency:true}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    mat-raised-button
+    class="mat-raised"
+    (click)="activeModal.close(true)"
+  >
+    {{'close' | translate}}
+  </button>
+</div>
+

@@ -1,0 +1,231 @@
+<form [formGroup]="activityForm">
+  <div class="modal-header">
+    <h4 class="modal-title">{{(data.activity ? 'editActivity' : 'addActivity') | translate}}</h4>
+    <button
+      type="button"
+      class="close"
+      (click)="matDialogRef.close()"
+      aria-label="Close"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div
+    fxLayout="column"
+    class="modal-body clearfix"
+    fxLayoutAlign="space-evenly stretch"
+  >
+    <mat-form-field class="field-full-width">
+      <input
+        matInput
+        formControlName="name"
+        placeholder="{{'name' | translate}}"
+      >
+      <mat-error *ngIf="activityForm.get('name').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width">
+      <input
+        matInput
+        formControlName="description"
+        placeholder="{{'description' | translate}}"
+      >
+      <mat-error *ngIf="activityForm.get('description').hasError('required')">
+        {{'form_error_required' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <div
+      fxLayout="row"
+      formGroupName="remuneration"
+      fxLayoutAlign="space-between center"
+    >
+      <div
+        fxFlex="25"
+        class="px-1"
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        *ngFor="let currency of keys(activityForm.controls['remuneration'].controls)"
+      >
+        <mat-form-field fxFlex="100">
+          <input
+            matInput
+            type="number"
+            [formControlName]="currency"
+            placeholder="{{currency | translate}}"
+          >
+          <span matSuffix>
+            <img class="coin" [src]="currenciesCoins[currency]">
+          </span>
+          <mat-hint *ngIf="currency !== 'titanium'">
+            {{'maxNumber' | translate:{max: 999} }}
+          </mat-hint>
+          <mat-error *ngIf="remunerationGroup.get(currency).hasError('pattern')">
+            {{'postiveonly' | translate}}
+          </mat-error>
+          <mat-error *ngIf="remunerationGroup.get(currency).hasError('required')">
+            {{'form_error_required' | translate}}
+          </mat-error>
+          <mat-error *ngIf="(currency !== 'titanium') && remunerationGroup.get(currency).hasError('max')">
+            {{'maxNumber' | translate:{max: 999} }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div
+      class="mt-3"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+    >
+      <mat-form-field fxFlex="63">
+        <input
+          matInput
+          type="number"
+          formControlName="reputationPoints"
+          placeholder="{{'reputationPoints' | translate}}"
+        >
+        <span matSuffix>
+          <img class="coin" [src]="currenciesCoins['reputation']">
+        </span>
+        <mat-error *ngIf="activityForm.get('reputationPoints').hasError('pattern')">
+          {{'postiveonly' | translate}}
+        </mat-error>
+      </mat-form-field>
+      <mat-slide-toggle
+        fxFlex="33"
+        color="primary"
+        name="isNoRecurring"
+        formControlName="isNoRecurring"
+        (change)="updateRemunationsFields($event)"
+        [title]="(data.activity?.isNoRecurring ? 'disable' : 'enable') | translate"
+      >
+        {{'notRecurring' | translate}}
+      </mat-slide-toggle>
+    </div>
+    <mat-expansion-panel
+      disabled="true"
+      hideToggle="true"
+      class="mat-elevation-z0"
+      [expanded]="!activityForm.get('isNoRecurring').value"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{'activityRepetition' | translate}}:
+        </mat-panel-title>
+        <mat-panel-description>
+          {{(activityForm.get('isNoRecurring').value ? 'noRepeat' : '') | translate}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+      >
+        <div
+          class="px-1"
+          fxFlex="33.33"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+        >
+          <mat-slide-toggle
+            fxFlex="30"
+            color="warn"
+            [disabled]="isNoRecurrent"
+            [ngModelOptions]="{standalone: true}"
+            (change)="enableField($event, 'activityPerHour')"
+            [(ngModel)]="activityForm.get('activityPerHour').enabled"
+          >
+          </mat-slide-toggle>
+          <mat-form-field fxFlex="70">
+            <input
+              matInput
+              type="number"
+              formControlName="activityPerHour"
+              placeholder="{{'activityPerHour' | translate}}"
+            >
+            <mat-error *ngIf="activityForm.get('activityPerHour').hasError('required')">
+              {{'form_error_required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="activityForm.get('activityPerHour').hasError('pattern')">
+              {{'postiveonly' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div
+          class="px-1"
+          fxFlex="33.33"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+        >
+          <mat-slide-toggle
+            fxFlex="30"
+            color="warn"
+            [disabled]="isNoRecurrent"
+            [ngModelOptions]="{standalone: true}"
+            (change)="enableField($event, 'activityPerDay')"
+            [(ngModel)]="activityForm.get('activityPerDay').enabled"
+          >
+          </mat-slide-toggle>
+          <mat-form-field fxFlex="70">
+            <input
+              matInput
+              type="number"
+              formControlName="activityPerDay"
+              placeholder="{{'activityPerDay' | translate}}"
+            >
+            <mat-error *ngIf="activityForm.get('activityPerDay').hasError('required')">
+              {{'form_error_required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="activityForm.get('activityPerDay').hasError('pattern')">
+              {{'postiveonly' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div
+          class="px-1"
+          fxFlex="33.33"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+        >
+          <mat-slide-toggle
+            fxFlex="30"
+            color="warn"
+            [disabled]="isNoRecurrent"
+            [ngModelOptions]="{standalone: true}"
+            (change)="enableField($event, 'activityPerWeek')"
+            [(ngModel)]="activityForm.get('activityPerWeek').enabled"
+          >
+          </mat-slide-toggle>
+          <mat-form-field fxFlex="70">
+            <input
+              matInput
+              type="number"
+              formControlName="activityPerWeek"
+              placeholder="{{'activityPerWeek' | translate}}"
+            >
+            <mat-error *ngIf="activityForm.get('activityPerWeek').hasError('required')">
+              {{'form_error_required' | translate}}
+            </mat-error>
+            <mat-error *ngIf="activityForm.get('activityPerWeek').hasError('pattern')">
+              {{'postiveonly' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      color="primary"
+      mat-raised-button
+      class="lc-btn-primary"
+      (click)="data.activity ? updateActivity() : addActivity()"
+      [disabled]="data.activity ? isButtonDisabled : activityForm.invalid"
+    >
+      {{(data.activity ? 'editActivity' : 'addActivity') | translate}}
+    </button>
+    <button type="button" mat-raised-button (click)="matDialogRef.close()">
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>

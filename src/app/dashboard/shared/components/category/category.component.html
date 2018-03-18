@@ -1,0 +1,80 @@
+<ng-container *ngTemplateOutlet="innerNgbAcc"></ng-container>
+<ng-template   #innerNgbAcc>
+
+        <ul class="list-unstyled ">
+          <li class="list-group-item menu list-group-item-wrapper text-center">
+            <span
+              (click)="openAddCategoryDialog()"
+              class="new-category center-block text-uppercase"
+              id="black"
+            >
+              <div class="inline top">
+                <mat-icon class="mat-24">add</mat-icon>
+              </div>
+              <div class="inline">
+                {{'addNewCategory' | translate}}
+              </div>
+            </span>
+          </li>
+
+        </ul>
+        <ul
+          class="list-unstyled"
+          dnd-sortable-container
+          [sortableData]="categories"
+        >
+          <li
+            dnd-sortable
+            (onDropSuccess)="transferDataSuccess()"
+            class="list-group-item list-group-item-wrapper"
+            *ngFor="let category of categories; let idx = index"
+            [dragEnabled]="category.name === 'archive' ? false : true"
+            [sortableIndex]="idx"
+            uiSrefActive="active"
+          >
+            <a
+              uiSref="Dashboard.Menu.Category"
+              [uiParams]="{category: category.id}"
+              [class.archive]="category.name === 'archive'"
+            >
+              <div *ngIf="category?.translation">
+                <div *ngFor="let lang of language_item;  let j = index">
+                  <div *ngIf="lang.isDefault == true">
+                    <div *ngFor="let x of category?.translation ; let k = index">
+                      <div *ngIf= "category?.translation[k]?.language_code === lang.code">
+                        <span style="float:left" class="inline category-name">{{category?.translation[k]?.name}} </span>
+                      </div>
+                    </div>
+                    <span
+                      class="inline badge badge-default badge-pill total-label top"
+                      [ngClass]="{
+                      'badge-danger':  category.total_items === 0,
+                      'badge-success': category.total_items !== 0
+                    }"
+                    >
+                    {{category.total_items}}
+                  </span>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="!category?.translation">
+                {{category.name}}
+              </div>
+            </a>
+            <span
+              class="delete-category"
+              *ngIf="category.name !== 'archive'"
+              (click)="openDeleteCategoryDialog(idx, category)"
+            >
+              <mat-icon class="mat-24">delete_forever</mat-icon>
+            </span>
+            <span
+              class="edit-category"
+              *ngIf="category.name !== 'archive'"
+              (click)="openEditCategoryDialog(idx, category)"
+            >
+              <mat-icon class="mat-24">mode_edit</mat-icon>
+            </span>
+          </li>
+        </ul>
+</ng-template>

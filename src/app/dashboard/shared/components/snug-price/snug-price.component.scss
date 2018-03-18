@@ -1,0 +1,38 @@
+@import '../../../../shared/sass/_variables.scss';
+@import '../../../../shared/sass/_mixins.scss';
+
+:host {
+  .snug-old-price {
+    color: #ccc;
+    margin-left: 35px;
+    font-size: 0.980em;
+    position: relative;
+    display: inline-block;
+    text-decoration: line-through;
+  }
+  .snug-final-price {
+    display: flex;
+    font-size: 2rem;
+    text-align: center;
+    flex-direction: column;
+    outline: 1px solid #fff;
+    &.with-reduction {
+      margin-top: -13px;
+      @media screen and (max-width: 1280px) {
+        margin-top: -6px;
+      }
+      &.item-price {
+        font-size: 1rem;
+      }
+    }
+    @media screen and (max-width: 1280px) {
+      font-size: 20px;
+    }
+  }
+}
+:host-context(.item-price) {
+  .snug-old-price,
+  .snug-final-price {
+    font-size: 1rem;
+  }
+}

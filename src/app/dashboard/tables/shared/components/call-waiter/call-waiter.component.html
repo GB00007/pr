@@ -1,0 +1,56 @@
+<mat-card class="p-1">
+  <mat-card-content class="mb-0 pb-0 pt-0">
+    <div
+      fxLayoutWrap
+      fxLayout="row"
+      fxLayoutAlign="space-between stretch"
+    >
+      <h4 class="title-section pt-3" fxFlex="60">
+        <span class="inline middle"><mat-icon>people_outline</mat-icon></span>
+        <span class="inline">{{'callWaiter' | translate}}</span>
+      </h4>
+      <div class="status-call-waiter">
+        <span class="text-right top pr-2">
+          <strong>({{noCallWaiter ? ('enabled' | translate) : ('disabled' | translate)}})</strong>
+        </span>
+        <mat-slide-toggle
+          color="warm"
+          #wifiSlideToggle
+          [checked]="noCallWaiter"
+          (change)="updateCallWaiter($event)"
+          title="{{noCallWaiter ? ('clickToDisable' | translate) : 'clickToEnable' | translate}}"
+        >
+        </mat-slide-toggle>
+      </div>
+      <div class="content" *ngIf="!noCallWaiter" fxFlex="60" fxFlexOffset="20">
+        <div class="alert alert-warning text-center">
+          {{'callWaiterDisabled' | translate}}.
+        </div>
+      </div>
+      <form name="callWaiter" fxFlex="100" [formGroup]="callWaiterForm" class="lc-edit-wifi" novalidate *ngIf="noCallWaiter">
+        <div class="mat-block clearfix">
+          <mat-form-field class="field-full-width" dividerColor="{{getDividerColor(callWaiterForm.controls['call_waiter_time'])}}">
+            <input
+              matInput
+              type="number"
+              id="number"
+              formControlName="call_waiter_time"
+              [ngModel]="callWaiterStuff"
+              placeholder="{{'minuteCallWaiter' | translate}}"
+            >
+          <span class="inline pull-right"><mat-icon>update</mat-icon></span>
+          </mat-form-field>
+          <button
+            type="submit"
+            mat-raised-button
+            (click)="updateCallWaiterStuff($event)"
+            [disabled]="valueNotChanged()"
+            class="mat-raised lc-btn-primary m-r-0 pull-right"
+          >
+            {{'updateCallWaiter' | translate}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>

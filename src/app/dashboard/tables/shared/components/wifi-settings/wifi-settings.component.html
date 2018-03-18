@@ -1,0 +1,75 @@
+<mat-card class="p-1">
+  <mat-card-content class="mb-0 pb-0 pt-0">
+    <div
+      fxLayoutWrap
+      fxLayout="row"
+      fxLayoutAlign="space-between stretch"
+    >
+    <h4 class="title-section pt-3" fxFlex="60">
+      <span class="inline middle"><mat-icon>wifi</mat-icon></span>
+      <span class="inline">{{'wifiSettings' | translate}}</span>
+    </h4>
+    <div class="status-wifi">
+      <span class="text-right top pr-2"><strong>({{noWifi ? ('enabled' | translate) : ('disabled' | translate)}})</strong></span>
+      <mat-slide-toggle
+        color="warm"
+        #wifiSlideToggle
+        [checked]="noWifi"
+        (change)="updateWifiStatus($event)"
+        title="{{noWifi ? ('clickToDisable' | translate) : 'clickToEnable' | translate}}"
+      >
+      </mat-slide-toggle>
+    </div>
+    <div class="content" fxFlex="60" fxFlexOffset="20" *ngIf="!noWifi">
+      <div class="alert alert-warning text-center">
+        Wifi {{'disabled' | translate}}.
+      </div>
+    </div>
+    <form name="wifiForm" [formGroup]="wifiForm" class="lc-edit-wifi" fxFlex="100" novalidate *ngIf="noWifi">
+      <div class="pt-3 pb-2">
+        <mat-form-field class="field-full-width" dividerColor="{{getDividerColor(wifiForm.controls.name)}}">
+          <input
+            matInput
+            id="name"
+            formControlName="name"
+            [ngModel]="wifiStuff?.wifi_name"
+            placeholder="{{'wifiName' | translate}}"
+          >
+        </mat-form-field>
+        <!--<app-control-messages class="col-lg-12" [controlName]="'name'"></app-control-messages>-->
+      </div>
+      <div class="pt-3 pb-2">
+        <mat-form-field class="field-full-width" dividerColor="{{getDividerColor(wifiForm.controls.password)}}">
+          <input
+            matInput
+            id="password"
+            formControlName="password"
+            [ngModel]="wifiStuff?.wifi_password"
+            placeholder="{{'wifiPassword' | translate}}"
+          >
+        </mat-form-field>
+        <!--<app-control-messages class="col-lg-12" [controlName]="'password'"></app-control-messages>-->
+      </div>
+      <div class="mat-block clearfix">
+        <!-- [(ngModel)]="checkboxValue"-->
+        <mat-checkbox
+          [checked]="withoutPassword"
+          formControlName="withoutPassword"
+          (change)="clearPassword($event)"
+        >
+          <span class="show-orders-label">{{'noPassword' | translate}}</span>
+        </mat-checkbox>
+        <button
+          type="submit"
+          mat-raised-button
+          (click)="updateWifiStuff()"
+          [disabled]="isButtonDisabled"
+          class="lc-btn-primary pull-right m-r-0"
+        >
+          {{'updateWifiInformation' | translate}}
+        </button>
+      </div>
+    </form>
+    </div>
+  </mat-card-content>
+</mat-card>

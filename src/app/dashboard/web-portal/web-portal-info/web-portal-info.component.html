@@ -1,0 +1,412 @@
+<form
+  novalidate
+  fxLayout="row"
+  class="lc-website-form"
+  [formGroup]="extraInfoForm"
+  fxLayoutAlign="space-around stretch"
+  fxLayoutGap="10px"
+>
+  <div fxFlex="50" fxLayout="column" fxLayoutAlign="start stretch" >
+    <mat-form-field>
+      <input
+        #title
+        matInput
+        [ngModel]="page?.title"
+        formControlName="title"
+        placeholder="{{'title' | translate}}"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        #subtitle
+        [ngModel]="page?.subtitle"
+        formControlName="subtitle"
+        placeholder="{{'subtitle' | translate}}"
+      >
+    </mat-form-field>
+    <!--
+      <mat-form-field>
+        <input
+          matInput
+          #website
+          formControlName="website_store"
+          [ngModel]="page?.website_store"
+          placeholder="{{'website' | translate}}"
+        >
+        <span matPrefix>www.</span>
+      </mat-form-field>
+    -->
+    <mat-form-field>
+      <input
+        #email
+        matInput
+        [ngModel]="page?.email_store"
+        formControlName="email_store"
+        placeholder="{{'email' | translate}}"
+      >
+      <mat-error *ngIf="extraInfoForm.get('email_store').hasError('invalidEmailAddress')">
+        {{'form_error_email' | translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        #phoneNumber
+        formControlName="phone_store"
+        [ngModel]="page?.phone_store"
+        placeholder="{{'phone' | translate}}"
+      >
+      <!--<mat-hint align="end">{{phoneNumber.value.length}} / 8</mat-hint>-->
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select
+        formControlName="color"
+        placeholder="{{'color' | translate}}"
+        (change)="updateSelectedColor($event)"
+        [ngModel]="selectedColor ? selectedColor : page?.color"
+      >
+        <mat-select-trigger>
+          <span
+            class="inline middle"
+            [ngStyle]="{
+              'width': '30px',
+              'height': '30px',
+              'background-color': selectedColor || page?.color
+            }"
+          >
+          </span>
+          {{selectedColor || page?.color}}
+        </mat-select-trigger>
+        <mat-option [value]="color" *ngFor="let color of colorsBrand">
+          <span
+            class="inline middle"
+            [ngStyle]="{
+              'width': '30px',
+              'height': '30px',
+              'background-color': color
+            }"
+          >
+          </span>
+          {{color}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        matInput
+        rows="2"
+        cols="100"
+        #address
+        minlength="7"
+        formControlName="website_store"
+        [ngModel]="page?.website_store"
+        [placeholder]="'address' | translate"
+      >
+      </textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        matInput
+        rows="5"
+        cols="100"
+        #impressum
+        minlength="7"
+        maxlength="500"
+        formControlName="impressum"
+        [ngModel]="page?.impressum || ''"
+        placeholder="{{'impressum' | translate}}"
+      >
+      </textarea>
+      <mat-error *ngIf="extraInfoForm.get('impressum').hasError('minlength')">
+        {{'textareaMinLength' | translate}}
+      </mat-error>
+      <mat-error *ngIf="extraInfoForm.get('impressum').hasError('maxlength')">
+        {{'textareaMaxLength' | translate}}
+      </mat-error>
+      <mat-hint align="end">{{impressum.value.length}} / 500</mat-hint>
+    </mat-form-field>
+    <!-- Logo -->
+    <div class="mat-block text-left fieldset-multiple">
+      <fieldset>
+        <legend>{{'logo' | translate}}</legend>
+        <div class="img-position" >
+          <img
+            *ngIf="getLogoUrl()"
+            class="img-dimension"
+            [src]="getLogoUrl()"
+          >
+        </div>
+        <button
+        (click)="openExtraInfoLogoDialog()"
+          mat-raised-button
+          class="mat-raised lc-btn-success"
+        >
+          {{'uploadExtraInfoLogo' | translate}}
+        </button>
+      </fieldset>
+    </div>
+    <!-- cover -->
+    <div class="mat-block text-left fieldset-multiple">
+      <fieldset>
+        <legend>{{'cover' | translate}}</legend>
+        <div class="img-position" *ngIf="page?.pictures.cover?.path">
+          <img
+            *ngIf="getCoverUrl()"
+            class="img-cover"
+            [src]="getCoverUrl()"
+          >
+        </div>
+        <button
+        (click)="openExtraInfoCoverDialog()"
+          mat-raised-button
+          class="mat-raised lc-btn-success"
+        >
+          {{'uploadExtraInfoCover' | translate}}
+        </button>
+      </fieldset>
+    </div>
+    <!-- cover -->
+  </div>
+  <div fxFlex="50" >
+    <!-- opening time -->
+    <div class="mat-block text-left fieldset-multiple lc-widget">
+      <fieldset>
+        <legend>{{'openingTime' | translate}}</legend>
+        <div fxLayout="row" fxLayoutAlign="space-between stretch" >
+          <div fxFlex="33" formGroupName="opening_time">
+            <span class="inline no-specific">
+              <mat-slide-toggle
+                #noSpecific
+                color="warn"
+                formControlName="no_specific"
+                (change)="openingTimeStatus($event)"
+                [checked]="!page?.opening_time?.no_specific"
+              >
+                {{'notSpecified' | translate}}
+              </mat-slide-toggle>
+            </span>
+          </div>
+          <div fxFlex="33" formGroupName="opening_time">
+            <mat-form-field>
+              <input
+                matInput
+                type="time"
+                #openingTimeFrom
+                formControlName="from"
+                placeholder="{{'from' | translate}}"
+                [ngModel]="page?.opening_time?.from"
+              >
+              <mat-error *ngIf="extraInfoForm.get('opening_time').get('from').hasError('required')">
+                {{'form_error_required' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33" formGroupName="opening_time"
+          >
+            <mat-form-field>
+              <input
+                matInput
+                type="time"
+                #openingTimeTo
+                formControlName="to"
+                [ngModel]="page?.opening_time?.to"
+                placeholder="{{'to' | translate}}"
+              >
+              <mat-error *ngIf="extraInfoForm.get('opening_time').get('to').hasError('required')">
+                {{'form_error_required' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <!-- Meals -->
+    <div
+      *ngIf="page?.business_sector.id === '2'"
+      class="mat-block text-left fieldset-multiple lc-widget meals"
+    >
+      <fieldset>
+        <legend>{{'meals' | translate}}</legend>
+          <div formGroupName="meals"  fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="30px">
+            <mat-form-field fxFlex="20" style="top:-20px">
+              <mat-select
+                [(ngModel)]="mealType"
+                formControlName="type"
+                placeholder="{{'meal' | translate}}"
+              >
+                <mat-option
+                [value]="meal" *ngFor="let meal of meals">
+                  {{meal | capitalize}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field >
+            <mat-form-field fxFlex="20" style="top:-20px">
+              <mat-select
+                multiple="true"
+                formControlName="day"
+                [(ngModel)]="mealDay"
+              >
+                <mat-option [value]="day.code" *ngFor="let day of days">
+                  {{day.name | capitalize}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="20">
+              <input
+                matInput
+                #mealFrom
+                type="time"
+                formControlName="from"
+                placeholder="{{'from' | translate}}"
+              >
+            </mat-form-field>
+            <mat-form-field fxFlex="20">
+              <input
+                matInput
+                #mealTo
+                type="time"
+                formControlName="to"
+                placeholder="{{'to' | translate}}"
+              >
+            </mat-form-field>
+        </div>
+        <div fxLayoutAlign="end center">
+            <button
+              type="button"
+              class="btn lc-btn-primary lc-btn-xs"
+              (click)="addMeal({type:mealType,day:mealDay,from:mealFrom.value,to:mealTo.value});mealType='';mealDay='';mealFrom.value='';mealTo.value='';"
+              [disabled]="!extraInfoForm.get('meals').get('type').value || !extraInfoForm.get('meals').get('day').value || !extraInfoForm.get('meals').get('from').value || !extraInfoForm.get('meals').get('to').value"
+            >
+              {{'add' | translate}}
+            </button>
+        </div>
+        <div class="row display-choices">
+          <div class="col-lg-12">
+            <span *ngFor="let meals of mealsToDisplay; let i = index;">
+              <div fxLayout="row" fxLayoutAlign="space-around stretch" fxLayoutGap="10px">
+                <div fxFlex="80">
+                  <span class="inline middle meals-wrapper">
+                    {{meals.type | capitalize}}:
+                    <div class="meals-content">
+                      <div class="inline"><i class="fa fa-clock-o"></i></div>
+                      <div class="inline to">{{'from' | translate}}: {{meals.from}}</div>
+                      <div class="inline"><i class="fa fa-long-arrow-right"></i></div>
+                      <div class="inline from">{{meals.to}}</div>
+                      <div class="inline">({{(meals?.day?.length === 7) ? ('everyday' | translate) : getDays(meals?.day)}})</div>
+                    </div>
+                  </span>
+                </div>
+                <div fxFlex="20">
+                  <span class="inline middle edit">
+                    <mat-icon (click)="updateMeal(meals)">mode_edit</mat-icon>
+                  </span>
+                  <span class="inline middle delete">
+                    <mat-icon (click)="deleteMeal(meals)">delete_forever</mat-icon>
+                  </span>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <!-- Payement -->
+    <div class="mat-block fieldset-multiple lc-widget text-center c-filters-wrapper">
+      <fieldset>
+        <legend>{{'paymentMethod' | translate}}</legend>
+        <span
+          (click)="toggle(card, 'payment')"
+          *ngFor="let card of paymentMethods;"
+          class="label label-pill filter label-primary c-filter"
+          [class.checked]="selected['payment'] && selected['payment'].indexOf(card) > -1"
+        >
+          {{card.split('_').join(' ') | translate}}
+          <mat-icon *ngIf="selected['payment'] && selected['payment'].indexOf(card) === -1">add</mat-icon>
+          <mat-icon *ngIf="selected['payment'] && selected['payment'].indexOf(card) > -1">done</mat-icon>
+        </span>
+      </fieldset>
+    </div>
+    <!-- Languages -->
+    <div class="mat-block fieldset-multiple lc-widget text-center c-filters-wrapper">
+      <fieldset>
+        <legend>{{'language' | translate}}</legend>
+        <span
+          (click)="toggle(language.code, 'language')"
+          *ngFor="let language of supportedLanguages"
+          class="label label-pill filter label-primary c-filter"
+          [class.checked]="selected['language'] && selected['language'].indexOf(language.code) > -1"
+        >
+          {{language.label.split('_').join(' ') | translate}}
+          <mat-icon *ngIf="selected['language'] && selected['language'].indexOf(language.code) === -1">add</mat-icon>
+          <mat-icon *ngIf="selected['language'] && selected['language'].indexOf(language.code) > -1">done</mat-icon>
+        </span>
+      </fieldset>
+    </div>
+    <!-- directions -->
+    <div class="mat-block fieldset-multiple lc-widget text-center">
+      <fieldset>
+        <legend>{{'directions' | translate}}</legend>
+        <mat-form-field formGroupName="directions">
+          <input
+            matInput
+            #publicTransport
+            formControlName="public_transport"
+            placeholder="{{'publicTransport' | translate}}"
+            [ngModel]="page?.directions?.public_transport || ''"
+          >
+        </mat-form-field>
+        <mat-form-field formGroupName="directions">
+          <input
+            matInput
+            #specificDirection
+            formControlName="specific_directions"
+            placeholder="{{'specificDirections' | translate}}"
+            [ngModel]="page?.directions?.specific_directions || ''"
+          >
+        </mat-form-field>
+        <mat-form-field formGroupName="directions">
+          <input
+            matInput
+            #carParking
+            formControlName="car_parking"
+            placeholder="{{'carParking' | translate}}"
+            [ngModel]="page?.directions?.car_parking || ''"
+          >
+        </mat-form-field>
+      </fieldset>
+    </div>
+    <!-- Services -->
+    <div
+      *ngIf="page?.business_sector.id === '2'"
+      class="mat-block fieldset-multiple lc-widget text-center c-filters-wrapper"
+    >
+      <fieldset>
+        <legend>{{'services' | translate}}</legend>
+        <span
+          (click)="toggle(option, 'options')"
+          *ngFor="let option of storeOptions;"
+          class="label label-pill filter label-primary c-filter"
+          [class.checked]="selected['options'] && selected['options'].indexOf(option) > -1"
+        >
+          {{option.split('_').join(' ') | translate}}
+          <mat-icon *ngIf="selected['options'] && selected['options'].indexOf(option) === -1">add</mat-icon>
+          <mat-icon *ngIf="selected['options'] && selected['options'].indexOf(option) > -1">done</mat-icon>
+        </span>
+      </fieldset>
+    </div>
+    <div class="mat-block clearfix">
+      <div class="pull-right">
+        <button
+          [disabled]="isButtonDisabled"
+          type="submit"
+          mat-raised-button
+          (click)="updateExtraInfo()"
+          class="mat-raised lc-btn-primary"
+        >
+          {{'updateExtraInfo' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

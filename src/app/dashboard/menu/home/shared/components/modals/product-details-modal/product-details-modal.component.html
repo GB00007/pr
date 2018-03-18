@@ -1,0 +1,117 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+      {{'productDetails' | translate}} "<span class="name-product">{{item?.name}}</span>"
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+    <div *ngIf="item.out_of_stock && !item.entries" class="ribbon">
+      <span>{{'notAvailable' | translate}}</span>
+    </div>
+</div>
+<div class="modal-body clearfix">
+  <div class="row">
+    <div class="pull-left col-mat-8" *ngIf="!item.entries">
+      <ul class="list-group">
+        <li class="list-group-item" *ngIf="!item.entries">
+          <strong>{{'description' | translate}}</strong>
+          <p class="clearfix description">{{item.description}}</p>
+        </li>
+        <li class="list-group-item" *ngIf="item.allergies.length">
+          <span class="more-details"><strong>{{'allergies' | translate}}</strong></span>
+          <ul class="list-inline allergies">
+            <li class="list-inline-item" *ngFor="let allergy of item.allergies; let i = index;">
+              <a
+                [popoverTitle]="allergy.title"
+                triggers="mouseenter:mouseleave"
+                [ngbPopover]="allergy.description"
+              >
+                <img
+                  class="img-fluid img-responsive img-circle"
+                  src="{{allergy.picture.base_url + allergies_icon_dim + allergy.picture.path}}"
+                >
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="pull-left details-composed-item" *ngIf="item.entries">
+      <ul class="list-group">
+        <li class="list-group-item no-border">
+          <strong>{{'items' | translate}}</strong><br/>
+          <div class="menu-items" *ngFor="let item of item.entries">
+            <img
+              class="text-center inline"
+              alt="{{item?.picture?.title}}"
+              title="{{item?.picture?.title}}"
+              [src]="getPictureUrl(item.picture)"
+            >
+            <h3>{{item.name}}:</h3>
+            <span class="price">{{item?.price | number : '1.2-2'}} {{ currentCurrency }}</span>
+            <div class="dotted-lines"></div>
+          </div>
+          <span class="center-block total">
+            <li class="list-group-item text-center">
+              <strong>{{'gross' | translate}}</strong>: {{item?.price | number : '1.2-2'}} {{ currentCurrency }}
+            </li>
+          </span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-mat-4" *ngIf="!item.entries">
+      <li class="list-group-item center-block text-center">
+        <img
+          class="text-center"
+          alt="{{item?.picture?.title}}"
+          title="{{item?.picture?.title}}"
+          src="{{item.picture.base_url + page_items_url + item.picture.path}}"
+        >
+      </li>
+      <li class="list-group-item text-center">
+        <span class="center-block"><strong>{{'price' | translate}}</strong>: {{item?.price | number : '1.2-2'}} {{ currentCurrency }}</span>
+        <span class="center-block clearfix" *ngIf="item.item_type && !item.entries"><strong>{{'type' | translate}}</strong>: {{item.item_type}}</span>
+      </li>
+      <li
+        class="list-group-item item-restriction-wrapper"
+        *ngIf="item.contain_pork || item.vegan || item.item_restrict=== 'kosher' || item.item_restrict === 'halal'"
+      >
+        <!-- Item Restrictions -->
+        <span class="inline middle more-details"><strong>{{'itemRestrictions' | translate}}</strong></span>
+        <ul class="middle list-inline item-restriction text-center">
+          <li class="list-inline-item" *ngIf="item.contain_pork">
+            <img src="https://res.cloudinary.com/loyalcraft/image/upload/w_235,h_235,f_auto/pictures/app/items-restrictions/icon_pig" class="img-fluid img-responsive img-circle" width="40" height="40"/>
+          </li>
+          <li class="list-inline-item" *ngIf="item.item_restrict === 'kosher'">
+            <img src="https://res.cloudinary.com/loyalcraft/image/upload/w_235,h_235,f_auto/pictures/app/items-restrictions/kosher-icons" class="img-fluid img-responsive img-circle" width="40" height="40"/>
+          </li>
+          <li class="list-inline-item" *ngIf="item.item_restrict === 'halal'">
+            <img src="https://res.cloudinary.com/loyalcraft/image/upload/w_235,h_235,f_auto/pictures/app/items-restrictions/halal-icons" class="img-fluid img-responsive img-circle" width="40" height="40"/>
+          </li>
+          <li class="list-inline-item" *ngIf="item.vegan">
+            <img src="https://res.cloudinary.com/loyalcraft/image/upload/w_235,h_235,q_75,f_auto/pictures/app/items-restrictions/vegan-icons" class="img-fluid img-responsive img-circle" width="40" height="40"/>
+          </li>
+        </ul>
+      </li>
+    </div>
+  </div>
+</div>
+<div class="inline category-detail">
+  <strong>{{'category' | translate}}</strong>: {{item.category.name}}
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    mat-raised-button
+    class="mat-raised"
+    (click)="activeModal.close(true)"
+  >
+    {{'close' | translate}}
+  </button>
+</div>
+

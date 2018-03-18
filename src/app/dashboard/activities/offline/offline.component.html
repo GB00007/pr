@@ -1,0 +1,109 @@
+<h3 class="text-left text-muted text-uppercase title-container">
+  {{'activities' | translate}} > {{'offline' | translate}}
+</h3>
+<hr>
+<mat-tab-group *ngIf="cashRenumeration && currencies && currencyConvertor">
+  <mat-tab label="{{'cashRemunerations' | translate}}" >
+    <div>
+      <h2 class="text-center margin">{{'offline' | translate}}</h2>
+      <mat-slide-toggle
+        #noSpecific
+        color="warn"
+        [checked]="page?.cashRemuneration"
+        (change)="updateCacheRenumerationStatus($event)"
+      >
+        <span class="status">{{(page?.cashRemuneration ? 'enabled' : 'disabled') | translate}}</span>
+      </mat-slide-toggle>
+    </div>
+    <fieldset
+      class="lc-widget text-center"
+    >
+      <legend>{{'currencyConvertor' | translate}}</legend>
+      <form
+        fxLayout="column"
+        fxLayoutGap="25px"
+        [formGroup]="currencyConvertor"
+        fxLayoutAlign="space-around center"
+      >
+        <mat-form-field fxFlex>
+          <input
+            matInput
+            required
+            type="number"
+            formControlName="unitAmount"
+            [placeholder]="'amount' | translate"
+          >
+          <span matSuffix>{{currentCurrency}}</span>
+          <mat-error *ngIf="currencyConvertor.get('unitAmount').hasError('required')">
+            {{'form_error_required' | translate}}
+          </mat-error>
+          <mat-error *ngIf="currencyConvertor.get('unitAmount').hasError('pattern')">
+            {{'postiveonly' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <div fxFlex>
+          <mat-icon class="arrow">arrow_downward</mat-icon>
+        </div>
+        <div fxFlex="50" class="px-3">
+          <div
+            fxLayout="row"
+            fxLayoutGap="10px"
+            formGroupName="remuneration"
+            fxLayoutAlign="space-between center"
+          >
+            <mat-form-field fxFlex="50" *ngFor="let currency of keys(currencyConvertor.controls['remuneration'].controls)">
+              <input
+                matInput
+                type="number"
+                [formControlName]="currency"
+                placeholder="{{currency | translate}}"
+              >
+              <img matSuffix [src]="currenciesCoins[currency]">
+              <mat-hint *ngIf="currency !== 'titanium'">
+                {{'maxNumber' | translate:{max: 999} }}
+              </mat-hint>
+              <mat-error *ngIf="remunerationGroup.get(currency).hasError('pattern')">
+                {{'postiveonly' | translate}}
+              </mat-error>
+              <mat-error *ngIf="remunerationGroup.get(currency).hasError('required')">
+                {{'form_error_required' | translate}}
+              </mat-error>
+              <mat-error *ngIf="(currency !== 'titanium') && remunerationGroup.get(currency).hasError('max')">
+                {{'maxNumber' | translate:{max: 999} }}
+              </mat-error>
+            </mat-form-field>
+            <div fxFlex="15" fxLayout="row" fxLayoutAlign="center center">
+              <mat-icon class="arrow">add_circle</mat-icon>
+            </div>
+          </div>
+          <div fxFlex="15">
+            <mat-form-field class="field-full-width mt-2"  >
+              <input
+                matInput
+                required
+                formControlName="reputationPoints"
+                [placeholder]="'Reputation' | translate"
+              >
+              <span matSuffix>
+                <img [src]="currenciesCoins['reputation']">
+              </span>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="m-0" fxFlexAlign="stretch" fxLayout="row" fxLayoutAlign="end center">
+          <button
+            fxFlex="33"
+            color="green"
+            mat-raised-button
+            [disabled]="isButtonDisabled"
+            (click)="updateCashConvertor()"
+          >
+            {{'update' | translate}}
+          </button>
+        </div>
+      </form>
+    </fieldset>
+  </mat-tab>
+</mat-tab-group>
+<!-- <app-loader *ngIf="!cashRenumeration || !currencies || !currencyConvertor"></app-loader> -->
+

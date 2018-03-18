@@ -1,0 +1,58 @@
+@import '../../../../../../shared/sass/mixins';
+
+:host {
+  .modal-header {
+    min-height: 90px;
+    .modal-title {
+      margin-bottom: 8px;
+    }
+  }
+  .modal-footer {
+    padding-top: 40px;
+  }
+  .tables-message-header {
+    top: 62px;
+    left: 16px;
+    position: absolute;
+  }
+  .tables-message-footer {
+    left: 14px;
+    bottom: 60px;
+    font-size: 15px;
+    position: absolute;
+  }
+  .mat-card-flat.mat-card-table {
+    padding: 0 0 2px 0 !important;
+    @include box-shadow(3px 3px 3px rgba(0, 0, 0, 0.2));
+    .mat-card-table-group {
+      margin: 0 7px 0 !important;
+      display: inline-block;
+      mat-card-title {
+        margin-bottom: 0 !important;
+      }
+      mat-checkbox {
+        margin-left: 8px;
+      }
+    }
+    .mat-card-image {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+  }
+  .no-content-modal {
+    display: block;
+    text-align: center;
+    .loading-bar {
+      margin-top: 2px;
+    }
+  }
+  .mat-checkbox-inner-container {
+    margin-right: 2px;
+    @include size(15px);
+  }
+  .mat-checkbox-layout .mat-checkbox-label {
+    font-weight: 500;
+    font-size: .95rem;
+    font-family: 'Ubuntu', sans-serif;
+  }
+}

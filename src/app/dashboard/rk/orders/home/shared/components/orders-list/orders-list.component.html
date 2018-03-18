@@ -1,0 +1,152 @@
+<div class="orders-filter center-block">
+  <div
+    fxLayout="column"
+    class="mt-4 mb-4"
+    fxLayoutAlign="space-between center"
+  >
+    <form
+      fxLayout="row"
+      class="mt-2 mb-3"
+      fxLayoutAlign="center center"
+    >
+      <mat-form-field class="mr-4">
+        <mat-select
+          class="text-left"
+          (change)="select('table', $event)"
+          [placeholder]="'tableNumber' | translate"
+        >
+          <mat-option value="none">{{'none' | translate}}</mat-option>
+          <mat-option *ngFor="let table of tables"  [value]="table.number">
+            {{table.number}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="ml-3">
+        <mat-select
+          class="text-left"
+          (change)="select('waiter', $event)"
+          [placeholder]="'waiter' | translate"
+        >
+          <mat-option value="none">{{'none' | translate}}</mat-option>
+          <mat-option *ngFor="let waiter of waiters"  [value]="waiter.id" >
+            {{waiter.firstname}} {{waiter.lastname}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+    <div class="my-2">
+        <!--class="mat-input-element field-full-width"-->
+        <!--
+          when change should update orders list and tables list too
+          to have the currecnt selected waiter's tables, same for tables.
+        -->
+      <mat-checkbox
+        [name]="status.status"
+        *ngFor="let status of statuses"
+        (change)="showMoreOrders(0, true)"
+        [(ngModel)]="selectedStatuses[status.status]"
+      >
+        <span
+          tooltip-position="above"
+          class="orders-filter-label"
+          matTooltip="{{status.total_items}}"
+          matTooltipClass="total-item-tooltip"
+        >
+          {{status.status | translate}} ({{status.total_items| humanize }})
+        </span>
+      </mat-checkbox>
+    </div>
+    <div class="my-2">
+      <mat-radio-group
+        [(ngModel)]="isPaid"
+        (change)="showMoreOrders(0, true)"
+        class="row-fluid orders-filter-row"
+      >
+        <mat-radio-button
+          [value]="radioFilterOption.value"
+          *ngFor="let radioFilterOption of radioFilterOptions"
+        >
+          <span class="orders-filter-label">{{radioFilterOption.label | translate}}</span>
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+</div>
+<div class="loader" *ngIf="!orders"></div>
+<div
+  [hidden]="!orders"
+  *ngFor="let order of orders"
+  [class.selected]="order?.customer === selectedName"
+  [class.open]="order?.status?.toLowerCase() === 'open'"
+  [class.paid]="order?.status?.toLowerCase() === 'completed'"
+  [class.not-paid]="order?.status?.toLowerCase() === 'cancelled'"
+  [class.in-progress]="order?.status?.toLowerCase() === 'in progress'"
+  class="mat-whiteframe-3dp mat-whiteframe-column mat-whiteframe-description row lc-order order-block lc-widget animated"
+>
+  <!--[class.paid]="order.payment_method || order?.signature?.type_of_receipt === 'START_BELEG'"
+  [class.not-paid]="!order.payment_method && order?.signature?.type_of_receipt !== 'START_BELEG'"-->
+  <app-order-card
+    [order]="order"
+    [statuses]="statuses"
+    [isCurrentUserAdmin]="isCurrentUserAdmin"
+    (updateOrdersList)="updateOrdersList($event)"
+    (updateOrders)="showMoreOrders(0, true)"
+  >
+  </app-order-card>
+</div>
+<app-no-content *ngIf="isOrdersEmpty && !loadingOrders" [label]="'noResult'" ></app-no-content>
+<app-loader *ngIf="orders && !orders.length && loadingOrders" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+<!-- <app-loader *ngIf="orders && !orders.length"></app-loader> -->
+<app-show-more
+  [label]="'showMoreOrders'"
+  (getNextPage)="showMoreOrders($event)"
+  *ngIf="!isOrdersLastPage && !loadingOrders"
+>
+</app-show-more>
+<!--  [disabled]="tables && !tables.length"-->
+<!--<button
+  mat-fab
+  type="button"
+  tooltip-position="below"
+  *ngIf="userRole === 'cashdesk'"
+  [matTooltip]="'income' |translate"
+
+  class="mat-btn mat-fab-top-right pos-fix accent"
+>
+  <mat-icon class="mat-48">monetization_on</mat-icon>
+</button>-->
+<button
+  mat-fab
+  type="button"
+  tooltip-position="below"
+  (click)="showMoreOrders(0, true)"
+  matTooltip="{{'refreshAllOrders' |translate}}"
+  class="mat-btn mat-fab-top-right pos-fix accent"
+  [ngClass]="{
+    'print-btn': userRole === 'cashdesk' || userRole === 'admin' || userRole === 'waiter'
+  }"
+>
+  <mat-icon class="mat-48">cached</mat-icon>
+</button>
+<button
+  mat-fab
+  type="button"
+  tooltip-position="below"
+  matTooltip="{{'addOrder' |translate}}"
+  class="mat-btn mat-fab-top-right pos-fix accent"
+  *ngIf="userRole === 'cashdesk' || userRole === 'admin' || userRole === 'waiter'"
+  (click)="redirectToAddOrders(userRole === 'admin' ? 'Dashboard.Rk.NewOrder' : 'Dashboard.Orders.AddNewOrder')"
+>
+  <mat-icon class="mat-48">add</mat-icon>
+</button>
+<button
+  mat-fab
+  type="button"
+  tooltip-position="below"
+  (click)="openIncomeDialog()"
+  *ngIf="userRole === 'cashdesk'"
+  matTooltip="{{'income' | translate}}"
+  class="mat-btn mat-fab-top-right pos-fix accent income-btn"
+>
+  <mat-icon class="mat-48">monetization_on</mat-icon>
+</button>

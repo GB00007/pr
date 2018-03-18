@@ -1,0 +1,66 @@
+<div fxLayoutAlign="center center">
+  <h2 class="text-center margin">{{'reputations' | translate}}</h2>
+</div>
+<!-- <app-loader *ngIf="!reputationLevels"></app-loader> -->
+<div *ngIf="reputationLevels" fxLayoutWrap fxLayout="row" fxLayoutAlign="start stretch" fxFlexAlign="stretch">
+  <div
+    fxFlex="25"
+    fxLayout="row"
+    fxLayoutAlign="center stretch"
+    *ngFor="let reputationLevelDefinition of reputationLevels; let i = index;"
+  >
+    <mat-card
+      fxFlex="100"
+      class="mat-elevation-z10"
+      [ngClass]="reputationLevelDefinition.reputationLevel.toLowerCase()"
+    >
+      <mat-card-title class="mb-2">
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div fxFlex="90" fxLayout="row" fxLayoutAlign="start center">
+            <img [src]="reputationsLevelsIcons[reputationLevelDefinition.reputationLevel.toLowerCase()]">
+            <div>{{reputationLevelDefinition.reputationLevel}}</div>
+          </div>
+          <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+            <button
+              fxFlex="100"
+              type="button"
+              color="primary"
+              mat-icon-button
+              aria-label="edit"
+              (click)="openPinCodeCheck(i, reputationLevelDefinition)"
+            >
+              <mat-icon>mode_edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-card-title>
+      <mat-card-content fxLayout="column" fxLayoutAlign="start stretch">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div>{{'transitionAmount' | translate}}: </div>
+          <div>{{reputationLevelDefinition.transitionAmount}}</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div>{{'lossAmount' | translate}}: </div>
+          <div>{{reputationLevelDefinition.lossAmount}}</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div>{{'inactivityPeriodDays' | translate}}: </div>
+          <div>{{reputationLevelDefinition.inactivityPeriodDays}}</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div class="group-btns-rk">
+  <button
+    mat-fab
+    type="button"
+    color="primary"
+    class="mat-btn"
+    tooltip-position="before"
+    [matTooltip]="'resetAllReputations' | translate"
+    (click)="openResetAllReputationsConfirmationDialog()"
+  >
+    <mat-icon class="mat-48">refresh</mat-icon>
+  </button>
+</div>

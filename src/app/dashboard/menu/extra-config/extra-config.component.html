@@ -1,0 +1,136 @@
+<div class="container-fluid">
+  <h3 class="text-left text-muted text-uppercase title-container">
+    {{'extraConfigManager' | translate}}
+  </h3>
+  <hr>
+  <app-loader [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}" *ngIf="!isExtraConfigsLoaded"></app-loader>
+  <!-- <app-no-content [label]="'noExtraConfig'" *ngIf="extraConfigs && extraConfigs.length == '0'"></app-no-content> -->
+  <div *ngIf="isExtraConfigsLoaded">
+     <div
+      fxLayoutWrap
+      fxLayout="row"
+      class="center-block"
+      *ngIf="extraConfigs"
+      fxLayoutAlign="start stretch"
+    >
+      <div
+        [fxFlex]="sizeCardWidth"
+        *ngFor="let extraConfig of extraConfigs; let i = index"
+      >
+        <mat-card class="pl-0 pr-0 pt-0 pb-0 mat-elevation-z6">
+          <mat-card-header class="p-0">
+            <h4 class="text-capitalize mb-0">{{extraConfig.name}}</h4>
+            <span
+              ngbDropdown
+              placement="bottom-right"
+              class="d-inline-block pl-0 pr-1"
+            >
+              <button
+                mat-button
+                type="button"
+                id="settings"
+                aria-label="More"
+                ngbDropdownToggle
+                class="mat-icon-button mat-text-primary ml-0 mr-0"
+              >
+                <mat-icon>settings</mat-icon>
+              </button>
+              <ul ngbDropdownMenu [class.last]="(i + 1) % 3 === 0" aria-labelledby="settings">
+                <li class="dropdown-item" (click)="openExtraConfigDetailsDialog(i, extraConfig)">
+                  <a class="mat-text-primary">
+                    <span class="inline"><mat-icon>details</mat-icon></span>
+                    <span class="inline up">{{'details' | translate}}</span>
+                  </a>
+                </li>
+                <li class="dropdown-item" (click)="openEditDialog(i, extraConfig)">
+                  <a class="mat-text-primary">
+                    <span class="inline"><mat-icon>mode_edit</mat-icon></span>
+                    <span class="inline up">{{'edit' | translate}}</span>
+                  </a>
+                </li>
+                <li class="dropdown-item" (click)="openDeleteDialog(i, extraConfig)">
+                  <a class="text-danger">
+                  <span class="inline"><mat-icon>delete_forever</mat-icon></span>
+                  <span class="inline up">{{'delete' | translate}}</span>
+                  </a>
+                </li>
+              </ul>
+            </span>
+          </mat-card-header>
+          <mat-card-content>
+            <div
+              fxLayoutWrap
+              fxLayout="row"
+              class="pb-1 pt-1 mt-4"
+              fxLayoutAlign="space-around center"
+            >
+              <div fxFlex="75" class="text-left lc-reset-padding-l">
+                <span class="option-name">{{'required' | translate}}</span>
+              </div>
+              <div fxFlex="25" class="text-left lc-reset-padding-v">
+                <mat-chip-list fxLayoutAlign="end center">
+                  <mat-chip [color]="extraConfig.required ? 'green' : 'red'">
+                    <span class="text-uppercase">{{extraConfig.required}}</span>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+            <div
+              fxLayoutWrap
+              fxLayout="row"
+              class="pb-1 pt-1"
+              fxLayoutAlign="space-around left"
+            >
+              <div fxFlex="75" class="text-left lc-reset-padding-l">
+                <span class="option-name">{{'multipleChoice' | translate}}</span>
+              </div>
+              <div fxFlex="25" class="text-left lc-reset-padding-v">
+                <mat-chip-list fxLayoutAlign="end center">
+                  <mat-chip [color]="extraConfig.multiple_choice ? 'green' : 'red'">
+                    <span class="text-uppercase">{{extraConfig.multiple_choice}}</span>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+            <div
+              fxLayoutWrap
+              fxLayout="row"
+              class="pb-1 pt-1"
+              fxLayoutAlign="space-around left"
+            >
+              <div fxFlex="75" class="text-left lc-reset-padding-l">
+                <span class="option-name">{{extraConfig?.minimum_choice ? ('minimumChoice' | translate) : '&nbsp;'}}</span>
+              </div>
+              <div fxFlex="25" class="center-block">
+                <mat-chip-list *ngIf="extraConfig.minimum_choice" fxLayoutAlign="end center">
+                  <mat-chip color="primary" selected="true">
+                    <span class="text-uppercase">{{extraConfig.minimum_choice}}</span>
+                  </mat-chip>
+                </mat-chip-list>
+                <span class="inline pt-2 pb-1" *ngIf="!extraConfig.minimum_choice">&nbsp;</span>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-footer (click)="openExtraConfigDetailsDialog(i, extraConfig)">
+            <mat-chip-list class="inline">
+              <mat-chip color="primary" selected="true">
+                <span class="text-uppercase">{{extraConfig.extra_ingredients?.length}}</span>
+              </mat-chip>
+            </mat-chip-list>
+            <span class="inline middle text-uppercase">{{'extraIngredients' | translate}}</span>
+          </mat-card-footer>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <button
+    mat-fab
+    type="submit"
+    tooltip-position="below"
+    (click)="openAddExtraConfigDialog()"
+    matTooltip="{{'addExtraConfig' | translate}}"
+    class="mat-btn mat-fab-top-right pos-fix accent"
+  >
+    <mat-icon class="mat-48">add</mat-icon>
+  </button>
+</div>

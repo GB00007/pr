@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss(false)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+  <h3 class="modal-title">{{'assignWaiter' | translate}}</h3>
+</div>
+<div class="modal-body clearfix">
+  <div >
+    <label>
+      {{'assignWaiterMessage' | translate}}
+    </label>
+    <select [(ngModel)]="userIndex" class="form-control">
+      <option [value]="i" *ngFor="let waiter of users; let i = index">
+        {{waiter.firstname}} {{waiter.lastname}}
+      </option>
+    </select>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      mat-raised-button
+      (click)="assignWaiterToOrder()"
+      class="mat-raised lc-btn-primary"
+    >
+      {{'submit' | translate}}
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</div>

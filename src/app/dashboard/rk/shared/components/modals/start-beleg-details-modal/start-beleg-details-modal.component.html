@@ -1,0 +1,52 @@
+<div class="modal-header" fxLayout="column" fxLayoutAlign="center center">
+  <h3>{{'cashRegisterDetails' | translate}}</h3>
+  <h5>{{'clickFieldToCopy' | translate}}</h5>
+</div>
+<div class="modal-body">
+  <mat-form-field class="field-full-width">
+    <input
+      matInput
+      readonly
+      type="text"
+      ngxClipboard
+      autofocus="true"
+      [value]="cashRegisterId"
+      [cbContent]="cashRegisterId"
+      [placeholder]="'RkId' | translate"
+      (click)="openSnackBar('rkIdCopied')"
+    >
+  </mat-form-field>
+  <mat-form-field class="field-full-width">
+    <input
+      matInput
+      readonly
+      type="text"
+      ngxClipboard
+      [value]="AESKey"
+      autofocus="true"
+      [cbContent]="AESKey"
+      [placeholder]="'AESKey' | translate"
+      (click)="openSnackBar('aeskeyCopied')"
+    >
+  </mat-form-field>
+  <mat-form-field class="field-full-width">
+    <textarea
+      matInput
+      readonly
+      type="text"
+      ngxClipboard
+      [value]="qrcode"
+      autofocus="true"
+      matTextareaAutosize
+      [cbContent]="qrcode"
+      [placeholder]="'qrcode' | translate"
+      (click)="openSnackBar('qrcodeCopied')"
+    >
+    </textarea>
+  </mat-form-field>
+</div>
+<div class="modal-footer" fxLayout="row" fxLayoutAlign="end center">
+  <button color="warn" type="button" mat-raised-button (click)="activeModal.close()">
+    {{'close' | translate}}
+  </button>
+</div>

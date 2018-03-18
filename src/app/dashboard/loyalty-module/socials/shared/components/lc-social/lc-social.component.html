@@ -1,0 +1,123 @@
+<form
+  novalidate
+  fxLayout="column"
+  fxLayoutGap="1rem"
+  *ngIf="socialMediaLinksForm"
+  fxLayoutAlign="center stretch"
+  [formGroup]="socialMediaLinksForm"
+>
+  <div
+    formArrayName="social_media_links"
+    *ngFor="let socialMediaLink of socialMediaLinksForm.get('social_media_links').controls; index as i"
+    [class.has-success]="socials[socialMediaLink.value.provider] && reductions[socialMediaLink.value.provider]?.isEnabled"
+  >
+    <div
+      fxLayout="row"
+      fxLayoutGap="1rem"
+      [formGroupName]="i"
+      class="social-provider-row"
+      fxLayoutAlign="start center"
+    >
+      <div fxFlex="20">
+        {{socialMediaLink.value.provider}}
+        (<a
+          target="_blank"
+          [href]="getPageLink(socials[socialMediaLink.value.provider]?.reference, socialMediaLink.value.provider)"
+          *ngIf="socials[socialMediaLink.value.provider] || reductions[socialMediaLink.value.provider]?.isEnabled"
+        >
+          @{{socials[socialMediaLink.value.provider]?.name}}
+        </a>)
+      </div>
+      <mat-form-field
+        fxFlex="auto"
+        *ngIf="socialMediaLink.value.provider === 'twitter' || socialMediaLink.value.provider === 'instagram'"
+      >
+        <span matPrefix>@</span>
+        <input
+          matInput
+          autocomplete="off"
+          formControlName="name"
+          [placeholder]="socialMediaLink.value.provider + 'IdPlaceholder' | translate"
+        >
+        <span
+          matSuffix
+          [class.active]="page?.social_media_links[socialMediaLink.value.provider] && reductions[socialMediaLink.value.provider]?.isEnabled"
+        >
+          <i class="fa" [ngClass]="'fa-' + socialMediaLink.value.provider"></i>
+        </span>
+      </mat-form-field>
+      <mat-form-field
+        [fxFlex]="(socialMediaLink.value.provider === 'foursquare') ? 'calc(40% - 1rem);' : auto"
+        *ngIf="socialMediaLink.value.provider === 'facebook' || socialMediaLink.value.provider === 'foursquare'"
+      >
+        <span matPrefix>@</span>
+        <input
+          matInput
+          autocomplete="off"
+          formControlName="name"
+          [matAutocomplete]="auto"
+          [placeholder]="socialMediaLink.value.provider + 'IdPlaceholder' | translate"
+        >
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let venue of filteredList[socialMediaLink.value.provider]" [value]="venue" [disabled]="venue.disabled">
+            <img [src]="venue.picture" *ngIf="venue.picture" [alt]="venue.name" [title]="venue.name">
+            <span>{{venue.name}}</span>
+          </mat-option>
+        </mat-autocomplete>
+        <span
+          matSuffix
+          *ngIf="socialMediaLink.value.provider !== 'foursquare'"
+          [class.active]="page?.social_media_links[socialMediaLink.value.provider] && reductions[socialMediaLink.value.provider]?.isEnabled"
+        >
+          <i class="fa" [ngClass]="'fa-' + socialMediaLink.value.provider"></i>
+        </span>
+      </mat-form-field>
+      <input
+        type="hidden"
+        [hidden]="true"
+        formControlName="reference"
+        [ngModel]="socialMediaLink.value.name"
+        *ngIf="socialMediaLink.value.provider === 'twitter' || socialMediaLink.value.provider === 'instagram'"
+      >
+      <div
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        *ngIf="socialMediaLink.value.provider === 'foursquare'"
+        [fxFlex]="(socialMediaLink.value.provider === 'foursquare') ? 'calc(40% - 1rem);' : 0"
+      >
+        <mat-form-field fxFlex="100">
+          <input
+            matInput
+            type="text"
+            id="autocomplete"
+            angularGooglePlace
+            [(ngModel)]="near"
+            (setAddress)="getAddress($event)"
+            [ngModelOptions]="{standalone: true}"
+            [placeholder]="'yourCityName' | translate"
+            [disabled]="accounts && !accounts['foursquare']"
+          >
+          <span
+            matSuffix
+            [class.active]="page?.social_media_links?.foursquare && reductions?.foursquare?.isEnabled"
+          >
+            <i class="fa fa-foursquare"></i>
+          </span>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="raw" fxLayoutAlign="end center">
+    <button
+      fxFlex="33"
+      type="button"
+      color="primary"
+      fxFlexOffset="66"
+      mat-raised-button
+      [disabled]="isButtonDisabled"
+      (click)="updateSocialNetworkSettings()"
+    >
+      {{'updateSettings' | translate}}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,129 @@
+<h3 class="text-left text-muted text-uppercase title-container">
+  {{'internalCategoriesManager' | translate}}
+</h3>
+<div class="status pull-right">
+  <mat-slide-toggle
+    color="primary"
+    [checked]="isActive"
+    tooltip-position="left"
+    class="inline status-button"
+    [ngClass]="ngTranslate.currentLang"
+    (change)="updateInternalCategoryStatus($event)"
+    matTooltip="{{isActive ? ('clickToDisable' | translate) : ('clickToEnable' | translate)}}"
+  >
+    <!--title="{{isActive ? ('clickToDisable' | translate) : 'clickToEnable' | translate}}"-->
+  </mat-slide-toggle>
+  <mat-chip-list class="inline" selectable="false">
+    <mat-chip *ngIf="isActive" color="green">{{'enabled' | translate}}</mat-chip>
+    <mat-chip *ngIf="!isActive" color="red">{{'disabled' | translate}}</mat-chip>
+  </mat-chip-list>
+</div>
+<hr>
+<form
+  name="internalCategoriesForm"
+  [formGroup]="internalCategoriesForm"
+  fxLayout="row"
+  fxLayoutAlign="center center">
+    <mat-form-field>
+      <input
+        matInput
+        name="name"
+        autocomplete="off"
+        formControlName="name"
+        placeholder="{{'name' | translate}}"
+      >
+      <mat-hint align="start">
+        <small
+          class="text-danger"
+          [hidden]="internalCategoriesForm.get('name').valid || internalCategoriesForm.get('name').pristine"
+        >
+          {{'form_error_required' | translate}}
+        </small>
+      </mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select
+        formControlName="color"
+        [placeholder]="'color' | translate"
+        class="mat-input-element"
+      >
+        <mat-option [value]="color.id" *ngFor="let color of colors">
+          <span
+            class="inline middle mat-{{color.name}}"
+            [ngStyle]="{
+              'width': '30px',
+              'height': '30px'
+            }"
+          >
+          </span>
+          {{color.name.split('-').join(' ') | capitalize}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      *ngIf="selected"
+      type="submit"
+      mat-raised-button
+      class="lc-btn-primary m-0"
+      [disabled]= "isBtnDisabled"
+      (click)="updateInternalCategory()"
+    >
+      {{'update' | translate}}
+    </button>
+    <button
+      *ngIf="!selected"
+      type="submit"
+      mat-raised-button
+      class="lc-btn-primary m-0"
+      [disabled]="!internalCategoriesForm.valid"
+      (click)="addNewInternalCategory()"
+    >
+      {{'add' | translate}}
+    </button>
+    <button mat-raised-button class="m-0" type="button" (click)="resetEdit()">
+      {{'reset' | translate}}
+    </button>
+</form>
+<hr>
+<app-loader *ngIf="!isInternalCatLoaded" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+<!-- <app-no-content [label]="'noInternalCat'" *ngIf="isInternalCatEmpty"></app-no-content> -->
+<div
+  *ngIf="isInternalCatLoaded && !isInternalCatEmpty"
+  fxLayoutWrap
+  fxLayout="row"
+  dnd-sortable-container
+  fxLayoutAlign="start center"
+  >
+  <!-- [sortableData]="internalCategories" -->
+  <mat-card
+    fxFlex="20"
+    dnd-sortable
+    [sortableIndex]="idx"
+    [ngClass]="category?.color?.name"
+    class="internal-category-wrapper m-0"
+    [class.selected]="selected === category?.id"
+    (onDropSuccess)="transferDataSuccess(category, idx)"
+    *ngFor="let category of internalCategories; let idx = index"
+  >
+    <mat-card-content class="pt-0 pl-0 pr-0">
+      <span class="inline internal-category">{{category.name}}</span>
+    </mat-card-content>
+    <mat-card-actions>
+      <ul class="list-inline text-right pr-1 mb-0">
+        <li class="list-inline-item" (click)="editInternalCategory(category)">
+          <mat-icon>mode_edit</mat-icon>
+        </li>
+        <li class="list-inline-item" (click)="deleteInternalCategory(category)">
+          <mat-icon>delete_forever</mat-icon>
+        </li>
+      </ul>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<!-- <app-no-content
+  [label]="'noInternalCategories'"
+  *ngIf="internalCategories && !internalCategories.length"
+>
+</app-no-content> -->
+
+

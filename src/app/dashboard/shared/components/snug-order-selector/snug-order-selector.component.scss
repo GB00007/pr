@@ -1,0 +1,70 @@
+:host {
+  width: 100%;
+  .selected-items {
+    height: 175px;
+    width: 98%;
+  }
+  .mat-raised-button{
+    margin: 0px
+  }
+  .mat-block {
+    display: block;
+    position: relative;
+    padding: 2px;
+    margin: 0px!important;
+}
+}
+.selection-section{
+  padding: 0 10px;
+  overflow: hidden;
+}
+.my-overflow {
+  margin-top: 20px;
+  padding-right: 20px;
+  overflow-y: auto;
+  height: 200px;
+  max-height: 200px;
+  min-height: 200px;
+}
+//15 "
+.div-15p{
+  max-height: 440px;
+}
+//13 "
+.div-13p{
+  max-height: 472px;
+}
+//19 "
+.div-19p{
+  max-height: 572px;
+}
+// 22 "
+.div-22p{
+  max-height: 722px;
+}
+// 23 "
+.div-23p{
+  max-height: 752px;
+}
+
+.fieldset-13p{
+  height: 175px
+}
+.fieldset-15p{
+  height: 175px
+}
+.fieldset-22p{
+  height: 175px 
+}
+.fieldset-19p{
+  height: 175px
+}
+.fieldset-22p{
+  height: 175px
+}
+.fieldset-22p{
+  height: 175px
+}
+.text-center{
+  text-align : -webkit-center
+}

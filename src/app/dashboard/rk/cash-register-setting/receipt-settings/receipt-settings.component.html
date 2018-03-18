@@ -1,0 +1,33 @@
+
+<form name="lcEditPage" [formGroup]="pageForm" class="lc-edit-page mt-3" novalidate>
+  <div *ngIf="page?.business_sector.id === '2'">
+      <mat-slide-toggle
+        color="warn"
+        #lockNewOrder
+        formControlName="lockNewOrder"
+        [checked]="page?.others?.lockNewOrder"
+        (change)="updatePage({others: {lockNewOrder: $event.checked}})"
+        [title]="(page?.others?.lockNewOrder ? 'enable' : 'disable') | translate"
+      >
+        <span class="middle pl-2">
+          <label class="mat-block inline">{{'lockNewOrder' | translate}}</label>
+          <strong>({{(page?.others?.lockNewOrder ? 'enabled' : 'disabled') | translate}})</strong>
+        </span>
+      </mat-slide-toggle>
+  </div>
+  <div  *ngIf="page?.business_sector.id === '2'">
+    <mat-slide-toggle
+      color="warn"
+      [checked]="page?.paid_by_assigned"
+      formControlName="paid_by_assigned"
+      (change)="updatePage({paid_by_assigned: $event.checked})"
+      [title]="(page?.paid_by_assigned ? 'enable' : 'disable') | translate"
+    >
+      <span class="middle pl-2">
+        <label class="mat-block inline">{{'paidByAssigned' | translate}}</label>
+        <strong>({{(page?.paid_by_assigned ? 'enabled' : 'disabled') | translate}})</strong>
+      </span>
+    </mat-slide-toggle>
+  </div>
+</form>
+<app-preconfig-reduction></app-preconfig-reduction>

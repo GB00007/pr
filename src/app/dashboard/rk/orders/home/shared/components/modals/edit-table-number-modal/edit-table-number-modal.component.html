@@ -1,0 +1,55 @@
+<mat-icon class="close" (click)="matDialogRef.close(false)" aria-label="Close">cancel</mat-icon>
+<div class="funds-wrapper" flexLayout="row" flexLayoutAlign="center center">
+  <h5 mat-dialog-title>{{'editTableNumber' | translate}}</h5>
+  <mat-dialog-content>
+    <form [formGroup]="editTableNumberForm">
+      <mat-form-field fxLayoutAlign="center center">
+        <input
+        matInput
+        placeholder="Table number"
+        formControlName="tableNumber"
+        >
+      </mat-form-field>
+      <div fxLayoutAlign="center center">
+        <mat-spinner  *ngIf="!tables"></mat-spinner>
+      </div>
+      <div class="space-pad" fxLayoutAlign="left" fxLayoutWrap>
+        <div
+          fxFlex="10"
+          class="square-button-wrapper"
+          *ngFor="let table of tables"
+          fxLayoutAlign="space-around stretch"
+        >
+          <div
+            fxFlexFill
+            class="space"
+            fxLayoutAlign="space-around center"
+            fxLayoutWrap
+            [ngClass]="'square-button square-button-' + 'indigo'"
+            [class.checked]="selectedId === table?.id"
+            (click)="toggle(table)"
+            >
+            <span *ngIf="table?.number">{{table.number}}</span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+    <button type="button" mat-raised-button (click)="matDialogRef.close()">
+      {{'cancel' | translate}}
+    </button>
+    <button
+     (click)="updateTableNumber()"
+      type="submit"
+      mat-raised-button
+      [disabled]="isButtonDisabled"
+      class="mat-raised lc-btn-primary"
+    >
+    {{'submit' | translate}}
+    </button>
+  </mat-dialog-actions>
+</div>
+
+
+

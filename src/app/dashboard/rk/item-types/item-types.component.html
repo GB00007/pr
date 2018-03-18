@@ -1,0 +1,137 @@
+<div class="container-fluid">
+  <h3 class="text-left text-muted text-uppercase title-container">
+    {{'rk' | translate}} > {{'itemTypesManager' | translate}}
+  </h3>
+  <hr>
+  <app-loader *ngIf="!isItemTypeLoaded" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+  <!-- <app-no-content [label]="'noItemType'" *ngIf="isItemTypeEmpty"></app-no-content>  -->
+   <div
+    *ngIf="isItemTypeLoaded && !isItemTypeEmpty"
+    fxLayoutWrap
+    fxLayout="row"
+    fxLayoutAlign="start stretch"
+  >
+    <div
+      [fxFlex]="cardWidth"
+      *ngFor="let itemType of itemTypes; let i = index;"
+    >
+      <mat-card class="pl-3 pr-0 pt-0">
+        <mat-card-title class="mb-2">
+          <div
+            fxLayoutWrap
+            fxLayout="row"
+            fxLayoutAlign="start center"
+          >
+            <div fxFlex="80">
+              <span class="name-item-type">{{itemType?.name}}</span>
+            </div>
+            <div fxFlex="20" class="text-right">
+              <span
+                ngbDropdown
+                class="d-inline-block"
+                placement="bottom-right"
+              >
+                <button
+                  mat-button
+                  type="button"
+                  id="settings"
+                  aria-label="More"
+                  ngbDropdownToggle
+                  class="mat-icon-button mat-text-primary"
+                >
+                  <mat-icon>settings</mat-icon>
+                </button>
+                <ul ngbDropdownMenu aria-labelledby="settings">
+                  <li class="dropdown-item" (click)="openEditItemTypeDialog(i, itemType)">
+                    <a class="mat-text-primary">
+                      <span class="inline"><mat-icon>mode_edit</mat-icon></span>
+                      <span class="inline up">{{'edit' | translate}}</span>
+                    </a>
+                  </li>
+                  <li class="dropdown-item" (click)="openDeleteItemTypeDialog(i, itemType)">
+                    <a class="text-danger">
+                    <span class="inline"><mat-icon>delete_forever</mat-icon></span>
+                    <span class="inline up">{{'delete' | translate}}</span>
+                    </a>
+                  </li>
+                </ul>
+              </span>
+            </div>
+          </div>
+        </mat-card-title>
+        <mat-card-subtitle class="p-0">
+          <div
+            fxLayoutWrap
+            fxLayout="row"
+            fxLayoutAlign="start center"
+          >
+            <div fxFlex="100">
+              <div class="description">
+                {{'printers' | translate}}: "{{getListPrinter(itemType.printers)}}"
+              </div>
+              <div
+                fxLayoutWrap
+                fxLayout="row"
+                fxLayoutAlign="space-around stretch"
+              >
+                <div [fxFlex]="cardWidth === 33.33 ? 50 : 100">
+                  <mat-chip-list>
+                    <mat-chip
+                      fxLayout="row"
+                      fxLayoutGap=".3rem"
+                      class="mat-elevation-z3 mt-3"
+                      fxLayoutAlign="space-between center"
+                      [color]="itemType?.isPrintEnabled ? 'text-green' : 'text-red'"
+                    >
+                      <mat-slide-toggle
+                        class="pt-0"
+                        color="primary"
+                        [checked]="itemType?.isPrintEnabled"
+                        (change)="updateItemTypes({id: itemType?.id, isPrintEnabled: !!$event.checked})"
+                        title="{{itemType?.isPrintEnabled ? ('clickToDisable' | translate) : 'clickToEnable' | translate}}"
+                      >
+                      </mat-slide-toggle>
+                      <span>{{(itemType?.isPrintEnabled ? 'isPrintEnabled' : 'isPrintDisabled') | translate}}</span>
+                    </mat-chip>
+                  </mat-chip-list>
+                </div>
+                <div [fxFlex]="cardWidth === 33.33 ? 50 : 100">
+                  <mat-chip-list [ngClass]="{'pull-right pr-2': cardWidth === 33.33}">
+                    <mat-chip
+                      fxLayout="row"
+                      fxLayoutGap=".3rem"
+                      fxLayoutAlign="space-between center"
+                      class="mat-elevation-z3 mt-3"
+                      [class.ml-5]="cardWidth === '33.33'"
+                      [color]="itemType?.isInDigitalMode ? 'text-green' : 'text-red'"
+                    >
+                      <mat-slide-toggle
+                        class="pt-0"
+                        color="primary"
+                        [checked]="itemType?.isInDigitalMode"
+                        (change)="updateItemTypes({id: itemType?.id, isInDigitalMode: !!$event.checked})"
+                        title="{{itemType?.isInDigitalMode ? ('clickToDisable' | translate) : 'clickToEnable' | translate}}"
+                      >
+                      </mat-slide-toggle>
+                      <span>{{itemType?.isInDigitalMode ? ('digitalModeEnabled' | translate) : ('digitalModeDisabled' | translate)}}</span>
+                    </mat-chip>
+                  </mat-chip-list>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-subtitle>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<button
+  mat-fab
+  type="button"
+  tooltip-position="below"
+  (click)="openAddItemTypeDialog()"
+  matTooltip="{{'addItemType' | translate}}"
+  class="mat-btn mat-fab-top-right pos-fix accent"
+>
+  <mat-icon class="mat-48">add</mat-icon>
+</button>

@@ -1,0 +1,8 @@
+<span class="snug-old-price"  *ngIf="itemOrOrder?.discount">
+  {{itemOrOrder?.totalGross | snugCurrency: itemOrOrder?.official_currency:true}}
+</span>
+<app-snug-discount-label [discount]="itemOrOrder?.discount"></app-snug-discount-label>
+<span *ngIf="itemOrOrder?.discount"></span>
+<span class="snug-final-price" [ngClass]="{'with-reduction': itemOrOrder?.discount}">
+  {{itemOrOrder?.final_price | snugCurrency: itemOrOrder?.official_currency:true}}
+</span>

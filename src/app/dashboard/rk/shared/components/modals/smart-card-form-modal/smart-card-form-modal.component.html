@@ -1,0 +1,151 @@
+<form
+  name="smartCardForm"
+  class="smart-card-form"
+  [formGroup]="smartCardForm"
+>
+  <div class="modal-header">
+    <h4>{{smartCard ? 'editSmartCard' : 'addSmartCard' | translate}}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix" >
+    <div class="mat-block text-left">
+      <mat-select
+        name="smart_card_type"
+        formControlName="smart_card_type"
+        [(ngModel)]="selectedSmartCardType"
+        (change)="updateFormFields($event)"
+        placeholder="{{'smartCardType' | translate}}"
+      >
+        <mat-option *ngFor="let smartCardType of smartCardTypes" [value]="smartCardType">
+          {{smartCardType}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class="mat-block text-center">
+      <mat-form-field class="field-full-width">
+        <input
+          matInput
+          formControlName="owner"
+          placeholder="{{'owner' | translate}}"
+        >
+      </mat-form-field>
+    </div>
+    <div class="mat-block text-center" *ngIf="selectedSmartCardType !== defaultSmartCardType">
+      <mat-form-field class="field-full-width">
+        <input
+          matInput
+          [textMask]="{mask: serialNumberMask}"
+          formControlName="serial_number_rks_card"
+          placeholder="{{'serialNumberRksCard' | translate}}"
+        >
+        <mat-hint align="start">
+          <span
+            class="text-danger"
+            [hidden]="smartCardForm.get('serial_number_rks_card').valid || smartCardForm.get('serial_number_rks_card').pristine"
+          >
+            <small *ngIf="smartCardForm.get('serial_number_rks_card').errors && smartCardForm.get('serial_number_rks_card').errors.required">
+              {{'form_error_required' | translate}}
+            </small>
+            <small *ngIf="smartCardForm.get('serial_number_rks_card').errors && smartCardForm.get('serial_number_rks_card').errors.pattern">
+              {{'postiveonly' | translate}}
+            </small>
+          </span>
+        </mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="mat-block text-center">
+      <mat-form-field class="field-full-width">
+        <input
+          matInput
+          formControlName="pin"
+          placeholder="{{'pinCode' | translate}}"
+        >
+        <mat-hint align="start">
+          <span
+            class="text-danger"
+            [hidden]="smartCardForm.get('pin').valid || smartCardForm.get('pin').pristine"
+          >
+            <small *ngIf="smartCardForm.get('pin').errors && smartCardForm.get('pin').errors.required">
+              {{'form_error_required' | translate}}
+            </small>
+            <small *ngIf="smartCardForm.get('pin').errors && smartCardForm.get('pin').errors.pattern">
+              {{'postiveonly' | translate}}
+            </small>
+          </span>
+        </mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="mat-block text-center" *ngIf="selectedSmartCardType !== defaultSmartCardType">
+      <mat-form-field class="field-full-width">
+        <input
+          matInput
+          formControlName="puk"
+          placeholder="{{'pukCode' | translate}}"
+        >
+        <mat-hint align="start">
+          <span
+            class="text-danger"
+            [hidden]="smartCardForm.get('puk').valid || smartCardForm.get('puk').pristine"
+          >
+            <small *ngIf="smartCardForm.get('puk').errors && smartCardForm.get('puk').errors.pattern">
+              {{'postiveonly' | translate}}
+            </small>
+          </span>
+        </mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="mat-block text-center">
+      <mat-form-field class="field-full-width">
+        <input
+          matInput
+          [appUnmask]="serialNumberCertificateUnmask"
+          formControlName="serial_number_certificate"
+          placeholder="{{'serialNumberCertificate' | translate}}"
+          [textMask]="{mask: serialNumberCertificateMask, pipe: serialNumberCertificatePipe}"
+        >
+        <mat-hint align="start">
+          <span
+            class="text-danger"
+            [hidden]="smartCardForm.get('serial_number_certificate').valid || smartCardForm.get('serial_number_certificate').pristine"
+          >
+            <small *ngIf="smartCardForm.get('serial_number_certificate').errors && smartCardForm.get('serial_number_certificate').errors.required">
+              {{'form_error_required' | translate}}
+            </small>
+            <small *ngIf="smartCardForm.get('serial_number_certificate').errors && smartCardForm.get('serial_number_certificate').errors.pattern">
+              {{'postiveonly' | translate}}
+            </small>
+          </span>
+        </mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="margin-l">
+      <mat-checkbox formControlName="is_default">{{'default' | translate}}</mat-checkbox>
+    </div>
+    <button
+      type="submit"
+      mat-raised-button
+      class="mat-raised lc-btn-primary"
+      [disabled]="!smartCardForm.valid"
+      (click)="smartCard ? updateSmartCard() : addSmartCard()"
+    >
+      {{'submit' | translate}}
+    </button>
+    <button
+      class="ml-1"
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>

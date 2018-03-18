@@ -1,0 +1,104 @@
+<form
+  name="deleteItem"
+  class="mark-as-paid"
+  [formGroup]="deleteItemForm"
+>
+  <div class="modal-header">
+    <h4 class="modal-title">{{'delete' | translate}} "{{entry.name}}"</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss(false)"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <div class="row justify-content-center">
+      <div class="p-4 text-left col-lg-8">
+        <mat-select
+          required
+          name="quantity"
+          class="width-pinCode"
+          formControlName="quantity"
+          *ngIf="order.entries.items.length > 1"
+          [placeholder]="'selectQuantity' | translate"
+        >
+          <mat-option *ngFor="let qte of quantities" [value]="qte" >
+            {{qte}}
+          </mat-option>
+        </mat-select>
+        <mat-select
+          required
+          name="quantity"
+          formControlName="quantity"
+          [placeholder]="'selectQuantity' | translate"
+          *ngIf="order.entries.items.length === 1 && entry.quantity > 1"
+        >
+          <mat-option *ngFor="let qte of quantities | slice:0:quantities.length - 1" [value]="qte">
+            {{qte}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="deleteItemForm.get('quantity').errors && deleteItemForm.get('quantity').errors['required']">
+          {{'form_error_required' | translate}}
+        </mat-error>
+      </div>
+      <div class="text-left col-lg-8 pl-4">
+        <mat-form-field
+          class="field-full-width"
+          dividerColor="{{getDividerColor(deleteItemForm.get('pinCode'))}}"
+        >
+          <input
+            matInput
+            #pinCode
+            required
+            autocomplete="off"
+            formControlName="pinCode"
+            [placeholder]="'pinCode' | translate"
+            [type]="showPin ? 'text' : 'password'"
+          >
+          <span matSuffix>
+            <button
+              type="button"
+              tabindex="-1"
+              mat-raised-button
+              (click)="showPin = !showPin"
+              class="btn btn-sm lc-btn-primary show-pin text-capitalize"
+            >
+              <span [hidden]="!showPin"> <i class="fa fa-eye-slash fa-2x"></i></span>
+              <span [hidden]="showPin"> <i class="fa fa-eye fa-2x"></i></span>
+            </button>
+          </span>
+          <mat-error *ngIf="deleteItemForm.get('pinCode').errors && deleteItemForm.get('pinCode').errors['required']">
+            {{'form_error_required' | translate}}
+          </mat-error>
+          <mat-error *ngIf="deleteItemForm.get('pinCode').errors && deleteItemForm.get('pinCode').errors['pattern']">
+            {{'postiveonly' | translate}}
+          </mat-error>
+          <mat-error *ngIf="deleteItemForm.get('pinCode').errors && deleteItemForm.get('pinCode').errors['wrongPinCode'] && !deleteItemForm.get('pinCode').errors['invalidPinCode']">
+            {{'wrongPinCode' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      mat-raised-button
+      (click)="deleteItemsOrder()"
+      class="mat-raised lc-btn-primary"
+      [disabled]="!deleteItemForm.valid"
+    >
+      {{'confirm' | translate}}
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      (click)="activeModal.dismiss(false)"
+    >
+      {{'cancel' | translate}}
+    </button>
+  </div>
+</form>

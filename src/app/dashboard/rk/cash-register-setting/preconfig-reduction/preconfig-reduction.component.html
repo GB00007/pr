@@ -1,0 +1,129 @@
+<!-- Staff discount -->
+<mat-card class="p-1" fxFlex="50">
+  <mat-card-content class="mb-0 pb-0 pt-0">
+    <h4 class="title-section pt-3">
+      <span class="inline middle">
+        <svg style="width: 24px;height: 24px;" viewBox="0 0 24 24">
+            <path fill="#000000" d="M 5 2 C 3.346 2 2 3.346 2 5 L 2 19 C 2 20.654 3.346 22 5 22 L 19 22 C 20.654 22 22 20.654 22 19 L 22 5 C 22 3.346 20.654 2 19 2 L 5 2 z M 5 4 L 19 4 C 19.551 4 20 4.449 20 5 L 20 19 C 20 19.551 19.551 20 19 20 L 5 20 C 4.449 20 4 19.551 4 19 L 4 5 C 4 4.449 4.449 4 5 4 z M 8.5 6 C 7.121 6 6 7.121 6 8.5 C 6 9.879 7.121 11 8.5 11 C 9.879 11 11 9.879 11 8.5 C 11 7.121 9.879 6 8.5 6 z M 15 6 L 7.34375 16.90625 L 9 18 L 16.65625 7.09375 L 15 6 z M 8.5 7.65625 C 8.959 7.65625 9.34375 8.041 9.34375 8.5 C 9.34375 8.959 8.959 9.34375 8.5 9.34375 C 8.041 9.34375 7.65625 8.959 7.65625 8.5 C 7.65625 8.041 8.041 7.65625 8.5 7.65625 z M 15.5 13 C 14.121 13 13 14.121 13 15.5 C 13 16.879 14.121 18 15.5 18 C 16.879 18 18 16.879 18 15.5 C 18 14.121 16.879 13 15.5 13 z M 15.5 14.65625 C 15.959 14.65625 16.34375 15.041 16.34375 15.5 C 16.34375 15.959 15.959 16.34375 15.5 16.34375 C 15.041 16.34375 14.65625 15.959 14.65625 15.5 C 14.65625 15.041 15.041 14.65625 15.5 14.65625 z"></path>
+        </svg>
+      </span>
+      <span class="inline">{{'staffDiscount' | translate}}</span>
+    </h4>
+    <div class="status-staff-discount">
+      <span class="text-right top pr-2">
+        <strong>({{staffDiscount?.is_actif ? ('enabled' | translate) : ('disabled' | translate)}})</strong>
+      </span>
+      <mat-slide-toggle
+        color="warm"
+        [checked]="staffDiscount?.is_actif"
+        (change)="toggleDiscount($event, staffDiscount, 'staff_discount')"
+        title="{{staffDiscount?.is_actif ? ('clickToDisable' | translate) : 'clickToEnable' | translate}}"
+      >
+      </mat-slide-toggle>
+    </div>
+    <div
+      fxLayoutWrap
+      fxLayout="row"
+      fxLayoutAlign="center center"
+    >
+      <div class="content" *ngIf="!staffDiscount?.is_actif" fxFlex="60" fxFlexOffset="20">
+        <div class="alert alert-warning text-center">
+          {{'staffDiscountDisabled' | translate}}.
+        </div>
+      </div>
+    </div>
+    <form
+      novalidate
+      name="staff-discount"
+      class="lc-edit-staff-discount"
+      *ngIf="staffDiscount?.is_actif"
+      [formGroup]="staffDiscountForm"
+    >
+      <div class="mat-block clearfix">
+        <mat-form-field class="field-full-width" dividerColor="{{getDividerColor(staffDiscountForm.controls['amount'])}}">
+          <input
+            matInput
+            type="number"
+            formControlName="amount"
+            placeholder="{{'amount' | translate}}"
+            [ngModel]="staffDiscount?.amount | number:'1.0'"
+          >
+          <span class="inline pull-right">%</span>
+        </mat-form-field>
+        <button
+          type="submit"
+          mat-raised-button
+          class="mat-raised lc-btn-primary m-r-0 pull-right"
+          [disabled]="valueNotChanged(staffDiscount, 'staff_discount')"
+          (click)="updatePreconfigReduction(staffDiscount, 'staff_discount')"
+        >
+          {{'updateStaffDiscount' | translate}}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+<!-- owner discount -->
+<mat-card class="p-1" fxFlex="50">
+  <mat-card-content class="mb-0 pb-0 pt-0">
+    <h4 class="title-section pt-3">
+      <span class="inline middle">
+        <svg style="width: 24px;height: 24px;" viewBox="0 0 24 24">
+            <path fill="#000000" d="M 5 2 C 3.346 2 2 3.346 2 5 L 2 19 C 2 20.654 3.346 22 5 22 L 19 22 C 20.654 22 22 20.654 22 19 L 22 5 C 22 3.346 20.654 2 19 2 L 5 2 z M 5 4 L 19 4 C 19.551 4 20 4.449 20 5 L 20 19 C 20 19.551 19.551 20 19 20 L 5 20 C 4.449 20 4 19.551 4 19 L 4 5 C 4 4.449 4.449 4 5 4 z M 8.5 6 C 7.121 6 6 7.121 6 8.5 C 6 9.879 7.121 11 8.5 11 C 9.879 11 11 9.879 11 8.5 C 11 7.121 9.879 6 8.5 6 z M 15 6 L 7.34375 16.90625 L 9 18 L 16.65625 7.09375 L 15 6 z M 8.5 7.65625 C 8.959 7.65625 9.34375 8.041 9.34375 8.5 C 9.34375 8.959 8.959 9.34375 8.5 9.34375 C 8.041 9.34375 7.65625 8.959 7.65625 8.5 C 7.65625 8.041 8.041 7.65625 8.5 7.65625 z M 15.5 13 C 14.121 13 13 14.121 13 15.5 C 13 16.879 14.121 18 15.5 18 C 16.879 18 18 16.879 18 15.5 C 18 14.121 16.879 13 15.5 13 z M 15.5 14.65625 C 15.959 14.65625 16.34375 15.041 16.34375 15.5 C 16.34375 15.959 15.959 16.34375 15.5 16.34375 C 15.041 16.34375 14.65625 15.959 14.65625 15.5 C 14.65625 15.041 15.041 14.65625 15.5 14.65625 z"></path>
+        </svg>
+      </span>
+      <span class="inline">{{'ownerDiscount' | translate}}</span>
+    </h4>
+    <div class="status-staff-discount">
+      <span class="text-right top pr-2">
+        <strong>({{ownerDiscount?.is_actif ? ('enabled' | translate) : ('disabled' | translate)}})</strong>
+      </span>
+      <mat-slide-toggle
+        color="warm"
+        [checked]="ownerDiscount?.is_actif"
+        (change)="toggleDiscount($event, ownerDiscount, 'owner_discount')"
+        title="{{ownerDiscount?.is_actif ? ('clickToDisable' | translate) : 'clickToEnable' | translate}}"
+      >
+      </mat-slide-toggle>
+    </div>
+    <div
+      fxLayoutWrap
+      fxLayout="row"
+      fxLayoutAlign="center center"
+    >
+      <div class="content" *ngIf="!ownerDiscount?.is_actif" fxFlex="60" fxFlexOffset="20">
+        <div class="alert alert-warning text-center">
+          {{'ownerDiscountDisabled' | translate}}.
+        </div>
+      </div>
+    </div>
+    <form
+      novalidate
+      name="staff-discount"
+      *ngIf="ownerDiscount?.is_actif"
+      [formGroup]="ownerDiscountForm"
+    >
+      <div class="mat-block clearfix">
+        <mat-form-field class="field-full-width" dividerColor="{{getDividerColor(ownerDiscountForm.controls['amount'])}}">
+          <input
+            matInput
+            type="number"
+            formControlName="amount"
+            placeholder="{{'amount' | translate}}"
+            [ngModel]="ownerDiscount?.amount | number:'1.0'"
+          >
+          <span class="inline pull-right">%</span>
+        </mat-form-field>
+        <button
+          type="submit"
+          mat-raised-button
+          class="lc-btn-primary m-r-0 pull-right"
+          [disabled]="valueNotChanged(ownerDiscount, 'owner_discount')"
+          (click)="updatePreconfigReduction(ownerDiscount, 'owner_discount')"
+        >
+          {{'updateOwnerDiscount' | translate}}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,205 @@
+<h2 class="text-center margin">{{'pageSettingsTitle' | translate}}</h2>
+<form name="lcEditPage" [formGroup]="pageForm" class="lc-edit-page mt-3" novalidate>
+  <!-- <div
+    fxLayoutWrap
+    fxLayout="row"
+    class="mat-block mb-0"
+    [fxLayoutAlign]="(page?.business_sector.id === '2') ? 'space-around start' : 'start start'"
+  >
+    <div fxFlex="33" *ngIf="page?.business_sector.id === '2'">
+      <div class="mat-block text-center mt-2">
+        <mat-slide-toggle
+          color="warn"
+          #selfOrdering
+          [checked]="page?.self_ordering"
+          formControlName="self_ordering"
+          (change)="updatePage({self_ordering: $event.checked})"
+          [title]="(page?.self_ordering ? 'enable' : 'disable') | translate"
+        >
+          <span class="middle pl-2">
+            <label class="mat-block inline">{{'selfOrderingStatusForMobile' | translate}}</label>
+            <strong>({{(page?.self_ordering ? 'enabled' : 'disabled') | translate}})</strong>
+          </span>
+        </mat-slide-toggle>
+      </div>
+    </div>
+    <div fxFlex="50">
+      <div class="mat-block text-center mt-2">
+        <mat-slide-toggle
+          color="warn"
+          [checked]="!page?.disable_menu"
+          formControlName="disable_menu"
+          (change)="updateDisplayMenu($event)"
+          [title]="(page?.disable_menu ? 'disable' : 'enable') | translate"
+        >
+          <span class="middle pl-2">
+            <label class="mat-block inline">
+              {{(page?.business_sector.id === '2') ? 'displayMenu' : 'displayCatalogue' | translate}}
+            </label>
+            <strong>({{(page?.disable_menu ? 'disabled' : 'enabled') | translate}})</strong>
+          </span>
+        </mat-slide-toggle>
+      </div>
+    </div>
+    <div fxFlex="50" *ngIf="page?.business_sector.id === '2'">
+      <div class="mat-block text-center mt-2">
+        <mat-slide-toggle
+          color="warn"
+          #disableCashRegister
+          formControlName="disableCashRegister"
+          [checked]="page?.others?.disable_cash_register"
+          (change)="updatePage({others: {disable_cash_register: $event.checked}})"
+          [title]="(page?.others?.disable_cash_register ? 'enable' : 'disable') | translate"
+        >
+          <span class="middle pl-2">
+            <label class="mat-block inline">{{'disableCashRegister' | translate}}</label>
+            <strong>({{(page?.others?.disable_cash_register ? 'enabled' : 'disabled') | translate}})</strong>
+          </span>
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </div> -->
+  <div
+    fxLayoutWrap
+    fxLayout="row"
+    class="mat-block mb-0"
+    fxLayoutAlign="space-around start"
+  >
+    <div fxFlex="45">
+      <mat-form-field class="field-full-width mt-2">
+        <input
+          matInput
+          required
+          formControlName="name"
+          [placeholder]="'name' | translate"
+        >
+        <mat-error *ngIf="pageForm.get('name').hasError('required')">
+          {{'form_error_required' | translate}}
+        </mat-error>
+      </mat-form-field>
+      <div class="mat-block text-left" *ngIf="pictureData || page?.pictures?.profile?.path">
+        <label for="picture">{{'currentPicture' | translate}}</label>
+        <div class="preview-picture">
+          <img
+            class="img-fluid img-preview"
+            [src]="getProfileImagePath()"
+          >
+
+        </div>
+      </div>
+      <div
+        fxLayoutWrap
+        fxLayout="row"
+        fxLayoutAlign="space-around center"
+        class="form-group mat-block sizes-varieties mt-1"
+      >
+        <div fxFlex="50">
+          <span class="inline">
+            <h4>{{'picture' | translate}}</h4>
+          </span>
+          <button
+            mat-raised-button
+            (click)="openEditPictureDialog()"
+            class="mat-raised lc-btn-success"
+          >
+            {{'update' | translate}} {{'picture' | translate}}
+          </button>
+          <!--<input-->
+            <!--#file-->
+            <!--type="file"-->
+            <!--(change)="uploadFile($event)"-->
+            <!--class="form-control-file file"-->
+            <!--accept="image/gif, image/jpeg, image/png"-->
+          <!--&gt;-->
+          <div class="clearfix">
+            <small class="text-muted text-sm-right lc-reset-padding-v">
+              {{'infoPicture' | translate}} <br> {{'infoPictureSize' | translate}}
+            </small>
+          </div>
+        </div>
+        <div fxFlex="50" class="text-center">
+          <mat-progress-spinner [hidden]="deactivated" color="warn" mode="indeterminate"></mat-progress-spinner>
+        </div>
+      </div>
+    </div>
+    <div fxFlex="45">
+      <div
+        fxLayoutWrap
+        fxLayout="row"
+        class="mat-block mt-0"
+        fxLayoutAlign="space-around center"
+      >
+        <mat-form-field fxFlex="70" class="field-full-width">
+          <mat-select
+            required
+            formControlName="country"
+            [placeholder]="'country' | translate"
+            class="mat-input-element field-full-width"
+          >
+            <mat-option [value]="country" *ngFor="let country of countries">
+              {{country | translate}}
+            </mat-option>
+          </mat-select>
+          <mat-error [hidden]="pageForm.get('country').valid || pageForm.get('country').pristine">
+            {{'form_error_required' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="25" fxFlexOffset="5">
+          <mat-select
+            formControlName="official_currency"
+            [placeholder]="'currency' | translate"
+            class="mat-input-element field-full-width"
+          >
+            <mat-option [value]="currency" *ngFor="let currency of currencies">
+              {{currency}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="text-left">
+        <button
+          type="button"
+          color="blue"
+          mat-raised-button
+          class="ml-0 mt-0"
+          (click)="openDeletePinCodeDialog(page)"
+        >
+          {{(page?.delete_pin ? 'changeAdminPinCode' : 'addAdminPinCode') | translate}}
+        </button>
+      </div>
+      <mat-form-field class="field-full-width">
+        <textarea
+          matInput
+          rows="10"
+          cols="100"
+          #description
+          minlength="7"
+          maxlength="500"
+          formControlName="description"
+          [placeholder]="'description' | translate"
+        >
+        </textarea>
+        <mat-error *ngIf="pageForm.get('description').hasError('minlength')">
+          {{'textareaMinLength' | translate}}
+        </mat-error>
+        <mat-error *ngIf="pageForm.get('description').hasError('maxlength')">
+          {{'textareaMaxLength' | translate}}
+        </mat-error>
+        <mat-hint align="end">{{description.value.length}} / 500</mat-hint>
+      </mat-form-field>
+      <div class="mat-block clearfix">
+        <div class="pull-right">
+          <button
+            type="submit"
+            mat-raised-button
+            (click)="editFormPage()"
+            [disabled]="valueNotChanged()"
+            class="mat-raised lc-btn-primary"
+          >
+            {{'updatePageInformation' | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

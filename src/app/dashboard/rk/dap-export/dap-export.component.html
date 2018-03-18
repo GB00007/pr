@@ -1,0 +1,50 @@
+<div class="container-fluid">
+  <div>
+    <h3 class="text-left text-muted text-uppercase title-container">
+      {{'rk' | translate}} > {{'DAPExportTitle' | translate}}
+    </h3>
+    <hr>
+    <app-loader *ngIf="!isdapExportsLoaded" [diameter] ='150' [strokeWidth]='15' [pos]="{'margin-top' : '20%', 'margin-left' : '45%'}"></app-loader>
+    <!-- <app-no-content [label]="'noDapExports'" *ngIf="isdapExportsEmpty"></app-no-content> -->
+    <div *ngIf="isdapExportsLoaded && !isdapExportsEmpty" class="cash-register-wrapper text-center">
+      <h2>{{'DAPExportTitle' | translate}}</h2>
+    </div>
+    <div
+      *ngIf="isdapExportsLoaded && !isdapExportsEmpty"
+      fxLayoutWrap
+      fxLayout="row"
+      fxLayoutAlign="start stretch"
+    >
+      <div
+        [fxFlex]="cardWidth"
+        *ngFor="let dapExport of dapExports; let i = index;"
+      >
+        <mat-card class="mat-elevation-z10">
+          <mat-card-title class="mb-2">
+            <div
+              fxLayoutWrap
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+            >
+              <div>{{'from' | translate}}: {{dapExport.date.start | date:'longDate'}}</div>
+              <div class="text-right">{{'to' | translate}}: {{dapExport.date.end | date:'longDate'}}</div>
+            </div>
+          </mat-card-title>
+          <mat-card-actions
+            fxLayout="row"
+            fxLayoutAlign="end center"
+          >
+            <button
+              type="button"
+              color="primary"
+              mat-raised-button
+              (click)="generateDAPExport(dapExport)"
+            >
+              <mat-icon>file_download</mat-icon> {{'generateAndDownload' | translate}}
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

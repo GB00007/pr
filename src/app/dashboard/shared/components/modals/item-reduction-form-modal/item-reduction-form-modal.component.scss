@@ -1,0 +1,104 @@
+@import '../../../../../shared/sass/_mixins.scss';
+@import '../../../../../shared/sass/_variables.scss';
+
+:host {
+  .value-selections {
+    top: -3px;
+    left: 40%;
+    position: absolute;
+    font-size: 1.050rem;
+    @media screen and (max-width: 1024px) {
+      top: -6px;
+      left: 38%;
+    }
+  }
+  .icon-selections {
+    @include size(24px);
+  }
+  mat-button-toggle-group {
+    @include box-shadow(none);
+    mat-button-toggle {
+      color: #333;
+      &.mat-button-toggle-checked {
+        color: #fff;
+        background-color: #5cb85c !important;
+      }
+      &.mat-button-toggle-disabled {
+        cursor: not-allowed;
+        color: rgba(0,0,0,.2);
+        background-color: #ccc;
+      }
+      &.without-icon {
+        top: 1px;
+        font-weight: 600;
+        font-size: 1.2rem;
+      }
+    }
+  }
+  .amount-input {
+    width: 7%;
+    margin-left: 15px;
+  }
+  .show-pin {
+    margin: 0;
+    padding: 0 4px;
+    min-width: 25px;
+    font-size: 0.5rem;
+    line-height: 18px;
+    box-shadow: none;
+    color: #000 !important;
+    background-color: transparent !important;
+  }
+  .error-message {
+    margin-top: 24px;
+    position: absolute;
+    font-size: 0.720em;
+  }
+  mat-chip-list {
+    display: inline-block;
+    mat-chip {
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 900;
+      margin-bottom: 5px;
+      &.disabled {
+          cursor: not-allowed;
+          color: rgba(0,0,0,.2);
+          background-color: #ccc;
+        }
+      &::first-letter {
+        text-transform: capitalize;
+      }
+      &.checked {
+        top: -1px;
+        background-color: #5cb85c !important;
+        .c-indicator-legend {
+          background-color: #5cb85c !important;
+          &:before {
+            height: 1em;
+            content: '';
+            width: 0.5em;
+            font-size: 15px;
+            position: absolute;
+            border-style: solid;
+            border-color: #fff;
+            transform: rotate(45deg);
+            border-width: 0 0.25em 0.25em 0;
+          }
+        }
+      }
+    }
+    mat-chip:not(.mat-basic-chip) + mat-chip:not(.mat-basic-chip) {
+      margin: 0 0 5px 5px;
+    }
+  }
+  .snug-reduction-label {
+    font-weight: 900;
+    font-size: 1.3rem;
+    margin-right: 1rem;
+    text-transform: capitalize;
+  }
+  .mat-fab-top-right.prev-step {
+    right: 90px !important;
+  }
+}
